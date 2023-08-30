@@ -12,7 +12,7 @@ BEGIN
 
     -- CONTROL DE ERRORES
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
-    DECLARE @transaccion_iniciada BIT = 0;
+    DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
     -- 
@@ -25,14 +25,14 @@ BEGIN
         -- INICIO DE LA TRANSACCIÓN
         IF @@TRANCOUNT = 0
         BEGIN
-            SET @transaccion_iniciada = 1;
+            SET @transaccionIniciada = 1;
             BEGIN TRANSACTION;
         END;
 
         --
 
         -- COMMIT DE LA TRANSACCIÓN
-        IF @transaccion_iniciada = 1
+        IF @transaccionIniciada = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
@@ -45,7 +45,7 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @transaccion_iniciada = 1
+        IF @transaccionIniciada = 1
         BEGIN
             ROLLBACK;
         END;
