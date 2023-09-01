@@ -77,47 +77,47 @@ BEGIN
             BEGIN TRANSACTION;
         END;
 
-        -- Se crea el usuario
-        INSERT INTO [dbo].[Usuarios]
-        (
-            [idTipoUsuario],
-            [correo],
-            [clave],
-            [eliminado]
-        )
-        SELECT  TOP 1
-                TU.[id],
-                @IN_correo,
-                @IN_clave,
+            -- Se crea el usuario
+            INSERT INTO [dbo].[Usuarios]
+            (
+                [idTipoUsuario],
+                [correo],
+                [clave],
+                [eliminado]
+            )
+            SELECT  TOP 1
+                    TU.[id],
+                    @IN_correo,
+                    @IN_clave,
+                    0
+            FROM    [dbo].[TiposUsuario] TU
+            WHERE   TU.[nombre] = @DESCRIPCION_ESTUDIANTE;
+
+            -- Se crea el estudiante
+            SET @idUsuario = SCOPE_IDENTITY();
+
+            INSERT INTO [dbo].[Estudiantes]
+            (
+                [idCarrera],
+                [idSede],
+                [idUsuario],
+                [nombre],
+                [apellido1],
+                [apellido2],
+                [carnet],
+                [eliminado]
+            )
+            VALUES
+            (
+                @idCarrera,
+                @idSede,
+                @idUsuario,
+                @IN_nombre,
+                @IN_apellido1,
+                @IN_apellido2,
+                @IN_carnet,
                 0
-        FROM    [dbo].[TiposUsuario] TU
-        WHERE   TU.[nombre] = @DESCRIPCION_ESTUDIANTE;
-
-        -- Se crea el estudiante
-        SET @idUsuario = SCOPE_IDENTITY();
-
-        INSERT INTO [dbo].[Estudiantes]
-        (
-            [idCarrera],
-            [idSede],
-            [idUsuario],
-            [nombre],
-            [apellido1],
-            [apellido2],
-            [carnet],
-            [eliminado]
-        )
-        VALUES
-        (
-            @idCarrera,
-            @idSede,
-            @idUsuario,
-            @IN_nombre,
-            @IN_apellido1,
-            @IN_apellido2,
-            @IN_carnet,
-            0
-        );
+            );
 
         -- COMMIT DE LA TRANSACCIÓN
         IF @transaccionIniciada = 1
