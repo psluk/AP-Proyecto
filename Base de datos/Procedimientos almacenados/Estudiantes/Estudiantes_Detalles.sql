@@ -29,26 +29,28 @@ BEGIN
             RAISERROR('No existe ningún estudiante con el carné %d.', 16, 1, @IN_carnet);
         END;
 
-        SELECT  E.[carnet]      AS 'carnet',
-                E.[nombre]      AS 'nombre',
-                E.[apellido1]   AS 'apellido1',
-                E.[apellido2]   AS 'apellido2',
-                U.[correo]      AS 'correo',
-                C.[codigo]      AS 'carrera.codigo', 
-                C.[nombre]      AS 'carrera.nombre',
-                S.[codigo]      AS 'sede.codigo',
-                S.[nombre]      AS 'sede.nombre'
-        FROM    [dbo].[Estudiantes] E
-        INNER JOIN  [dbo].[Carreras] C
-            ON  E.[idCarrera] = C.[id]
-        INNER JOIN  [dbo].[Sedes] S
-            ON  E.[idSede] = S.[id]
-        INNER JOIN [dbo].[Usuarios] U
-            ON  E.[idUsuario] = U.[id]
-        WHERE   E.[eliminado] = 0
-            AND @IN_carnet IS NOT NULL
-            AND E.[carnet] = @IN_carnet
-        FOR JSON PATH;
+        SELECT (
+            SELECT  E.[carnet]      AS 'carnet',
+                    E.[nombre]      AS 'nombre',
+                    E.[apellido1]   AS 'apellido1',
+                    E.[apellido2]   AS 'apellido2',
+                    U.[correo]      AS 'correo',
+                    C.[codigo]      AS 'carrera.codigo', 
+                    C.[nombre]      AS 'carrera.nombre',
+                    S.[codigo]      AS 'sede.codigo',
+                    S.[nombre]      AS 'sede.nombre'
+            FROM    [dbo].[Estudiantes] E
+            INNER JOIN  [dbo].[Carreras] C
+                ON  E.[idCarrera] = C.[id]
+            INNER JOIN  [dbo].[Sedes] S
+                ON  E.[idSede] = S.[id]
+            INNER JOIN [dbo].[Usuarios] U
+                ON  E.[idUsuario] = U.[id]
+            WHERE   E.[eliminado] = 0
+                AND @IN_carnet IS NOT NULL
+                AND E.[carnet] = @IN_carnet
+            FOR JSON PATH)
+        AS 'results';
 
     END TRY
     BEGIN CATCH

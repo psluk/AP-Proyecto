@@ -87,7 +87,7 @@ BEGIN
             FOR JSON PATH),
             '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
                     -- que el JSON retornado sea un arreglo vacío
-        );
+        ) AS 'results';
 
     END TRY
     BEGIN CATCH
