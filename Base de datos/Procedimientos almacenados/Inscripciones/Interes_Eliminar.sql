@@ -33,7 +33,7 @@ BEGIN
 
         SELECT  @idEvento = E.[id]
         FROM    [dbo].[Eventos] E
-        WHERE   E.[uuid] = @IN_evento
+        WHERE   E.[uuid] = @uuidEvento
             AND E.[eliminado] = 0;
 
         IF @idEvento IS NULL
