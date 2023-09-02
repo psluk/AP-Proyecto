@@ -1,11 +1,10 @@
 --------------------------------------------------------------------------
--- Autor:       [nombre]
--- Fecha:       [año]-[mes]-[día]
--- Descripción: [descripción]
+-- Autor:       Paúl Rodríguez García
+-- Fecha:       2023-09-02
+-- Descripción: Devuelve la lista de carreras del sistema.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Nombre]
-    -- Parámetros
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Carreras_Lista]
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -14,28 +13,17 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transaccionIniciada BIT = 0;
 
-    -- DECLARACIÓN DE VARIABLES
-    -- 
-
     BEGIN TRY
 
-        -- VALIDACIONES
-        --
-
-        -- INICIO DE LA TRANSACCIÓN
-        IF @@TRANCOUNT = 0
-        BEGIN
-            SET @transaccionIniciada = 1;
-            BEGIN TRANSACTION;
-        END;
-
-        --
-
-        -- COMMIT DE LA TRANSACCIÓN
-        IF @transaccionIniciada = 1
-        BEGIN
-            COMMIT TRANSACTION;
-        END;
+        SELECT COALESCE(
+            (SELECT C.[codigo]  AS 'codigo',
+                    C.[nombre]  AS 'nombre'
+            FROM    [dbo].[Carreras] C
+            ORDER BY C.[nombre] ASC
+            FOR JSON PATH),
+            '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
+                    -- que el JSON retornado sea un arreglo vacío
+        ) AS 'results';
 
     END TRY
     BEGIN CATCH
