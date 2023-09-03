@@ -4,7 +4,7 @@
 -- Descripción: Agrega un evento nuevo
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Nombre]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Eventos_Agregar]
     @IN_Titulo VARCHAR(64),
     @IN_Descripcion VARCHAR(512),
     @IN_FechaInicio DATETIME,

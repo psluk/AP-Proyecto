@@ -1,10 +1,10 @@
 --------------------------------------------------------------------------
 -- Autor:       Fabián Vargas
--- Fecha:       23-09-02
--- Descripción: Retorna los detalles de un evento
+-- Fecha:       23-09-03
+-- Descripción: Retorna la lista de actividades de un evento
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Eventos_Detalles]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Actividades_Lista]
     @IN_uuid UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -12,44 +12,49 @@ BEGIN
 
     -- CONTROL DE ERRORES
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
-    DECLARE @transaccion_iniciada BIT = 0;
+    DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    DECLARE @ID_Evento INT = NULL
+    DECLARE @ID_Evento INT = NULL;
 
     BEGIN TRY
 
-        IF NOT EXISTS
-        ( 
-            SELECT 1 
-            FROM [dbo].[Eventos] E 
-            WHERE E.[uuid] = @IN_uuid
-        )
+        -- VALIDACIONES
+        SELECT @ID_Evento = E.[id]
+        FROM [dbo].[Eventos] E
+        WHERE E.[uuid] = @IN_uuid
+        AND E.[eliminado] = 0
+
+        IF @ID_Evento IS NULL
         BEGIN
             DECLARE @uuid_varchar VARCHAR(36)= (SELECT CONVERT(NVARCHAR(36), @IN_uuid))
-            RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar)
+            RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar) 
         END
 
+        IF NOT EXISTS(
+            SELECT 1
+            FROM [dbo].[Actividades] A
+            WHERE A.[idEvento] = @ID_Evento
+            AND A.[eliminado] = 0
+        )
+        BEGIN
+            RAISERROR('No existen actividades asociadas al evento.',50000,1)
+        END
+        
         SELECT COALESCE(
-            (
-                SELECT 
-                    E.[titulo],
-                    E.[descripcion],
-                    E.[capacidad],
-                    E.[fechaInicio],
-                    E.[fechaFin],
-                    E.[lugar],
-                    E.[especiales],
-                    C.[nombre]
-                    FROM [dbo].[Eventos] E
-                INNER JOIN [dbo].[Categorias] C
-                ON C.[id] = E.[idCategoria]
-                WHERE E.[uuid] = @IN_uuid
-                AND E.[eliminado] = 0
-                FOR JSON PATH      
-            ),
+            (SELECT 
+                A.[uuid],
+                A.[lugar],
+                A.[fechaInicio],
+                A.[fechaFin]
+            FROM [dbo].[Actividades] A
+            WHERE A.[idEvento] = @ID_Evento
+            AND A.[eliminado] = 0
+            FOR JSON PATH),
             '[]'
         ) as 'resultados'
+            
+        FOR JSON PATH
 
     END TRY
     BEGIN CATCH
@@ -59,7 +64,7 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @transaccion_iniciada = 1
+        IF @transaccionIniciada = 1
         BEGIN
             ROLLBACK;
         END;

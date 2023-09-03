@@ -1,55 +1,68 @@
 --------------------------------------------------------------------------
 -- Autor:       Fabián Vargas
--- Fecha:       23-09-02
--- Descripción: Retorna los detalles de un evento
+-- Fecha:       23-09-03
+-- Descripción: Agrega una actividad de un evento
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Eventos_Detalles]
-    @IN_uuid UNIQUEIDENTIFIER
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Actividades_Agregar]
+    @IN_uuid UNIQUEIDENTIFIER,
+    @IN_lugar VARCHAR(128),
+    @IN_fechaInicio DATETIME,
+    @IN_FechaFin DATETIME
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
 
     -- CONTROL DE ERRORES
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
-    DECLARE @transaccion_iniciada BIT = 0;
+    DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
     DECLARE @ID_Evento INT = NULL
-
     BEGIN TRY
 
-        IF NOT EXISTS
-        ( 
-            SELECT 1 
-            FROM [dbo].[Eventos] E 
-            WHERE E.[uuid] = @IN_uuid
-        )
+        -- VALIDACIONES
+        SELECT @ID_Evento = E.[id]
+        FROM [dbo].[Eventos] E
+        WHERE E.[uuid] = @IN_uuid
+        AND E.[eliminado] = 0
+
+        IF @ID_Evento IS NULL
         BEGIN
-            DECLARE @uuid_varchar VARCHAR(36)= (SELECT CONVERT(NVARCHAR(36), @IN_uuid))
-            RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar)
+            RAISERROR('No existe el evento al cual se quiere agregar la actividad',50000, 1)
         END
 
-        SELECT COALESCE(
-            (
-                SELECT 
-                    E.[titulo],
-                    E.[descripcion],
-                    E.[capacidad],
-                    E.[fechaInicio],
-                    E.[fechaFin],
-                    E.[lugar],
-                    E.[especiales],
-                    C.[nombre]
-                    FROM [dbo].[Eventos] E
-                INNER JOIN [dbo].[Categorias] C
-                ON C.[id] = E.[idCategoria]
-                WHERE E.[uuid] = @IN_uuid
-                AND E.[eliminado] = 0
-                FOR JSON PATH      
-            ),
-            '[]'
-        ) as 'resultados'
+        -- INICIO DE LA TRANSACCIÓN
+        IF @@TRANCOUNT = 0
+        BEGIN
+            SET @transaccionIniciada = 1;
+            BEGIN TRANSACTION;
+        END;
+
+        INSERT INTO [dbo].[Actividades]
+        (
+            idEvento,
+            uuid,
+            lugar,
+            fechaInicio,
+            fechaFin,
+            eliminado
+        )
+        VALUES
+        (
+            @ID_Evento,
+            NEWID(),
+            @IN_lugar,
+            @IN_fechaInicio,
+            @IN_FechaFin,
+            0
+        )
+
+        -- COMMIT DE LA TRANSACCIÓN
+        IF @transaccionIniciada = 1
+        BEGIN
+            COMMIT TRANSACTION;
+        END;
 
     END TRY
     BEGIN CATCH
@@ -59,7 +72,7 @@ BEGIN
         SET @ErrorState = ERROR_STATE();
         SET @Message = ERROR_MESSAGE();
 
-        IF @transaccion_iniciada = 1
+        IF @transaccionIniciada = 1
         BEGIN
             ROLLBACK;
         END;
