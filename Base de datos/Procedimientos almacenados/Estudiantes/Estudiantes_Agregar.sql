@@ -31,17 +31,52 @@ BEGIN
     BEGIN TRY
 
         -- VALIDACIONES
+        IF (LTRIM(RTRIM(@IN_correo)) = '')
+        BEGIN
+            RAISERROR('No se brindó un correo electrónico', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_clave)) = '')
+        BEGIN
+            RAISERROR('No se brindó una contraseña', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_codigoCarrera)) = '')
+        BEGIN
+            RAISERROR('No se brindó un código de carrera', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_codigoSede)) = '')
+        BEGIN
+            RAISERROR('No se brindó un código de sede', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_nombre)) = '')
+        BEGIN
+            RAISERROR('No se brindó un nombre', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_apellido1)) = '')
+        BEGIN
+            RAISERROR('No se brindó el primer apellido', 16, 1)
+        END;
+
+        IF (@IN_carnet = 0)
+        BEGIN
+            RAISERROR('No se brindó un carné', 16, 1)
+        END;
+
         IF EXISTS ( SELECT  1
                     FROM    [dbo].[Usuarios] U
                     WHERE   U.[correo] = @IN_correo
                         AND U.[eliminado] = 0 )
         BEGIN
-            RAISERROR('Ya existe un usuario con el correo "%s".', 16, 1, @IN_correo)
+            RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correo)
         END;
 
-        IF (@IN_correo NOT LIKE '%@estudiantec.cr')
+        IF (@IN_correo NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correo)) = '@estudiantec.cr')
         BEGIN
-            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr.', 16, 1, @IN_correo);
+            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr', 16, 1, @IN_correo);
         END;
 
         IF EXISTS ( SELECT  1
@@ -49,7 +84,7 @@ BEGIN
                     WHERE   E.[carnet] = @IN_carnet
                         AND E.[eliminado] = 0 )
         BEGIN
-            RAISERROR('Ya existe un estudiante con el carné %d.', 16, 1, @IN_carnet)
+            RAISERROR('Ya existe un estudiante con el carné %d', 16, 1, @IN_carnet)
         END;
 
         SELECT  @idSede = S.[id]
@@ -58,7 +93,7 @@ BEGIN
 
         IF @idSede IS NULL
         BEGIN
-            RAISERROR('No existe ninguna sede con el código "%s".', 16, 1, @IN_codigoSede)
+            RAISERROR('No existe ninguna sede con el código "%s"', 16, 1, @IN_codigoSede)
         END;
 
         SELECT  @idCarrera = C.[id]
@@ -68,7 +103,7 @@ BEGIN
 
         IF @idCarrera IS NULL
         BEGIN
-            RAISERROR('No existe ninguna carrera con el código "%s" en la sede.', 16, 1, @IN_codigoCarrera)
+            RAISERROR('No existe ninguna carrera con el código "%s" en la sede', 16, 1, @IN_codigoCarrera)
         END;
 
         -- INICIO DE LA TRANSACCIÓN

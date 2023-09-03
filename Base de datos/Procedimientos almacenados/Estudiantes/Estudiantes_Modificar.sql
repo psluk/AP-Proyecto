@@ -33,6 +33,41 @@ BEGIN
     BEGIN TRY
 
         -- VALIDACIONES
+        IF (LTRIM(RTRIM(@IN_correo)) = '')
+        BEGIN
+            RAISERROR('No se brindó un correo electrónico', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_clave)) = '')
+        BEGIN
+            RAISERROR('No se brindó una contraseña', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_codigoCarrera)) = '')
+        BEGIN
+            RAISERROR('No se brindó un código de carrera', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_codigoSede)) = '')
+        BEGIN
+            RAISERROR('No se brindó un código de sede', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_nombre)) = '')
+        BEGIN
+            RAISERROR('No se brindó un nombre', 16, 1)
+        END;
+
+        IF (LTRIM(RTRIM(@IN_apellido1)) = '')
+        BEGIN
+            RAISERROR('No se brindó el primer apellido', 16, 1)
+        END;
+
+        IF (@IN_carnet = 0) OR (@IN_carnetNuevo = 0)
+        BEGIN
+            RAISERROR('No se brindó un carné', 16, 1)
+        END;
+
         IF NOT EXISTS ( SELECT  1
                         FROM    [dbo].[Estudiantes] E
                         WHERE   E.[eliminado] = 0
