@@ -6,6 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Actividades_Modificar]
     @IN_uuid UNIQUEIDENTIFIER,
+    @IN_nombre VARCHAR(64),
     @IN_Lugar VARCHAR(128),
     @IN_fechaInicio DATETIME,
     @IN_fechaFin DATETIME
@@ -40,6 +41,11 @@ BEGIN
             RAISERROR('No se proporcionó un lugar', 16, 1);
         END;
 
+        IF LTRIM(RTRIM(@IN_nombre)) = ''
+        BEGIN
+            RAISERROR('No se proporcionó un nombre', 16, 1);
+        END;
+
         -- INICIO DE LA TRANSACCIÓN
         IF @@TRANCOUNT = 0
         BEGIN
@@ -48,7 +54,8 @@ BEGIN
         END;
 
         UPDATE A
-        SET A.[lugar] = @IN_Lugar,
+        SET A.[nombre] = @IN_nombre,
+            A.[lugar] = @IN_Lugar,
             A.[fechaInicio] = @IN_FechaInicio,
             A.[fechaFin] = @IN_FechaFin
         FROM [dbo].[Actividades] A

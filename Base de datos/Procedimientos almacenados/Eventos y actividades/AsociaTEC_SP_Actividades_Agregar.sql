@@ -6,6 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Actividades_Agregar]
     @IN_uuid UNIQUEIDENTIFIER,
+    @IN_nombre VARCHAR(64),
     @IN_lugar VARCHAR(128),
     @IN_fechaInicio DATETIME,
     @IN_FechaFin DATETIME
@@ -54,6 +55,7 @@ BEGIN
         (
             idEvento,
             uuid,
+            nombre,
             lugar,
             fechaInicio,
             fechaFin,
@@ -63,6 +65,7 @@ BEGIN
         (
             @ID_Evento,
             NEWID(),
+            @IN_nombre,
             @IN_lugar,
             @IN_fechaInicio,
             @IN_FechaFin,

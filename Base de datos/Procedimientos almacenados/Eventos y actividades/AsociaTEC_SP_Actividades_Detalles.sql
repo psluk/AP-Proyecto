@@ -33,7 +33,8 @@ BEGIN
 
         SELECT COALESCE(
             (
-                SELECT A.[lugar],
+                SELECT A.[Nombre],
+                       A.[lugar],
                        A.[fechaInicio],
                        A.[fechaFin]
                 FROM [dbo].[Actividades] A

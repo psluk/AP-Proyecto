@@ -44,6 +44,7 @@ BEGIN
         SELECT COALESCE(
             (SELECT 
                 A.[uuid],
+                A.[nombre],
                 A.[lugar],
                 A.[fechaInicio],
                 A.[fechaFin]
