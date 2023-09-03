@@ -52,15 +52,6 @@ BEGIN
             RAISERROR('Ya existe un estudiante con el carné %d.', 16, 1, @IN_carnet)
         END;
 
-        SELECT  @idCarrera = C.[id]
-        FROM    [dbo].[Carreras] C
-        WHERE   C.[codigo] = @IN_codigoCarrera;
-
-        IF @idCarrera IS NULL
-        BEGIN
-            RAISERROR('No existe ninguna carrera con el código "%s".', 16, 1, @IN_codigoCarrera)
-        END;
-
         SELECT  @idSede = S.[id]
         FROM    [dbo].[Sedes] S
         WHERE   S.[codigo] = @IN_codigoSede;
@@ -68,6 +59,16 @@ BEGIN
         IF @idSede IS NULL
         BEGIN
             RAISERROR('No existe ninguna sede con el código "%s".', 16, 1, @IN_codigoSede)
+        END;
+
+        SELECT  @idCarrera = C.[id]
+        FROM    [dbo].[Carreras] C
+        WHERE   C.[codigo] = @IN_codigoCarrera
+            AND C.[idSede] = @idSede;
+
+        IF @idCarrera IS NULL
+        BEGIN
+            RAISERROR('No existe ninguna carrera con el código "%s" en la sede.', 16, 1, @IN_codigoCarrera)
         END;
 
         -- INICIO DE LA TRANSACCIÓN
@@ -99,7 +100,6 @@ BEGIN
             INSERT INTO [dbo].[Estudiantes]
             (
                 [idCarrera],
-                [idSede],
                 [idUsuario],
                 [nombre],
                 [apellido1],
@@ -110,7 +110,6 @@ BEGIN
             VALUES
             (
                 @idCarrera,
-                @idSede,
                 @idUsuario,
                 @IN_nombre,
                 @IN_apellido1,

@@ -65,7 +65,7 @@ BEGIN
             INNER JOIN  [dbo].[Carreras] C
                 ON  E.[idCarrera] = C.[id]
             INNER JOIN  [dbo].[Sedes] S
-                ON  E.[idSede] = S.[id]
+                ON  C.[idSede] = S.[id]
             WHERE   (
                         @usarFiltroDeNombre = 0
                     OR  CONCAT(E.[nombre], ' ', E.[apellido1], ' ', ISNULL(E.[apellido2], ''))

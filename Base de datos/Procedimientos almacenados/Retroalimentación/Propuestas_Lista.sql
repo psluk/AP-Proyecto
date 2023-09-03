@@ -96,7 +96,7 @@ BEGIN
             INNER JOIN  [dbo].[Carreras] C
                 ON  A.[idCarrera] = C.[id]
             INNER JOIN  [dbo].[Sedes] S
-                ON  A.[idSede] = S.[id]
+                ON  C.[idSede] = S.[id]
             WHERE   (
                         @usarFiltroDeTitulo = 0
                     OR  P.[titulo]

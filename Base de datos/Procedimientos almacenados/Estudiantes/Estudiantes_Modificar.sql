@@ -87,15 +87,6 @@ BEGIN
             END;
         END;
 
-        SELECT  @idCarrera = C.[id]
-        FROM    [dbo].[Carreras] C
-        WHERE   C.[codigo] = @IN_codigoCarrera;
-
-        IF @idCarrera IS NULL
-        BEGIN
-            RAISERROR('No existe ninguna carrera con el código "%s".', 16, 1, @IN_codigoCarrera)
-        END;
-
         SELECT  @idSede = S.[id]
         FROM    [dbo].[Sedes] S
         WHERE   S.[codigo] = @IN_codigoSede;
@@ -103,6 +94,16 @@ BEGIN
         IF @idSede IS NULL
         BEGIN
             RAISERROR('No existe ninguna sede con el código "%s".', 16, 1, @IN_codigoSede)
+        END;
+
+        SELECT  @idCarrera = C.[id]
+        FROM    [dbo].[Carreras] C
+        WHERE   C.[codigo] = @IN_codigoCarrera
+            AND C.[idSede] = @idSede;
+
+        IF @idCarrera IS NULL
+        BEGIN
+            RAISERROR('No existe ninguna carrera con el código "%s".', 16, 1, @IN_codigoCarrera)
         END;
 
         IF (@IN_clave IS NOT NULL) AND (@IN_clave <> '')
@@ -135,7 +136,6 @@ BEGIN
             -- Se actualiza el estudiante
             UPDATE  E
             SET     E.[idCarrera] = @idCarrera,
-                    E.[idSede] = @idSede,
                     E.[nombre] = @IN_nombre,
                     E.[apellido1] = @IN_apellido1,
                     E.[apellido2] = @IN_apellido2,

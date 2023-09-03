@@ -45,7 +45,7 @@ BEGIN
         INNER JOIN  [dbo].[Carreras] C
             ON  A.[idCarrera] = C.[id]
         INNER JOIN  [dbo].[Sedes] S
-            ON  A.[idSede] = S.[id]
+            ON  C.[idSede] = S.[id]
         WHERE   A.[eliminado] = 0
             AND C.[codigo] = @IN_codigoCarrera
             AND S.[codigo] = @IN_codigoSede;

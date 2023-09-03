@@ -43,7 +43,7 @@ BEGIN
             INNER JOIN  [dbo].[Carreras] C
                 ON  E.[idCarrera] = C.[id]
             INNER JOIN  [dbo].[Sedes] S
-                ON  E.[idSede] = S.[id]
+                ON  C.[idSede] = S.[id]
             INNER JOIN [dbo].[Usuarios] U
                 ON  E.[idUsuario] = U.[id]
             WHERE   E.[eliminado] = 0

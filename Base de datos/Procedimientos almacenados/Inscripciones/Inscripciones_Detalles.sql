@@ -89,7 +89,7 @@ BEGIN
             INNER JOIN  [dbo].[Carreras] Cr
                 ON  A.[idCarrera] = Cr.[id]
             INNER JOIN  [dbo].[Sedes] S
-                ON  A.[idSede] = S.[id]
+                ON  Cr.[idSede] = S.[id]
             WHERE   I.[idEvento] = @idEvento
                 AND I.[idEstudiante] = @idEstudiante
                 AND I.[eliminado] = 0

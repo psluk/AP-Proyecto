@@ -66,7 +66,7 @@ BEGIN
             INNER JOIN  [dbo].[Carreras] C
                 ON  A.[idCarrera] = C.[id]
             INNER JOIN  [dbo].[Sedes] S
-                ON  A.[idSede] = S.[id]
+                ON  C.[idSede] = S.[id]
             WHERE   P.[id] = @idPropuesta
             FOR JSON PATH),
             '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
