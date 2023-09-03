@@ -36,7 +36,7 @@ BEGIN
                 SELECT A.[lugar],
                        A.[fechaInicio],
                        A.[fechaFin]
-                FROM [dbo].[Actividades]
+                FROM [dbo].[Actividades] A
                 WHERE A.[uuid] = @IN_uuid
                 AND A.[eliminado] = 0
                 FOR JSON PATH
