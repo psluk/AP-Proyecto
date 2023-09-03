@@ -1,11 +1,12 @@
 --------------------------------------------------------------------------
--- Autor:       [nombre]
--- Fecha:       [año]-[mes]-[día]
--- Descripción: [descripción]
+-- Autor:       Paúl Rodríguez García
+-- Fecha:       2023-09-02
+-- Descripción: Devuelve la lista de carreras del sistema.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Nombre]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Carreras_Lista]
     -- Parámetros
+    @IN_sede    VARCHAR(4)
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -15,27 +16,30 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    -- 
+    DECLARE @idSede INT = NULL;
 
     BEGIN TRY
 
         -- VALIDACIONES
-        --
+        SELECT  @idSede = S.[id]
+        FROM    [dbo].[Sedes] S
+        WHERE   S.[codigo] = @IN_sede;
 
-        -- INICIO DE LA TRANSACCIÓN
-        IF @@TRANCOUNT = 0
+        IF @idSede IS NULL
         BEGIN
-            SET @transaccionIniciada = 1;
-            BEGIN TRANSACTION;
+            RAISERROR('No existe ninguna sede con el código "%s"', 16, 1, @IN_sede);
         END;
 
-        --
-
-        -- COMMIT DE LA TRANSACCIÓN
-        IF @transaccionIniciada = 1
-        BEGIN
-            COMMIT TRANSACTION;
-        END;
+        SELECT COALESCE(
+            (SELECT C.[codigo]  AS 'codigo',
+                    C.[nombre]  AS 'nombre'
+            FROM    [dbo].[Carreras] C
+            WHERE   C.[idSede] = @idSede
+            ORDER BY C.[nombre] ASC
+            FOR JSON PATH),
+            '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
+                    -- que el JSON retornado sea un arreglo vacío
+        ) AS 'results';
 
     END TRY
     BEGIN CATCH
