@@ -32,6 +32,17 @@ BEGIN
             RAISERROR('No existe el evento al cual se quiere agregar la actividad',50000, 1)
         END
 
+        IF NOT EXISTS (
+            SELECT 1
+            FROM [dbo].[Eventos] E
+            WHERE E.[id] = @ID_Evento
+            AND @IN_fechaInicio >= E.[fechaInicio]
+            AND @IN_FechaFin <= E.[fechaFin]
+        )
+        BEGIN
+            RAISERROR('Las fechas de inicio y fin de la actividad no están dentro del rango permitido para el evento', 50001, 1)
+        END
+
         -- INICIO DE LA TRANSACCIÓN
         IF @@TRANCOUNT = 0
         BEGIN
