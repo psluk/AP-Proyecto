@@ -1,13 +1,11 @@
 --------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-02
--- Descripción: Elimina a un unico colaborador de evento.
+-- Descripciï¿½n: Elimina a un unico colaborador de evento.
 --------------------------------------------------------------------------
 
---AsociaTEC_SP_Colaboradores_Eliminar [nombre, apellido1, apellido2, carnet, evento] (desactiva al estudiante como colaborador)
-
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Colaboradores_Eliminar]
-    -- Parámetros
+    -- Parï¿½metros
     @IN_nombre VARCHAR(32),
     @IN_apellido1 VARCHAR(16),
     @IN_apellido2 VARCHAR(16),
@@ -21,7 +19,7 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transaccionIniciada BIT = 0;
 
-    -- DECLARACIÓN DE VARIABLES
+    -- DECLARACIï¿½N DE VARIABLES
 
 
     BEGIN TRY
@@ -89,7 +87,7 @@ BEGIN
             RAISERROR('El colaborador que se desea eliminar no existe o ya fue eliminado.', 16, 1)
         END;
 
-		-- INICIO DE LA TRANSACCIÓN
+		-- INICIO DE LA TRANSACCIï¿½N
         IF @@TRANCOUNT = 0
         BEGIN
             SET @transaccionIniciada = 1;
@@ -110,9 +108,9 @@ BEGIN
 			AND	E.[apellido1] = @IN_apellido1
 			AND E.[apellido2] = @IN_apellido2
 			AND E.[carnet] = @IN_carnet
-			AND Eve.[uuid] = @IN_identificadorEvento
+			AND Eve.[uuid] = @IN_identificadorEvento;
 
-        -- COMMIT DE LA TRANSACCIÓN
+        -- COMMIT DE LA TRANSACCIï¿½N
         IF @transaccionIniciada = 1
         BEGIN
             COMMIT TRANSACTION;
