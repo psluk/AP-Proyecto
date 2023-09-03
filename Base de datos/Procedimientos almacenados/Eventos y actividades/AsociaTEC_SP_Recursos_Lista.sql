@@ -4,7 +4,7 @@
 -- Descripción: Retorna la lista de recursos de una actividad
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Nombre]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Recursos_Lista]
     @IN_uuid UNIQUEIDENTIFIER
 AS
 BEGIN
