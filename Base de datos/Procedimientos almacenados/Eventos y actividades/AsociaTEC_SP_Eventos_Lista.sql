@@ -46,6 +46,7 @@ BEGIN
 					INNER JOIN [dbo].[Categorias] C
 					ON C.[id] = E.[idCategoria]
 					WHERE E.[idAsociacion] = @ID_Asociacion
+					AND E.[eliminado] = 0
 					FOR JSON PATH
 					),
 					'[]'
@@ -66,6 +67,7 @@ BEGIN
 					FROM [dbo].[Eventos] E
 					INNER JOIN [dbo].[Categorias] C
 					ON C.[id] = E.[idCategoria]
+					WHERE E.[eliminado] = 0
 					FOR JSON PATH
 					),
 					'[]'
