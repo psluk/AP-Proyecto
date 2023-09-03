@@ -27,7 +27,7 @@ BEGIN
         )
         BEGIN
             DECLARE @uuid_varchar VARCHAR(36)= (SELECT CONVERT(NVARCHAR(36), @IN_uuid))
-            RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar);
+            RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar)
         END
 
         SELECT COALESCE(

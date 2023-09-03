@@ -65,13 +65,18 @@ BEGIN
 		ON I.[id] = E.[idInscripcion]
 		WHERE I.[idEvento] = @ID_Evento
 
-        SELECT @Num_Inscripciones AS 'inscripciones',
-			   @Num_Confirmados AS 'confirmados',
-			   @Num_Calificaciones AS 'cancelados',
-			   @Num_Compartidos AS 'compartidos',
-			   @Num_Calificaciones AS 'calificaciones',
-			   @Num_Estrellas AS 'estrellas'
-			   FOR JSON PATH
+        SELECT COALESCE
+        (
+            (SELECT @Num_Inscripciones AS 'inscripciones',
+			        @Num_Confirmados AS 'confirmados',
+			        @Num_Calificaciones AS 'cancelados',
+			        @Num_Compartidos AS 'compartidos',
+			        @Num_Calificaciones AS 'calificaciones',
+                    @Num_Estrellas AS 'estrellas'
+                    FOR JSON PATH
+            ),
+            '[]'
+        ) as resultados
 
     END TRY
     BEGIN CATCH
