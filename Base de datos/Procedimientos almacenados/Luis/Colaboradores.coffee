@@ -1,15 +1,8 @@
-Colaboradores
-AsociaTEC_SP_Solicitudes_Lista [nombre, sede, carrera, evento] (devuelve lista de las solicitudes) -> nombre, apellido1, apellido2, carnet
-
-AsociaTEC_SP_Solicitudes_Decidir[ bool, nombre, apellido1, apellido2, carnet, evento] (decide si se accepta la peticion del estudiante; se llama a AsociaTEC_SP_Colaboradores_Agregar)
-AsociaTEC_SP_Colaboradores_Lista [Asociacion, Evento]  (devuelve la lista de los colaboradores)
-AsociaTEC_SP_Colaboradores_Agregar [Asociacion, Evento, nombre, apellido1, apellido2, carnet] (se agrega el estudiante o se reactiva como colaborador)
-AsociaTEC_SP_Colaboradores_Eliminar [nombre, apellido1, apellido2, carnet] (desactiva al estudiante como colaborador)
 
 Asociaciones
-AsociaTEC_SP_Asociaciones_Lista [] (devuelve lista de las asociaciones) -> nombre, sede, carrera
 
-AsociaTEC_SP_Asociaciones_Detalles [nombre, sede, carrera] (devuelve todos los detalles) -> carreda, sede, nombre, descripcion, telefono, correo
+
+
 AsociaTEC_SP_Asociaciones_Agregar [carreda, sede, nombre, descripcion, telefono, correo, clave] (lo reactiva si ya existe)
 AsociaTEC_SP_Asociaciones_Modificar [carredaActual, sedeActual, nombreActual, carreda?, sede?, nombre?, descripcion?, telefono?, correo?, clave?] (modifica los valores)
 AsociaTEC_SP_Asociaciones_Eliminar [carreda, sede, nombre] (desactiva a la asociacion)
@@ -25,11 +18,28 @@ AsociaTEC_SP_Mensajes_Agregar_Estudiante [uuid, contenido ,nombre, apellido1, ap
 AsociaTEC_SP_Mensajes_Eliminar [uuid] (eliminamos el mensaje) -> exito/fracaso
 
 
-SP adicionales
 
-lista de carreras 
-lista de sedes
+Pendientes
 
-Colaboradores de actividades no existen en bd?
 
-EstudiantesDeAsociacion no son colaboradores
+AsociaTEC_SP_Asociaciones_Detalles [nombre, sede, carrera] (devuelve todos los detalles) -> carreda, sede, nombre, descripcion, telefono, correo
+
+
+
+
+
+Faltan pruebas
+
+    colaboradores
+
+        Revisar los filtros de tipo string en cada SP
+
+        AsociaTEC_SP_Solicitudes_Lista [correo, codigoSede, codigoCarrera, evento] (devuelve lista de las solicitudes) -> nombre, apellido1, apellido2, carnet
+        AsociaTEC_SP_Colaboradores_Lista [correo, codigoSede, codigoCarrera, evento]  (devuelve la lista de los colaboradores)
+        AsociaTEC_SP_Colaboradores_Eliminar [nombre, apellido1, apellido2, carnet] (desactiva al estudiante como colaborador)
+        AsociaTEC_SP_Colaboradores_Agregar [Evento, carnet] (se agrega el estudiante o se reactiva como colaborador)
+        AsociaTEC_SP_Solicitudes_Decidir[ bool, nombre, apellido1, apellido2, carnet, evento] (decide si se accepta la peticion del estudiante; se llama a AsociaTEC_SP_Colaboradores_Agregar)
+
+    Asociaciones
+
+        AsociaTEC_SP_Asociaciones_Lista [sede(opcional), carrera(opcional),] (devuelve lista de las asociaciones) -> nombre, sede, carrera, correo
