@@ -5,5 +5,5 @@
 --------------------------------------------------------------------------
 
 CREATE TYPE Tags AS TABLE(
-	IN_tags VARCHAR(32)
+	IN_tags VARCHAR(32) NOT NULL
 )
