@@ -3,7 +3,6 @@
 -- Fecha:       2023-09-03
 -- Descripci�n: modificamos los valores de una asociacion
 --------------------------------------------------------------------------
---AsociaTEC_SP_Asociaciones_Modificar [correoActual, nombre?, descripcion?, telefono?, codigoCarreda?, codigoSede?,  correo?, clave?] (modifica los valores)
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Asociaciones_Modificar]
     -- Par�metros
