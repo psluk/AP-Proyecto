@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------
 -- Autor:       Paúl Rodríguez García
--- Fecha:       2023-09-02
--- Descripción: Devuelve los detalles de una propuesta.
+-- Fecha:       2023-09-05
+-- Descripción: Elimina una propuesta.
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Detalles]
@@ -39,45 +39,22 @@ BEGIN
             RAISERROR('No existe ninguna propuesta con el identificador "%s"', 16, 1, @IN_propuesta);
         END;
 
-        -- Se retorna la información
-        SELECT COALESCE(
-            (SELECT P.[uuid]            AS  'id',
-                    P.[titulo]          AS  'titulo',
-                    P.[tematica]        AS  'tematica',
-                    P.[objetivos]       AS  'objetivos',
-                    P.[actividades]     AS  'actividades',
-                    P.[otros]           AS  'otros',
-                    P.[timestamp]       AS  'fecha',
-                    EdP.[descripcion]   AS  'estado.actual',
-                    (
-                        SELECT	EdP2 .[descripcion]
-                        FROM	[dbo].[EstadosDePropuesta] EdP2
-                        WHERE	EdP.[id] != EdP2.[id]
-                        FOR JSON AUTO
-                    )					AS  'estado.otros',
-                    E.[carnet]          AS  'estudiante.carnet',
-                    E.[nombre]          AS  'estudiante.nombre',
-                    E.[apellido1]       AS  'estudiante.apellido1',
-                    E.[apellido2]       AS  'estudiante.apellido2',
-                    A.[nombre]          AS  'asociacion.nombre',
-                    C.[codigo]          AS  'asociacion.carrera',
-                    S.[codigo]          AS  'asociacion.sede'
-            FROM    [dbo].[Propuestas] P
-            INNER JOIN  [dbo].[EstadosDePropuesta] EdP
-                ON  P.[idEstado] = EdP.[id]
-            INNER JOIN  [dbo].[Estudiantes] E
-                ON  P.[idEstudiante] = E.[id]
-            INNER JOIN  [dbo].[Asociaciones] A
-                ON  P.[idAsociacion] = A.[id]
-            INNER JOIN  [dbo].[Carreras] C
-                ON  A.[idCarrera] = C.[id]
-            INNER JOIN  [dbo].[Sedes] S
-                ON  C.[idSede] = S.[id]
-            WHERE   P.[id] = @idPropuesta
-            FOR JSON PATH),
-            '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
-                    -- que el JSON retornado sea un arreglo vacío
-        ) AS 'results';
+        -- INICIO DE LA TRANSACCIÓN
+        IF @@TRANCOUNT = 0
+        BEGIN
+            SET @transaccionIniciada = 1;
+            BEGIN TRANSACTION;
+        END;
+
+            UPDATE  P
+            SET     P.[eliminado] = 1
+            WHERE   P.[id] = @idPropuesta;
+
+        -- COMMIT DE LA TRANSACCIÓN
+        IF @transaccionIniciada = 1
+        BEGIN
+            COMMIT TRANSACTION;
+        END;
 
     END TRY
     BEGIN CATCH
