@@ -22,6 +22,7 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
+	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%';
 	DECLARE @usarIDtipoUsuario INT = 0;
 	DECLARE @usarIDCarrera INT = NULL;
 	DECLARE @usarIDSede INT = NULL;
@@ -73,33 +74,28 @@ BEGIN
 		--validacion de que no exista el usuario
         IF EXISTS ( SELECT  1
                     FROM    [dbo].[Usuarios] U
-                    WHERE   U.[correo] = @IN_correo
-                        AND U.[eliminado] = 0 )
+                    WHERE   U.[correo] = LTRIM(RTRIM(@IN_correo))
+                        AND U.[eliminado] = 0)
         BEGIN
             RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correo)
         END;
-
-		--validacion de asociacion si es que fuera necesaria
-		--
-		--
-		--
 
 		SELECT @usarIDCarrera = C.[id], @usarIDSede = S.[id]
 		FROM [dbo].[Carreras] C
 		INNER JOIN [dbo].[Sedes] S
 			ON S.[id] = C.[idSede]
-		WHERE C.[codigo] = @IN_codigoCarrera
-		AND S.[codigo] = @IN_codigoSede;
+		WHERE C.[codigo] = LTRIM(RTRIM(@IN_codigoCarrera))
+		AND S.[codigo] = LTRIM(RTRIM(@IN_codigoSede));
 
 		IF ((@usarIDCarrera IS NULL) OR (@usarIDSede IS NULL))
 		BEGIN
-			RAISERROR('No se encontro la Sede y Carrera a la cual pertenecera la asociacion"%s"', 16, 1)
+			RAISERROR('No se encontro la Sede "%s" o Carrera "%s" a la cual pertenecera la asociacion', 16, 1,@IN_codigoSede ,@IN_codigoCarrera)
 		END;
 
 
 		SELECT @usarIDtipoUsuario = Tu.[id]
 		FROM [dbo].[TiposUsuario] Tu
-		WHERE Tu.[nombre] LIKE 'Asocia%'
+		WHERE Tu.[nombre] LIKE @usarTipoAsociacion
 
 		-- INICIO DE LA TRANSACCI�N
 		IF @@TRANCOUNT = 0
@@ -115,8 +111,8 @@ BEGIN
 				[eliminado]
 			)
 			VALUES(@usarIDtipoUsuario,
-					@IN_correo,
-					@IN_clave,
+					LTRIM(RTRIM(@IN_correo)),
+					LTRIM(RTRIM(@IN_clave)),
 					0);
 
 			SET @usarIDUsuario = SCOPE_IDENTITY();
@@ -132,8 +128,8 @@ BEGIN
 			)
 			VALUES(@usarIDCarrera,
 					@usarIDUsuario,
-					@IN_nombre,
-					@IN_descripcion,
+					LTRIM(RTRIM(@IN_nombre)),
+					LTRIM(RTRIM(@IN_descripcion)),
 					@IN_telefono,
 					0)
 
@@ -143,9 +139,6 @@ BEGIN
 		BEGIN
 		    COMMIT TRANSACTION;
 		END;
-
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH

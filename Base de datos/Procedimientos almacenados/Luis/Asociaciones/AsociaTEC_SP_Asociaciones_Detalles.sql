@@ -6,8 +6,6 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Asociaciones_Detalles]
     -- Par�metros
-    @IN_codigoSede VARCHAR(4),
-    @IN_codigoCarrera VARCHAR(4),
 	@IN_correo VARCHAR(128)
 AS
 BEGIN
@@ -18,44 +16,37 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
+	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%';
+
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
-
-		IF (LTRIM(RTRIM(@IN_codigoSede)) = '')
-        BEGIN
-			--el codigo de sede es vacio
-            RAISERROR('El codigo de sede esta vacio.', 16, 1);
-        END;
-
-		IF (LTRIM(RTRIM(@IN_codigoCarrera)) = '')
-        BEGIN
-			--el codigo de carrera es vacio
-            RAISERROR('El codigo de carrera esta vacio.', 16, 1);
-        END;
 
 		IF (LTRIM(RTRIM(@IN_correo)) = '') OR NOT EXISTS (SELECT 1 
 													  FROM [dbo].[Usuarios] U 
 													  INNER JOIN [dbo].[TiposUsuario] Tu 
-														ON Tu.[id] = U.[id] 
-													  WHERE U.[correo] = @IN_correo
-													  AND Tu.[nombre] LIKE 'Asoci%' 
-													  AND U.[eliminado] = 0)
+														ON Tu.[id] = U.[idTipoUsuario]
+													  INNER JOIN [dbo].[Asociaciones] A
+														ON A.[idUsuario] = U.[id]
+													  WHERE U.[correo] = LTRIM(RTRIM(@IN_correo))
+													  AND Tu.[nombre] LIKE @usarTipoAsociacion 
+													  AND U.[eliminado] = 0
+													  AND A.[eliminado] = 0)
         BEGIN
 			--el identificador de la asociacion viene vacio
             RAISERROR('no existe ninguna asociacion con ese correo.', 16, 1)
         END;
 
 		SELECT COALESCE(
-            (SELECT	A.[nombre]		AS 'asociacion.nombre',
+            (SELECT	A.[nombre]  AS 'asociacion.nombre',
 				U.[correo]		AS 'asociacion.correo',
 				A.[telefono]	AS 'asociacion.telefono',
 				A.[descripcion]	AS 'asociacion.descripcion',
 			    C.[nombre]      AS 'carrera.nombre',
-			    S.[nombre]      AS 'sede.nombre'	
+				C.[codigo]      AS 'carrera.codigo',
+			    S.[nombre]      AS 'sede.nombre',
+				S.[codigo]      AS 'sede.codigo'
 			FROM [dbo].[Asociaciones] A
 			INNER JOIN [dbo].[Carreras] C
 				ON C.[id] = A.[idCarrera]
@@ -63,10 +54,9 @@ BEGIN
 				ON S.[id] = C.[idSede]
 			INNER JOIN [dbo].[Usuarios] U
 				ON U.[id] = A.[idUsuario]
-			WHERE U.[correo] = @IN_correo
+			WHERE U.[correo] = LTRIM(RTRIM(@IN_correo))
 			AND A.[eliminado] = 0
-			AND C.[codigo] = @IN_codigoCarrera
-			AND S.[codigo] = @IN_codigoSede
+			AND U.[eliminado] = 0
             ORDER BY S.[nombre], C.[nombre], A.[nombre] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace

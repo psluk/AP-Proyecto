@@ -54,9 +54,9 @@ BEGIN
 			INNER JOIN [dbo].[Usuarios] U
 				ON U.[id] = A.[idUsuario]
 			WHERE (@usarCarrera = 0 
-				   OR C.[codigo] = @IN_codigoCarrera)
+				   OR C.[codigo] = LTRIM(RTRIM(@IN_codigoCarrera)))
 			AND (@usarSede = 0 
-				 OR S.[codigo] = @IN_codigoSede)
+				 OR S.[codigo] = LTRIM(RTRIM(@IN_codigoSede)))
 			AND A.[eliminado] = 0
             ORDER BY S.[nombre], C.[nombre], A.[nombre] ASC
             FOR JSON PATH),

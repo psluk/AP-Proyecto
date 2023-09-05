@@ -35,20 +35,7 @@ BEGIN
 
         IF (LTRIM(RTRIM(@IN_correoActual)) = '')
         BEGIN
-            RAISERROR('No se brindó un correo electrónico', 16, 1)
-        END;
-
-		IF EXISTS ( SELECT  1
-                    FROM    [dbo].[Usuarios] U
-                    WHERE   U.[correo] = @IN_correoActual
-                        AND U.[eliminado] = 0 )
-        BEGIN
-            RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoActual)
-        END;
-
-        IF (@IN_correoActual NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correoActual)) = '@estudiantec.cr')
-        BEGIN
-            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr', 16, 1, @IN_correoActual);
+            RAISERROR('No se brindó un correo electrónico identificador del usuario', 16, 1)
         END;
 
 		--revisamos si existe el usuario como asociacion
@@ -56,16 +43,32 @@ BEGIN
 		SELECT @usarIDUsuario = U.[id], @usarIDAsociacion = A.[id]
 			FROM [dbo].[Usuarios] U
 			INNER JOIN [dbo].[TiposUsuario] Tu
-				ON Tu.[nombre] LIKE @usarTipoAsociacion
+				ON Tu.[nombre] = U.[idTipoUsuario]
 			INNER JOIN [dbo].[Asociaciones] A
 				ON A.[idUsuario] = U.[id]
-			WHERE U.[correo] = @IN_correoActual
+			WHERE U.[correo] = LTRIM(RTRIM(@IN_correoActual))
 			AND Tu.[nombre] LIKE @usarTipoAsociacion
+			AND U.[eliminado] = 0
+			AND A.[eliminado] = 0
 
 		IF ((@usarIDUsuario IS NULL) OR (@usarIDAsociacion IS NULL))
 		BEGIN
 			RAISERROR('El correo "%s" no corresponde a ninguna asociacion', 16, 1, @IN_correoActual);
 		END;
+
+		IF EXISTS ( SELECT  1
+                    FROM    [dbo].[Usuarios] U
+                    WHERE   U.[correo] = @IN_correoNueva
+                        AND U.[eliminado] = 0 )
+        BEGIN
+            RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoNueva)
+        END;
+
+        IF (@IN_correoNueva NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correoNueva)) = '@estudiantec.cr')
+        BEGIN
+            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr', 16, 1, @IN_correoNueva);
+        END;
+
 
 		--obtenemos los ID de la Sede y carrera nuevos
 
@@ -73,12 +76,12 @@ BEGIN
 		FROM [dbo].[Carreras] C
 		INNER JOIN [dbo].[Sedes] S
 			ON S.[id] = C.[idSede]
-		WHERE @IN_codigoCarreraNueva = C.[codigo]
-		AND @IN_codigoSedeNueva = S.[codigo]
+		WHERE @IN_codigoCarreraNueva = LTRIM(RTRIM(C.[codigo]))
+		AND @IN_codigoSedeNueva = LTRIM(RTRIM(S.[codigo]))
 
 		IF ((@usarIDCarrera IS NULL) OR (@usarIDSede IS NULL))
 		BEGIN
-			RAISERROR('los codigos de la carrera o sede estan erroneos', 16, 1);
+			RAISERROR('los codigos de la carrera y sede no coinciden con los existentes', 16, 1);
 		END;
 
 
@@ -92,25 +95,27 @@ BEGIN
 			
 			--actualizamos las asociaciones
 			UPDATE A
-			SET A.[idCarrera] = CASE WHEN @usarIDCarrera != NULL THEN @usarIDCarrera
+			SET A.[idCarrera] = CASE WHEN @usarIDCarrera IS NOT NULL THEN @usarIDCarrera
 									 ELSE A.[idCarrera] END,
-				A.[nombre] = CASE WHEN @IN_nombreNueva != NULL THEN @IN_nombreNueva
+				A.[nombre] = CASE WHEN @IN_nombreNueva IS NOT NULL THEN @IN_nombreNueva
 									 ELSE A.[nombre] END,
-				A.[descripcion] = CASE WHEN @IN_descripcionNueva != NULL THEN @IN_descripcionNueva
+				A.[descripcion] = CASE WHEN @IN_descripcionNueva IS NOT NULL THEN @IN_descripcionNueva
 									 ELSE A.[descripcion] END,
-				A.[telefono] = CASE WHEN @IN_telefonoNueva != NULL THEN @IN_telefonoNueva
+				A.[telefono] = CASE WHEN @IN_telefonoNueva IS NOT NULL THEN @IN_telefonoNueva
 									 ELSE A.[telefono] END
 			FROM[dbo].[Asociaciones] A
 			WHERE A.[idUsuario] = @usarIDUsuario
+			AND A.[eliminado] = 0
 
 			--actualizamos a el usuario
 			UPDATE U
-			SET U.[correo] = CASE WHEN @IN_correoNueva != NULL THEN @IN_correoNueva
+			SET U.[correo] = CASE WHEN @IN_correoNueva IS NOT NULL THEN @IN_correoNueva
 									 ELSE U.[correo] END,
-			    U.[clave] = CASE WHEN @IN_claveNueva != NULL THEN @IN_claveNueva
+			    U.[clave] = CASE WHEN @IN_claveNueva IS NOT NULL THEN @IN_claveNueva
 									 ELSE U.[clave] END
 			FROM [dbo].[Usuarios] U
 			WHERE U.[id] = @usarIDUsuario
+			AND U.[eliminado] = 0
 
 
 		-- COMMIT DE LA TRANSACCI�N
@@ -118,9 +123,6 @@ BEGIN
 		BEGIN
 		    COMMIT TRANSACTION;
 		END;
-
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH

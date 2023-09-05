@@ -38,8 +38,11 @@ BEGIN
 					ON Tu.[nombre] LIKE @usarTipoAsociacion
 				  INNER JOIN [dbo].[Asociaciones] A
 					ON A.[idUsuario] = U.[id]
-				  WHERE U.[correo] = @IN_correo
-				  AND Tu.[nombre] LIKE @usarTipoAsociacion)
+				  WHERE U.[correo] = LTRIM(RTRIM(@IN_correo))
+				  AND Tu.[nombre] LIKE @usarTipoAsociacion
+				  AND U.[eliminado] = 0
+				  AND A.[eliminado] = 0)
+				  
 		BEGIN
 			RAISERROR('El correo "%s" no corresponde a ninguna asociacion', 16, 1, @IN_correo);
 		END;
