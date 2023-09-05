@@ -6,9 +6,6 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Colaboradores_Eliminar]
     -- Par�metros
-    @IN_nombre VARCHAR(32),
-    @IN_apellido1 VARCHAR(16),
-    @IN_apellido2 VARCHAR(16),
 	@IN_carnet INT,
     @IN_identificadorEvento UNIQUEIDENTIFIER
 AS
@@ -27,24 +24,6 @@ BEGIN
 		--REALIZAR LAS VALIDACIONES
 
         -- VALIDACIONES
-
-		IF ((LTRIM(RTRIM(@IN_nombre)) = ''))
-        BEGIN
-            -- nombre vacio
-            RAISERROR('Parametro [nombre] es vacio.', 16, 1)
-        END;
-
-		IF (LTRIM(RTRIM(@IN_apellido1)) = '')
-        BEGIN
-            -- apellido1 vacio
-            RAISERROR('Parametro [apellido1] es vacio.', 16, 1)
-        END;
-
-		IF (LTRIM(RTRIM(@IN_apellido2)) = '')
-        BEGIN
-            -- apellido2 vacio
-            RAISERROR('Parametro [apellido2] es vacio.', 16, 1)
-        END;
 
 		IF NOT EXISTS ( SELECT  1
                     FROM [dbo].[Estudiantes] E
@@ -77,9 +56,6 @@ BEGIN
 			WHERE CdE.[eliminado] = 0
 			AND E.[eliminado] = 0
 			AND Eve.[eliminado] = 0
-			AND E.[nombre] = @IN_nombre
-			AND	E.[apellido1] = @IN_apellido1
-			AND E.[apellido2] = @IN_apellido2
 			AND E.[carnet] = @IN_carnet
 			AND Eve.[uuid] = @IN_identificadorEvento)
 		BEGIN
@@ -104,9 +80,6 @@ BEGIN
 			WHERE CdE.[eliminado] = 0
 			AND E.[eliminado] = 0
 			AND Eve.[eliminado] = 0
-			AND E.[nombre] = @IN_nombre
-			AND	E.[apellido1] = @IN_apellido1
-			AND E.[apellido2] = @IN_apellido2
 			AND E.[carnet] = @IN_carnet
 			AND Eve.[uuid] = @IN_identificadorEvento;
 
@@ -115,8 +88,6 @@ BEGIN
         BEGIN
             COMMIT TRANSACTION;
         END;
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH

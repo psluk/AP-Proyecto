@@ -1,9 +1,8 @@
-﻿--------------------------------------------------------------------------
+﻿	--------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
--- Descripci�n: eliminamos una asociacion nueva
+-- Descripci�n: eliminamos una asociacion
 --------------------------------------------------------------------------
---AsociaTEC_SP_Asociaciones_Eliminar [correo] (desactiva a la asociacion)
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Asociaciones_Eliminar]
     -- Par�metros
@@ -17,7 +16,9 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
-	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%'
+	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%';
+	DECLARE @usarCiclo INT = 0;
+	DECLARE @usarseleccionar INT = 0;
 
     BEGIN TRY
 
@@ -51,17 +52,40 @@ BEGIN
 		    BEGIN TRANSACTION;
 		END;
 			
-			--eliminamos propuestas
+			WHILE @usarCiclo = 1
+			BEGIN
+				BEGIN TRY
+					IF (@usarseleccionar = 0)
+						BEGIN
+						--EXEC AsociaTEC_SP_Propuesta_Eliminar
+						END;
+					IF (@usarseleccionar = 1)
+						BEGIN 
+						--eliminamos estudiantes de asociacion
+						END;
+					IF (@usarseleccionar = 2)
+						BEGIN 
+						--EXEC [dbo].[AsociaTEC_SP_Eventos_Eliminar]
+						END;
+					IF (@usarseleccionar = 3)
+						BEGIN 
+						--eliminamos asociacion
+						END;
+					IF (@usarseleccionar = 4)
+						BEGIN 
+						--exec conversaciones
+						END;
+					ELSE
+						BEGIN
+						SET @usarCiclo = 0; -- condicion parada
+						END;
+				END TRY
+				BEGIN CATCH
+					SET @usarseleccionar = @usarseleccionar + 1
+				END CATCH;
+			END;
+
 			
-			--eliminamos estudiantes de asociacion
-
-			--exec eventos
-
-			--eliminamos asociacion
-
-			--exec conversaciones
-		    
-			--exec mensajes
 
 
 		-- COMMIT DE LA TRANSACCI�N

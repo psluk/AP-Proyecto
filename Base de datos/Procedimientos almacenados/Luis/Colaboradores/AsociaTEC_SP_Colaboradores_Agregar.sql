@@ -24,8 +24,6 @@ BEGIN
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
 		SELECT  @usarIDEstudiante = E.[id]
         FROM [dbo].[Estudiantes] E
@@ -99,7 +97,7 @@ BEGIN
 			END;
 
 		END;
-		IF (@usarExistenciaPrevia = 0) -- creamos una entrada de colaborador
+		ELSE -- creamos una entrada de colaborador
 		BEGIN
 			-- INICIO DE LA TRANSACCI�N
 			IF @@TRANCOUNT = 0
@@ -108,10 +106,15 @@ BEGIN
 			    BEGIN TRANSACTION;
 			END;
 
-			    INSERT INTO [dbo].[ColaboradoresDeEvento] 
+			    INSERT INTO [dbo].[ColaboradoresDeEvento] (
+					[idEventos], 
+					[idEstudiante], 
+					[descripcion], 
+					[eliminado]
+				)
 				VALUES(@usarIDEvento,
 					   @usarIDEstudiante,
-					   @IN_descripcion,
+					   LTRIM(RTRIM(@IN_descripcion)),
 					   0);
 				
 
@@ -122,8 +125,6 @@ BEGIN
 			END;
 
 		END;
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH

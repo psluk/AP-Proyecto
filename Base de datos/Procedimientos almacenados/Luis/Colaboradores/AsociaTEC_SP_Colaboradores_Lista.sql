@@ -8,8 +8,6 @@
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Colaboradores_Lista]
     -- Par�metros
     @IN_Correo VARCHAR(128),
-    @IN_codigoSede VARCHAR(4),
-    @IN_codigoCarrera VARCHAR(4),
     @IN_identificadorEvento UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -20,11 +18,9 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
-
+	DECLARE @tipoasociacion VARCHAR(16) = 'Asocia%';
 
     BEGIN TRY
-
-		--REALIZAR LAS VALIDACIONES
 
         -- VALIDACIONES
 
@@ -32,18 +28,6 @@ BEGIN
         BEGIN
             -- correo vacio
             RAISERROR('Parametro [correo] es vacio.', 16, 1)
-        END;
-
-		IF (LTRIM(RTRIM(@IN_codigoSede)) = '')
-        BEGIN
-            -- CodigoSede vacio
-            RAISERROR('Parametro [codigoSede] es vacio.', 16, 1)
-        END;
-
-		IF (LTRIM(RTRIM(@IN_codigoCarrera)) = '')
-        BEGIN
-            -- codigoCarrera vacio
-            RAISERROR('Parametro [codigoCarrera] es vacio.', 16, 1)
         END;
     
 		IF (LTRIM(RTRIM(@IN_identificadorEvento)) = '')
@@ -65,10 +49,6 @@ BEGIN
 				ON Eve.[id] = CdE.[idEventos]
 			INNER JOIN [dbo].[Asociaciones] A
 			    ON  A.[id] = Eve.[idAsociacion]
-			INNER JOIN [dbo].[Carreras] C
-				ON C.[id] = A.[idCarrera]
-			INNER JOIN [dbo].[Sedes] Sedes
-				ON Sedes.[id] = C.[idSede]
 			INNER JOIN [dbo].[Usuarios] U
 				ON U.[id] = A.[idUsuario]
 			INNER JOIN [dbo].[TiposUsuario] Tpu
@@ -78,8 +58,8 @@ BEGIN
 			AND E.[eliminado] = 0 --no eliminados (estudiantes)
 			AND Eve.[eliminado] = 0 --no eliminados (eventos)
 			AND A.[eliminado] = 0 --no eliminados (asociaciones)
-			AND Tpu.[nombre] LIKE 'Asociac%' --que sea tipo asociacion
-			AND U.[correo] = @IN_Correo -- identificador de asociacion
+			AND Tpu.[nombre] LIKE @tipoasociacion --que sea tipo asociacion
+			AND U.[correo] = LTRIM(RTRIM(@IN_Correo)) -- identificador de asociacion
 			AND U.[eliminado] = 0 --no eliminados (usuario)
             ORDER BY E.[apellido1], E.[apellido2], E.[nombre] ASC
             FOR JSON PATH),

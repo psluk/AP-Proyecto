@@ -61,6 +61,10 @@ BEGIN
 		IF(@IN_descripcion IS NULL)
 		BEGIN
 			SET @IN_descripcion = '';
+		END
+		ELSE 
+		BEGIN
+			SET @IN_descripcion = LTRIM(RTRIM(@IN_descripcion))
 		END;
 
 		--buscamos el id de la solicitud
@@ -73,6 +77,7 @@ BEGIN
 			ON Eve.[id] = S.[idEvento]
 		WHERE E.[id] = @usarIDEstudiante
 		AND Eve.[id] = @usarIDEvento
+		AND S.[eliminado] = 0
 		IF(@usarIDSolicitud IS NULL)
 		BEGIN 
             --La solicitud no existe
@@ -90,7 +95,7 @@ BEGIN
 			END;
 
 			    UPDATE S
-				SET S.[eliminado] = 1
+				SET S.[eliminado] = 1, S.[aceptado] = 0
 				FROM [dbo].[Solicitudes] S
 				WHERE S.[id] = @usarIDSolicitud
 
@@ -124,8 +129,6 @@ BEGIN
 			END;
 
 		END;
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH
