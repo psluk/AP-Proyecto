@@ -47,6 +47,7 @@ BEGIN
 		SELECT @ID_Carrera = C.[id]
 		FROM   [dbo].[Carreras] C
 		WHERE C.[idSede] = @ID_Sede
+        AND C.[codigo] = @IN_Carrera
 		
 		IF @ID_Carrera IS NULL
         BEGIN
