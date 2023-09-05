@@ -1,9 +1,4 @@
-Pendientes
---falta unicamente implementar la cascada de borrados
-AsociaTEC_SP_Asociaciones_Eliminar [correo] (desactiva a la asociacion)
-
-
-Completados
+Completados (falta grandes pruebas)
 
     colaboradores
         AsociaTEC_SP_Solicitudes_Lista [correo, evento, acceptados(opcional)] (devuelve lista de las solicitudes) -> carnet, apellido1, apellido2, nombre
@@ -16,6 +11,7 @@ Completados
         AsociaTEC_SP_Asociaciones_Lista [codigoSede(opcional), codigoCarrera(opcional)] (devuelve lista de las asociaciones) -> nombreAsocia, correo, nombreSede, codigoSede, nombreCarrera, codigoCarrera
         AsociaTEC_SP_Asociaciones_Modificar [carredaActual, sedeActual, nombreActual, carreda?, sede?, nombre?, descripcion?, telefono?, correo?, clave?] (modifica los valores)
         AsociaTEC_SP_Asociaciones_Detalles [correo] (devuelve todos los detalles) -> muchos datos
+        AsociaTEC_SP_Asociaciones_Eliminar [correo] (desactiva a la asociacion)
         AsociaTEC_SP_Asociaciones_Agregar [carreda, sede, nombre, descripcion, telefono, correo, clave] (lo reactiva si ya existe)
 
 

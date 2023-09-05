@@ -19,6 +19,7 @@ BEGIN
 	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%';
 	DECLARE @usarCiclo INT = 0;
 	DECLARE @usarseleccionar INT = 0;
+	DECLARE @usartempIdentificador UNIQUEIDENTIFIER = NULL;
 
     BEGIN TRY
 
@@ -58,38 +59,95 @@ BEGIN
 			WHILE @usarCiclo = 1
 			BEGIN
 				BEGIN TRY
-					IF (@usarseleccionar = 0)
+					IF (@usarseleccionar = 0) -- eliminamos las propuestas
 						BEGIN
-						--EXEC AsociaTEC_SP_Propuesta_Eliminar
+							SELECT TOP 1 @usartempIdentificador = P.[uuid]
+							FROM [dbo].[Propuestas] P
+							INNER JOIN [dbo].[Asociaciones] A
+								ON A.[id] = P.[idAsociacion]
+							INNER JOIN [dbo].[Usuarios] U
+								ON  A.[idUsuario] = U.id
+							WHERE U.[correo] = LTRIM(RTRIM(@IN_correo)) 
+							AND A.[eliminado] = 0
+							AND U.[eliminado] = 0
+							AND P.[eliminado] = 0;
+						
+							EXEC [dbo].[AsociaTEC_SP_Propuesta_Eliminar] @usartempIdentificador
 						END;
-					IF (@usarseleccionar = 1)
+					IF (@usarseleccionar = 1) --eliminamos (estudiantes de asociacion)
 						BEGIN 
-						--eliminamos estudiantes de asociacion
+						
+							UPDATE EdA
+							SET EdA.[eliminado] = 0
+							FROM [dbo].[EstudiantesDeAsociacion] EdA
+							INNER JOIN [dbo].[Asociaciones] A
+								ON A.[id] = EdA.[idAsociacion]
+							INNER JOIN [dbo].[Usuarios] U
+								ON  A.[idUsuario] = U.id
+							WHERE U.[correo] = LTRIM(RTRIM(@IN_correo)) 
+							AND A.[eliminado] = 0
+							AND U.[eliminado] = 0
+							AND EdA.[eliminado] = 0;
+
+							SET @usarseleccionar = @usarseleccionar + 1;
 						END;
-					IF (@usarseleccionar = 2)
+					IF (@usarseleccionar = 2) -- eliminacion de evento
 						BEGIN 
-						--EXEC [dbo].[AsociaTEC_SP_Eventos_Eliminar]
+							SELECT TOP 1 @usartempIdentificador = E.[uuid]
+								FROM [dbo].[Eventos] E
+								INNER JOIN [dbo].[Asociaciones] A
+									ON A.[id] = E.[idAsociacion]
+								INNER JOIN [dbo].[Usuarios] U
+									ON  A.[idUsuario] = U.id
+								WHERE U.[correo] = LTRIM(RTRIM(@IN_correo)) 
+								AND A.[eliminado] = 0
+								AND U.[eliminado] = 0
+								AND E.[eliminado] = 0;
+							
+							EXEC [dbo].[AsociaTEC_SP_Eventos_Eliminar] @usartempIdentificador;
 						END;
-					IF (@usarseleccionar = 3)
+					IF (@usarseleccionar = 3) -- eliminacion de conversaciones y mensajes
 						BEGIN 
-						--eliminamos asociacion
+							SELECT TOP 1 @usartempIdentificador = C.[uuid]
+							FROM [dbo].[Conversaciones] C
+							INNER JOIN [dbo].[Usuarios] U
+								ON  C.[idUsuario] = U.id
+							WHERE U.[correo] = LTRIM(RTRIM(@IN_correo)) 
+							AND C.[eliminado] = 0
+							AND U.eliminado = 0;
+							
+							EXEC [dbo].[AsociaTEC_SP_Conversaciones_Eliminar] @usartempIdentificador;
 						END;
-					IF (@usarseleccionar = 4)
+
+					IF (@usarseleccionar = 4) -- eliminacion de asociacion y usuario
 						BEGIN 
-						--exec conversaciones
+							UPDATE A
+							SET A.[eliminado] = 1
+							FROM [dbo].[Asociaciones] A
+							INNER JOIN [dbo].[Usuarios] U
+								ON U.[id] = A.[idUsuario]
+							WHERE U.[correo] = LTRIM(RTRIM(@IN_correo))
+							AND A.[eliminado] = 0
+							AND U.eliminado = 0;
+
+							UPDATE U
+							SET U.[eliminado] = 1
+							FROM [dbo].[Usuarios] U
+							WHERE U.[correo] = LTRIM(RTRIM(@IN_correo))
+							AND U.eliminado = 0;
+
+							SET @usarseleccionar = @usarseleccionar + 1;
 						END;
+
 					ELSE
 						BEGIN
-						SET @usarCiclo = 0; -- condicion parada
+							SET @usarCiclo = 0; -- condicion parada
 						END;
 				END TRY
 				BEGIN CATCH
 					SET @usarseleccionar = @usarseleccionar + 1
 				END CATCH;
 			END;
-
-			
-
 
 		-- COMMIT DE LA TRANSACCI�N
 		IF @transaccionIniciada = 1
