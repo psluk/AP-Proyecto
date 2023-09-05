@@ -28,8 +28,6 @@ BEGIN
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
 
 		IF (LTRIM(RTRIM(@IN_correo)) = '')
@@ -88,8 +86,10 @@ BEGIN
 		IF(@usarTags = 1)
 		BEGIN
 			--insertamos las nuevas etiquetas
-			INSERT INTO [dbo].[Etiquetas]
-			SELECT tTID.[in_tags]
+			INSERT INTO [dbo].[Etiquetas](
+				[etiqueta]
+			)
+			SELECT LTRIM(RTRIM(tTID.[in_tags]))
 			FROM @tempTagsID tTID
 			WHERE tTID.[id] = NULL;
 		END;
@@ -107,7 +107,7 @@ BEGIN
 			@usarIDUsuario,
 			NEWID(),
 			@IN_titulo,
-			GETDATE(),
+			LTRIM(RTRIM(GETDATE())),
 			0,
 			0
 		);
@@ -133,8 +133,6 @@ BEGIN
 						ON LTRIM(RTRIM(E.[etiqueta])) = LTRIM(RTRIM(It.[IN_tags]))  COLLATE Latin1_General_CI_AI
 				) AS ideti -- Para omitir tildes
 		END;
-
-        
 
         -- COMMIT DE LA TRANSACCIÓN
         IF @transaccionIniciada = 1

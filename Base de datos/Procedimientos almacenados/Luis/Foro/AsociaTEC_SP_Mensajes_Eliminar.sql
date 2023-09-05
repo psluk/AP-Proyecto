@@ -30,9 +30,10 @@ BEGIN
 
 		IF NOT EXISTS (SELECT 1 
 				   FROM [dbo].[Mensajes] M
-				   WHERE M.[uuid] = @IN_identificadorMensaje) 
+				   WHERE M.[uuid] = @IN_identificadorMensaje
+				   AND M.[eliminado] = 0) 
 		BEGIN
-			RAISERROR('lel mensaje a borrar no se encontro.', 16, 1);
+			RAISERROR('El mensaje a borrar no se encontro.', 16, 1);
 		END;
 
 

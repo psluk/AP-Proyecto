@@ -19,10 +19,9 @@ BEGIN
     -- DECLARACIÓN DE VARIABLES
 	DECLARE @usartitulo BIT = 0;
 	DECLARE @usartags BIT = 0;
+	DECLARE @usarSeparador VARCHAR(1) = ' ';
 
     BEGIN TRY
-
-		--REALIZAR LAS VALIDACIONES
 
         -- VALIDACIONES
 
@@ -38,12 +37,12 @@ BEGIN
             SET @usartags = 1;
 		END;
 
-
 		SELECT COALESCE(
-            (SELECT C.[titulo] AS 'conversacion.titulo',
-			   C.[uuid] AS 'conversacion.identificador',
-			   C.[timestamp] AS 'conversacion.timestamp',
-			   E.[etiqueta] AS 'tags.etiqueta'
+            (SELECT C.[titulo] AS 'titulo',
+			   C.[uuid] AS 'identificador',
+			   C.[timestamp] AS 'timestamp',
+			   datos.tags AS 'tags'
+			FROM(SELECT C.[id] AS 'idConversacion', STRING_AGG( E.[etiqueta], @usarSeparador) AS 'tags' 
 			FROM [dbo].[Conversaciones] C
 			INNER JOIN [dbo].[EtiquetasDeConversacion] EdC
 				ON EdC.[idConversacion] = C.[id]
@@ -51,12 +50,16 @@ BEGIN
 				ON E.[id] = EdC.[idEtiqueta]
 			INNER JOIN @IN_tags It
 			ON 1=1
-			WHERE (@usartitulo = 0 OR C.[titulo] = @IN_titulo) 
+			WHERE (@usartitulo = 0 
+				  OR C.[titulo] = LTRIM(RTRIM(@IN_titulo))) 
 			AND (@usartags = 0 
 				OR E.[etiqueta] COLLATE Latin1_General_CI_AI  -- Para omitir tildes
-					LIKE '%' + It.[IN_tags] + '%')
+					LIKE '%' + LTRIM(RTRIM(It.[IN_tags])) + '%')
 			AND C.[eliminado] = 0
 			AND EdC.[eliminado] = 0
+			GROUP BY C.[id]) AS datos
+			INNER JOIN [dbo].[Conversaciones] C
+				ON datos.[idConversacion] = C.[id]
             ORDER BY C.[titulo], C.[timestamp] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace

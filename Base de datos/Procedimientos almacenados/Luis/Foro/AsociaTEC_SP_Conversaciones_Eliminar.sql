@@ -21,8 +21,6 @@ BEGIN
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
 
 		IF (LTRIM(RTRIM(@IN_identificadorConversacion)) = '')
@@ -33,7 +31,8 @@ BEGIN
 
 		IF NOT EXISTS (SELECT 1 
 				   FROM [dbo].[Conversaciones] C
-				   WHERE C.[uuid] = @IN_identificadorConversacion) 
+				   WHERE C.[uuid] = @IN_identificadorConversacion
+				   AND C.[eliminado] = 0) 
 		BEGIN
 			RAISERROR('la conversacion a borrar no se encontro.', 16, 1);
 		END;
@@ -54,6 +53,7 @@ BEGIN
 		INNER JOIN [dbo].[Conversaciones] C
 			ON C.[id] = EdC.[idConversacion]
 		WHERE C.[uuid] = @IN_identificadorConversacion
+		AND EdC.[eliminado] = 0
 
 		--borrado de mensajes
 		UPDATE M
@@ -62,20 +62,20 @@ BEGIN
 		INNER JOIN [dbo].[Conversaciones] C
 			ON C.[id] = M.[idConversacion]
 		WHERE C.[uuid] = @IN_identificadorConversacion
+		AND M.[eliminado] = 0
 
 		-- borrado de conversacion
 		UPDATE C
 		SET C.[eliminado] = 1
 		FROM [dbo].[Conversaciones] C
 		WHERE C.[uuid] = @IN_identificadorConversacion
+		AND C.[eliminado] = 0
 
         -- COMMIT DE LA TRANSACCIÓN
         IF @transaccionIniciada = 1
         BEGIN
             COMMIT TRANSACTION;
         END;
-
-		SELECT 1;
 
     END TRY
     BEGIN CATCH

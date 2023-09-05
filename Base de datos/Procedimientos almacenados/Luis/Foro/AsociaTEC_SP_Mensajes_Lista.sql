@@ -1,5 +1,3 @@
-
-
 --------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
@@ -23,8 +21,6 @@ BEGIN
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
 
 		IF (LTRIM(RTRIM(@IN_identificadorConversacion)) = '')
@@ -39,7 +35,7 @@ BEGIN
 				 AND C.[eliminado] = 0)
 		BEGIN
 			-- Identificador inexistente
-            RAISERROR('No existe el identificador', 16, 1);
+            RAISERROR('No existe el identificadorConversacion', 16, 1);
 		END;
 
 		SELECT COALESCE(
@@ -48,7 +44,10 @@ BEGIN
 					M.[uuid] AS 'identificador',
 					Case WHEN Tu.[nombre] LIKE @usarTipoUsuarioAso THEN A.[nombre]
 						WHEN Tu.[nombre] LIKE @usarTipoUsuarioEst THEN E.[nombre]
-						ELSE 'upps' END AS 'autor'
+						ELSE 'upps' END AS 'autor.nombre',
+					Case WHEN Tu.[nombre] LIKE @usarTipoUsuarioAso THEN NULL
+						WHEN Tu.[nombre] LIKE @usarTipoUsuarioEst THEN E.[carnet]
+						ELSE 'upps' END AS 'autor.carnet'
 			FROM [dbo].[Mensajes] M
 			INNER JOIN [dbo].[Conversaciones] C
 				ON C.[id] = M.[idConversacion]
@@ -57,9 +56,9 @@ BEGIN
 			INNER JOIN [dbo].[TiposUsuario] Tu
 				ON Tu.[id] = U.[idTipoUsuario]
 			INNER JOIN [dbo].[Estudiantes] E
-				ON E.[idUsuario] = U.[id]
+				ON E.[idUsuario] = M.[idUsuario]
 			INNER JOIN [dbo].[Asociaciones] A
-				ON A.[idUsuario] = U.[id]
+				ON A.[idUsuario] = M.[idUsuario]
 			WHERE M.[eliminado] = 0
 			AND U.[eliminado] = 0
 			AND E.[eliminado] = 0

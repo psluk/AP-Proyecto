@@ -90,7 +90,7 @@ BEGIN
             @usarIDUsuario,
 			@usarIDConversacion,
             NEWID(),
-            @IN_contenido,
+            LTRIM(RTRIM(@IN_contenido)),
             GETDATE(),
             0
         )
@@ -100,8 +100,6 @@ BEGIN
         BEGIN
             COMMIT TRANSACTION;
         END;
-
-		SELECT 1;
 
     END TRY
     BEGIN CATCH
