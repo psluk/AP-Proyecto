@@ -98,6 +98,48 @@ BEGIN
             WHERE   E.[id] = @idEstudiante
                 AND I.[eliminado] = 0;
 
+            -- Se eliminan las encuestas
+            UPDATE  En
+            SET     En.[eliminado] = 1
+            FROM    [dbo].[inscripciones] I
+            INNER JOIN  [dbo].[Estudiantes] E
+                ON  I.[idEstudiante] = E.[id]
+            INNER JOIN  [dbo].[Encuestas] En
+                ON  En.[idInscripcion] = I.[id]
+            WHERE   E.[id] = @idEstudiante
+                AND En.[eliminado] = 0;
+
+            -- Se eliminan las propuestas
+            UPDATE  P
+            SET     P.[eliminado] = 1
+            FROM    [dbo].[Propuestas] P
+            INNER JOIN  [dbo].[Estudiantes] E
+                ON  P.[idEstudiante] = E.[id]
+            WHERE   E.[id] = @idEstudiante
+                AND P.[eliminado] = 0;
+
+            -- Se eliminan las conversaciones
+            UPDATE  C
+            SET     C.[eliminado] = 1
+            FROM    [dbo].[Usuarios] U
+            INNER JOIN  [dbo].[Estudiantes] E
+                ON  E.[idUsuario] = U.[id]
+            INNER JOIN  [dbo].[Conversaciones] C
+                ON  C.[idUsuario] = U.[id]
+            WHERE   C.[eliminado] = 0
+                AND E.[id] = @idEstudiante;
+
+            -- Se eliminan los mensajes
+            UPDATE  M
+            SET     M.[eliminado] = 1
+            FROM    [dbo].[Usuarios] U
+            INNER JOIN  [dbo].[Estudiantes] E
+                ON  E.[idUsuario] = U.[id]
+            INNER JOIN  [dbo].[Mensajes] M
+                ON  M.[idUsuario] = U.[id]
+            WHERE   M.[eliminado] = 0
+                AND E.[id] = @idEstudiante;
+
         -- COMMIT DE LA TRANSACCIÓN
         IF @transaccionIniciada = 1
         BEGIN
