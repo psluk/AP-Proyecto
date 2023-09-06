@@ -15,7 +15,6 @@ BEGIN
     DECLARE @transaccion_iniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    DECLARE @ID_Evento INT = NULL
 
     BEGIN TRY
 
@@ -24,6 +23,7 @@ BEGIN
             SELECT 1 
             FROM [dbo].[Eventos] E 
             WHERE E.[uuid] = @IN_uuid
+            AND e.[eliminado] = 0
         )
         BEGIN
             DECLARE @uuid_varchar VARCHAR(36)= (SELECT CONVERT(NVARCHAR(36), @IN_uuid))
@@ -40,17 +40,19 @@ BEGIN
                     E.[fechaFin],
                     E.[lugar],
                     E.[especiales],
-                    C.[nombre]
-                    FROM [dbo].[Eventos] E
+                    C.[nombre],
+                    A.[nombre] as 'asociacion.nombre'
+                FROM [dbo].[Eventos] E
                 INNER JOIN [dbo].[Categorias] C
                 ON C.[id] = E.[idCategoria]
+                INNER JOIN [dbo].[Asociaciones] A
+                ON A.[id] = E.[idAsociacion]
                 WHERE E.[uuid] = @IN_uuid
                 AND E.[eliminado] = 0
                 FOR JSON PATH      
             ),
             '[]'
-        ) as 'resultados'
-
+        ) as 'results'
     END TRY
     BEGIN CATCH
 

@@ -42,7 +42,7 @@ BEGIN
                 AND A.[eliminado] = 0
                 FOR JSON PATH
             ), '[]'
-        ) as 'resultados'
+        ) as 'results'
 
     END TRY
     BEGIN CATCH

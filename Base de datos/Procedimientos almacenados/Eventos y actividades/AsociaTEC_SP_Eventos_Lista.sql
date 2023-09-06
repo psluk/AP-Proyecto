@@ -5,7 +5,8 @@
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Eventos_Lista]
-    @IN_CodigoCarrera VARCHAR(4) = NULL
+    @IN_CodigoCarrera VARCHAR(4) = NULL,
+    @IN_CodigoSede VARCHAR(4) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -14,65 +15,63 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transaccion_iniciada BIT = 0;
 
-    DECLARE @ID_Asociacion INT = NULL;
+    DECLARE @ID_Carrera INT = NULL;
+    DECLARE @ID_Sede INT = NULL;
 
     BEGIN TRY
 
-         -- Busca el ID de la asociacion a la que corresponde los eventos
-        SELECT  @ID_Asociacion = COALESCE(A.[id], NULL)
-        FROM    [dbo].[Asociaciones] A
-        INNER JOIN [dbo].[Carreras] C
-		ON C.[id] = A.[idCarrera]
-		WHERE C.[codigo] = @IN_CodigoCarrera
+        SELECT @ID_Sede  = S.[id]
+        FROM [dbo].[Sedes] S
+        WHERE S.[codigo] = @IN_CodigoSede
 
-		IF(@IN_CodigoCarrera IS NOT NULL AND @ID_Asociacion IS NULL)
-		BEGIN
-			RAISERROR('No existe eventos relacionados a esa carrera."%s"', 16, 1, @IN_CodigoCarrera);
-		END
+        IF @ID_Sede IS NULL AND @IN_CodigoSede IS NOT NULL
+        BEGIN
+            RAISERROR('No existe la sede: %s', 16, 1, @IN_CodigoSede)
+        END
 
-        IF(@ID_Asociacion IS NOT NULL)
-			BEGIN
-				SELECT COALESCE(
-					(SELECT E.[uuid],
-					E.[titulo],
-					E.[descripcion],
-					E.[capacidad],
-					E.[fechaFin],
-					E.[fechaInicio],
-					E.[lugar],
-					E.[especiales],
-					C.[nombre]
-					FROM [dbo].[Eventos] E
-					INNER JOIN [dbo].[Categorias] C
-					ON C.[id] = E.[idCategoria]
-					WHERE E.[idAsociacion] = @ID_Asociacion
-					AND E.[eliminado] = 0
-					FOR JSON PATH
-					),
-					'[]'
-				) as 'resultados'			
-			END
-		ELSE
-			BEGIN
-				SELECT COALESCE(
-					(SELECT E.[uuid],
-					E.[titulo],
-					E.[descripcion],
-					E.[capacidad],
-					E.[fechaFin],
-					E.[fechaInicio],
-					E.[lugar],
-					E.[especiales],
-					C.[nombre]
-					FROM [dbo].[Eventos] E
-					INNER JOIN [dbo].[Categorias] C
-					ON C.[id] = E.[idCategoria]
-					WHERE E.[eliminado] = 0
-					FOR JSON PATH
-					),
-					'[]'
-				) as 'resultados'
-			END
+        SELECT @ID_Carrera = C.[id]
+        FROM [dbo].[Carreras] C
+        WHERE C.[codigo] = @IN_CodigoCarrera
+
+        IF @ID_Carrera IS NULL AND @IN_CodigoCarrera IS NOT NULL
+        BEGIN
+            RAISERROR('No existe la carrera: %s', 16, 1, @IN_CodigoCarrera)
+        END
+
+
+        SELECT COALESCE
+        (
+            (SELECT E.[uuid],
+            E.[titulo],
+            E.[descripcion],
+            E.[capacidad],
+            E.[fechaFin],
+            E.[fechaInicio],
+            E.[lugar],
+            E.[especiales],
+            C.[nombre]
+            FROM [dbo].[Eventos] E
+            INNER JOIN [dbo].[Categorias] C
+            ON C.[id] = E.[idCategoria]
+            INNER JOIN [dbo].[Asociaciones] A
+            ON A.[id] = E.[idAsociacion]
+            INNER JOIN [dbo].[Carreras] K
+            ON K.[id] = A.[idCarrera]
+            WHERE (
+                @IN_CodigoCarrera IS NULL
+                OR
+                A.[idCarrera] = @ID_Carrera
+            ) AND (
+                @IN_CodigoSede IS NULL
+                OR
+                K.[idSede] = @ID_Sede
+            )
+            AND E.[eliminado] = 0
+            FOR JSON PATH
+            ),
+            '[]'
+        ) as 'results'			
+
 
     END TRY
     BEGIN CATCH
