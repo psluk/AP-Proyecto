@@ -16,22 +16,30 @@ BEGIN
 
     BEGIN TRY
 
-        SELECT  U.[id] AS 'UsuarioID',
-                U.[clave],
+        SELECT  U.[clave],
                 U.[correo],
-                E.[id] AS 'EstudianteID',
-                U.[idTipoUsuario],
-                TU.[nombre] AS 'TipoUsuario'
+                TU.[nombre] AS 'tipoUsuario',
+                C.[codigo] AS 'codigoCarrera',
+                S.[codigo] AS 'codigoSede',
+                E.[carnet]
         FROM [dbo].[Usuarios] U
         INNER JOIN  [dbo].[TiposUsuario] TU
             ON U.[idTipoUsuario] = TU.[id]
         LEFT JOIN Estudiantes E
-            ON U.[id] = E.[idUsuario]   
+            ON U.[id] = E.[idUsuario]
+        LEFT JOIN Asociaciones A
+            ON U.[id] = A.[idUsuario]
+        LEFT JOIN Carreras C
+            ON E.[idCarrera] = C.[id]
+            OR A.[idCarrera] = C.[id]
+        LEFT JOIN Sedes S
+            ON C.[idSede] = S.[id]
         WHERE U.[correo] = @IN_correo
             AND (
                 E.[eliminado] = 0
                 OR E.[eliminado] IS NULL
             )
+
     END TRY
     BEGIN CATCH
 
