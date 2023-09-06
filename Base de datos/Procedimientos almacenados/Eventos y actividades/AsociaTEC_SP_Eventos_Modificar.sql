@@ -48,7 +48,7 @@ BEGIN
 
 		IF @ID_Categoria IS NULL
 		BEGIN
-			RAISERROR('No existe la categoria: %s',50000, @IN_Categoria)
+			RAISERROR('No existe la categoria: %s',16,1, @IN_Categoria)
 		END
 
         IF LTRIM(RTRIM(@IN_Titulo)) = ''

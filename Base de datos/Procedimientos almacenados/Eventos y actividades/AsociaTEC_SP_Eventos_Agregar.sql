@@ -41,7 +41,7 @@ BEGIN
 
 		IF @ID_Sede IS NULL
         BEGIN
-            RAISERROR('No existe la sede',50000, @IN_Sede)
+            RAISERROR('No existe la sede',16,1, @IN_Sede)
         END
 
 		SELECT @ID_Carrera = C.[id]
@@ -51,7 +51,7 @@ BEGIN
 		
 		IF @ID_Carrera IS NULL
         BEGIN
-            RAISERROR('No existe la carrera',50000, @IN_Carrera)
+            RAISERROR('No existe la carrera',16,1, @IN_Carrera)
         END
 
 		SELECT @ID_Asociacion = A.[id]
@@ -61,7 +61,7 @@ BEGIN
 
 		IF @ID_Asociacion IS NULL
         BEGIN
-            RAISERROR('No existe la asociación %s.%s',50000, @IN_Carrera,@IN_Sede)
+            RAISERROR('No existe la asociación %s.%s',16,1, @IN_Carrera,@IN_Sede)
         END
 
         SELECT @ID_Categoria = 
@@ -74,7 +74,7 @@ BEGIN
 
         IF @ID_Categoria IS NULL 
         BEGIN
-            RAISERROR('No existe la categoria: %s',50000, @IN_Categoria)
+            RAISERROR('No existe la categoria: %s',16,1, @IN_Categoria)
         END
 
         -- INICIO DE LA TRANSACCIÓN

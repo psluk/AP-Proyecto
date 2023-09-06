@@ -28,7 +28,7 @@ BEGIN
             AND A.[eliminado] = 0
         )
         BEGIN
-            RAISERROR('No existe la actividad', 50000, 1)
+            RAISERROR('No existe la actividad', 16, 1)
         END
 
         SELECT COALESCE(

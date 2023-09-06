@@ -27,7 +27,7 @@ BEGIN
         AND A.[eliminado] = 0
         )
         BEGIN
-            RAISERROR('No existe la actividad que desea eliminar', 50000, 1)
+            RAISERROR('No existe la actividad que desea eliminar', 16, 1)
         END
 
         -- INICIO DE LA TRANSACCIÓN

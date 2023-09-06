@@ -33,7 +33,7 @@ BEGIN
         AND A.[eliminado] = 0
         )
         BEGIN
-            RAISERROR('No existe la actividad deseada a modificar', 50000, 1)
+            RAISERROR('No existe la actividad deseada a modificar', 16, 1)
         END
 
         IF LTRIM(RTRIM(@IN_Lugar)) = ''

@@ -30,7 +30,7 @@ BEGIN
 
         IF @ID_Evento IS NULL
         BEGIN
-            RAISERROR('No existe el evento al cual se quiere agregar la actividad',50000, 1)
+            RAISERROR('No existe el evento al cual se quiere agregar la actividad',16, 1)
         END
 
         IF NOT EXISTS (

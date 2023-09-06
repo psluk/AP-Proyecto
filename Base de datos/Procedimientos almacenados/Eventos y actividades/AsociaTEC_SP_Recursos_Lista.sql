@@ -27,7 +27,7 @@ BEGIN
 
         IF @ID_Actividad IS NULL
         BEGIN
-            RAISERROR('No existe la actividad consultada', 50000, 1)
+            RAISERROR('No existe la actividad consultada', 16, 1)
         END
 
 

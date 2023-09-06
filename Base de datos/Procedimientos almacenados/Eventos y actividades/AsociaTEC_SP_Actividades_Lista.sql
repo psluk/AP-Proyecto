@@ -38,7 +38,7 @@ BEGIN
             AND A.[eliminado] = 0
         )
         BEGIN
-            RAISERROR('No existen actividades asociadas al evento.',50000,1)
+            RAISERROR('No existen actividades asociadas al evento.',16,1)
         END
         
         SELECT COALESCE(
