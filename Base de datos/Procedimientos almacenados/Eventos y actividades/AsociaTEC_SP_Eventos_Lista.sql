@@ -32,12 +32,13 @@ BEGIN
         SELECT @ID_Carrera = C.[id]
         FROM [dbo].[Carreras] C
         WHERE C.[codigo] = @IN_CodigoCarrera
+        AND (@IN_CodigoSede IS NULL 
+        OR C.[idSede] = @ID_Sede) 
 
         IF @ID_Carrera IS NULL AND @IN_CodigoCarrera IS NOT NULL
         BEGIN
             RAISERROR('No existe la carrera: %s', 16, 1, @IN_CodigoCarrera)
         END
-
 
         SELECT COALESCE
         (
@@ -60,7 +61,7 @@ BEGIN
             WHERE (
                 @IN_CodigoCarrera IS NULL
                 OR
-                A.[idCarrera] = @ID_Carrera
+                K.[codigo] = @IN_CodigoCarrera
             ) AND (
                 @IN_CodigoSede IS NULL
                 OR

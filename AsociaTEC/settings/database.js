@@ -6,19 +6,31 @@ const config = {
     password: "asociadmin",
     server: "AsociaTEC.mssql.somee.com",
     database: "AsociaTEC",
+    pool: {
+        max:10,
+        min:0,
+        idleTimeoutMillis: 30000
+
+    },
     options: {
         encrypt: true,
         trustServerCertificate: true,
     },
 };
 
-// Establecer conexión a la base de datos de Somee
-sqlcon.connect(config, (error) => {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("Conexión exitosa a la base de datos de Somee");
-    }
-});
+// Creación de pool a la base de datos
+const pool = new sqlcon.ConnectionPool(config);
 
-module.exports = { sqlcon };
+// Conexión a la base de datos
+async function conexion() {
+    try {
+      await pool.connect();
+      console.log('Conexión exitosa a la base de datos de Somee');
+    } catch (err) {
+      console.error('Conexión fallida a la base de datos de Somee', err);
+    }
+  }
+
+conexion();
+
+module.exports = {pool, sqlcon};

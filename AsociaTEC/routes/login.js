@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { sqlcon } = require("../settings/database.js");
+const { pool, sqlcon } = require("../settings/database.js");
 const bcrypt = require("bcrypt");
 const manejarError = require("../settings/errores.js");
 
@@ -40,14 +40,14 @@ router.get("/logout", (req, res) => {
 
 // Inicio de sesión
 router.post("/login", async (req, res) => {
-    const request = new sqlcon.Request();
+    const request = pool.request();
+    
+    // Se lee el cuerpo de la solicitud
+    const { correo, clave } = req.body;
 
     try {
-        // Se lee el cuerpo de la solicitud
-        const { correo, clave } = req.body;
-
         // Parámetros de entrada del procedimiento almacenado
-        request.input("IN_Correo", sqlcon.VarChar, email);
+        request.input("IN_Correo", sqlcon.VarChar, correo);
     } catch (error) {
         console.log(error);
         res.status(401).send({ mensaje: "Datos inválidos" });
@@ -58,31 +58,38 @@ router.post("/login", async (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            bcrypt.compare(
-                password,
-                result.recordset[0].clave,
-                (error, response) => {
-                    if (error) {
-                        console.log(error);
-                        res.status(500).send({
-                            mensaje: "Ocurrió un error inesperado ",
-                        });
-                    } else if (response) {
-                        /* Coincide */
-                        req.session.user = {
-                            correo: result.recordset[0].correo,
-                            carnet: result.recordset[0].carnet,
-                            tipoUsuario: result.recordset[0].TipoUsuario,
-                        };
-                        res.send(req.session.user);
-                    } else {
-                        /* No coincide */
-                        res.status(401).send({
-                            mensaje: "No coincide el usuario o contraseña",
-                        });
+            if (result.recordset.length > 0) {
+                bcrypt.compare(
+                    clave,
+                    result.recordset[0].clave,
+                    (error, response) => {
+                        if (error) {
+                            console.log(error);
+                            res.status(500).send({
+                                mensaje: "Ocurrió un error inesperado ",
+                            });
+                        } else if (response) {
+                            /* Coincide */
+                            req.session.user = {
+                                correo: result.recordset[0].correo,
+                                carnet: result.recordset[0].carnet,
+                                tipoUsuario: result.recordset[0].tipoUsuario,
+                                codigoCarrera: result.recordset[0].codigoCarrera,
+                                codigoSede: result.recordset[0].codigoSede
+                            };
+                            res.send(req.session.user);
+                        } else {
+                            /* No coincide */
+                            res.status(401).send({
+                                mensaje: "No coincide el usuario o contraseña",
+                            });
+                        }
                     }
-                }
-            );
+                );
+            }
+            else{
+                res.status(401).send({ message: "El usuario no existe" });
+            }
         }
     });
 });
