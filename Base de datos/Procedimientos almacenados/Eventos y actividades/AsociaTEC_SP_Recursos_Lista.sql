@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------
 -- Autor:       Fabián Vargas
 -- Fecha:       23-09-03
--- Descripción: Retorna la lista de recursos de una actividad
+-- Descripción: Retorna la lista de recursos
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Recursos_Lista]
-    @IN_uuid UNIQUEIDENTIFIER
+
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -19,31 +19,16 @@ BEGIN
 
     BEGIN TRY
 
-        -- VALIDACIONES
-        SELECT @ID_Actividad = A.[id]
-        FROM [dbo].[Actividades] A
-        WHERE A.[uuid] = @IN_uuid
-        AND A.[eliminado] = 0
-
-        IF @ID_Actividad IS NULL
-        BEGIN
-            RAISERROR('No existe la actividad consultada', 16, 1)
-        END
-
-
-        SELECT COALESCE(
-            (
-                SELECT R.[nombre],
-                       D.[cantidad]
-                FROM [dbo].[RecursosDeActivdad] D
-                INNER JOIN [dbo].[Recursos] R
-                ON R.[id] = D.[idRecurso]
-                WHERE D.[idActividad] = @ID_Actividad
-                AND D.[eliminado] = 0
-                FOR JSON PATH
-            ),
-            '[]'
-        ) as 'resultados'
+    SELECT COALESCE(
+        (
+            SELECT R.[nombre]
+            FROM [dbo].[Recursos] R
+            FOR JSON PATH
+        ),
+        '[]'
+    ) as 'resultados'
+    
+    
     END TRY
     BEGIN CATCH
 
