@@ -41,7 +41,7 @@ BEGIN
             AND @IN_FechaFin <= E.[fechaFin]
         )
         BEGIN
-            RAISERROR('Las fechas de inicio y fin de la actividad no están dentro del rango permitido para el evento', 50001, 1)
+            RAISERROR('Las fechas de inicio y fin de la actividad no están dentro del rango permitido para el evento', 16, 1)
         END
 
         -- INICIO DE LA TRANSACCIÓN
