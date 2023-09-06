@@ -7,7 +7,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Retroalimentacion_Agregar]
     -- Parámetros
-    @IN_evento          VARCHAR(36),
+    @IN_evento          UNIQUEIDENTIFIER,
     @IN_carnet          INT,
     @IN_calificacion    TINYINT,
     @IN_comentario      VARCHAR(256)
@@ -20,7 +20,6 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    DECLARE @uuidEvento UNIQUEIDENTIFIER = NULL;
     DECLARE @idEvento INT = NULL;
     DECLARE @idEstudiante INT = NULL;
     DECLARE @idInscripcion INT = NULL;
@@ -28,13 +27,6 @@ BEGIN
     BEGIN TRY
 
         -- VALIDACIONES
-        SET @uuidEvento = TRY_CAST(@IN_evento AS UNIQUEIDENTIFIER);
-
-        IF @uuidEvento IS NULL
-        BEGIN
-            RAISERROR('El identificador "%s" no es válido', 16, 1, @IN_evento);
-        END;
-
         SELECT  @idEvento = E.[id]
         FROM    [dbo].[Eventos] E
         WHERE   E.[uuid] = @IN_evento
@@ -42,7 +34,8 @@ BEGIN
 
         IF @idEvento IS NULL
         BEGIN
-            RAISERROR('No existe ningún evento con el identificador "%s"', 16, 1, @IN_evento);
+            DECLARE @uuid_varchar VARCHAR(36) = (SELECT CONVERT(NVARCHAR(36), @IN_evento));
+            RAISERROR('No existe ningún evento con el identificador "%s"', 16, 1, @uuid_varchar);
         END;
 
         SELECT  @idEstudiante = E.[id]

@@ -6,7 +6,7 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Detalles]
     -- Parámetros
-    @IN_propuesta       VARCHAR(36)
+    @IN_propuesta       UNIQUEIDENTIFIER
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -16,27 +16,20 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    DECLARE @uuidPropuesta UNIQUEIDENTIFIER = NULL;
     DECLARE @idPropuesta INT = NULL;
 
     BEGIN TRY
 
         -- VALIDACIONES
-        SET @uuidPropuesta = TRY_CAST(@IN_propuesta AS UNIQUEIDENTIFIER);
-
-        IF @uuidPropuesta IS NULL
-        BEGIN
-            RAISERROR('El identificador "%s" no es válido', 16, 1, @IN_propuesta);
-        END;
-
         SELECT  @idPropuesta = P.[id]
         FROM    [dbo].[Propuestas] P
-        WHERE   P.[uuid] = @uuidPropuesta
+        WHERE   P.[uuid] = @IN_propuesta
             AND P.[eliminado] = 0;
 
         IF @idPropuesta IS NULL
         BEGIN
-            RAISERROR('No existe ninguna propuesta con el identificador "%s"', 16, 1, @IN_propuesta);
+            DECLARE @uuid_varchar VARCHAR(36) = (SELECT CONVERT(NVARCHAR(36), @IN_propuesta));
+            RAISERROR('No existe ninguna propuesta con el identificador "%s"', 16, 1, @uuid_varchar);
         END;
 
         -- Se retorna la información
