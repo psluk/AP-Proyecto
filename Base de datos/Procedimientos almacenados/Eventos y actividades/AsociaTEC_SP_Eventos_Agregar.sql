@@ -41,7 +41,7 @@ BEGIN
 
 		IF @ID_Sede IS NULL
         BEGIN
-            RAISERROR('No existe la sede',16,1, @IN_Sede)
+            RAISERROR('No existe la sede',16,1)
         END
 
 		SELECT @ID_Carrera = C.[id]
@@ -51,7 +51,7 @@ BEGIN
 		
 		IF @ID_Carrera IS NULL
         BEGIN
-            RAISERROR('No existe la carrera',16,1, @IN_Carrera)
+            RAISERROR('No existe la carrera',16,1)
         END
 
 		SELECT @ID_Asociacion = A.[id]
