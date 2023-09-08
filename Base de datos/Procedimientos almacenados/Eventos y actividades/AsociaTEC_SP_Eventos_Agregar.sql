@@ -29,6 +29,7 @@ BEGIN
     DECLARE @ID_Categoria INT = NULL;
 	DECLARE @ID_Sede INT = NULL;
 	DECLARE @ID_Carrera INT = NULL;
+    DECLARE @NEW_uuid UNIQUEIDENTIFIER = NEWID();
 
 
     BEGIN TRY
@@ -102,7 +103,7 @@ BEGIN
         (
             @ID_Asociacion,
             @ID_Categoria,
-            NEWID(),
+            @NEW_uuid,
             @IN_Titulo,
             @IN_Descripcion,
             @IN_FechaInicio,
@@ -112,6 +113,12 @@ BEGIN
             @IN_Capacidad,
             0
         )
+        SELECT COALESCE(
+            (SELECT @NEW_uuid AS 'uuid' 
+            FOR JSON PATH),
+            '[]'
+        ) as 'results'
+        
 
         -- COMMIT DE LA TRANSACCIÓN
         IF @transaccion_iniciada = 1

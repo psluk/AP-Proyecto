@@ -40,7 +40,7 @@ BEGIN
                     E.[fechaFin],
                     E.[lugar],
                     E.[especiales],
-                    C.[nombre],
+                    C.[nombre] as 'categoria',
                     A.[nombre] as 'asociacion.nombre'
                 FROM [dbo].[Eventos] E
                 INNER JOIN [dbo].[Categorias] C
