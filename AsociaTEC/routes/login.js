@@ -4,7 +4,10 @@ const { pool, sqlcon } = require("../settings/database.js");
 const bcrypt = require("bcrypt");
 const manejarError = require("../settings/errores.js");
 
-// Verificar si hay una sesión iniciada
+/**
+ * Metodo GET
+ * Verifica si ya hay un usuario con sesión iniciada
+ */
 router.get("/login", (req, res) => {
     const saved = req.session.user;
 
@@ -22,7 +25,10 @@ router.get("/login", (req, res) => {
     }
 });
 
-// Cierre de sesión
+/**
+ * Metodo GET
+ * Cierra la sesión activa
+ */
 router.get("/logout", (req, res) => {
     const saved = req.session.user;
 
@@ -38,7 +44,10 @@ router.get("/logout", (req, res) => {
     }
 });
 
-// Inicio de sesión
+/**
+ * Metodo POST
+ * Inicia una sesión
+ */
 router.post("/login", async (req, res) => {
     const request = pool.request();
     
