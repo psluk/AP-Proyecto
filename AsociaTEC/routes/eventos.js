@@ -12,7 +12,7 @@ const estaAutenticado = require("../settings/autenticado.js")
 router.get("/", (req, res) => {
 
     if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
     const codigoCarrera = req.query.codigoCarrera;
@@ -52,7 +52,7 @@ router.get("/", (req, res) => {
  */
 router.get("/evento", (req, res) => {
     if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
     const uuid = req.query.uuid
@@ -85,10 +85,10 @@ router.get("/evento", (req, res) => {
 router.post("/agregar", (req, res) => {
 
     if (!estaAutenticado(req, true, true)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
-    const titulo = req.body.titulo;
+    const titulo = req.body.titul;
     const descripcion = req.body.descripcion;
     const fechaInicio = req.body.fechaInicio;
     const fechaFin = req.body.fechaFin;
@@ -136,7 +136,7 @@ router.post("/agregar", (req, res) => {
  */
 router.put("/modificar", (req, res) => {
     if (!estaAutenticado(req, true, true)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
     const titulo = req.body.titulo;
     const descripcion = req.body.descripcion;
@@ -183,7 +183,7 @@ router.put("/modificar", (req, res) => {
 router.delete("/eliminar", (req, res) => {
 
     if (!estaAutenticado(req, true, true)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
     const uuid = req.query.uuid;
@@ -213,7 +213,7 @@ router.delete("/eliminar", (req, res) => {
 router.put("/compartir", (req, res) => {
 
     if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
     const uuid = req.body.uuid;
@@ -244,7 +244,7 @@ router.put("/compartir", (req, res) => {
  */
 router.get("/reporte", (req, res) => {
     if (!estaAutenticado(req, true, true)) {
-        return res.status(403).send('Acceso denegado');
+        return res.status(403).send({ mensaje: "Acceso Denegado" });
     }
 
     const uuid = req.query.uuid

@@ -54,8 +54,6 @@ BEGIN
             FOR JSON PATH),
             '[]'
         ) as 'results'
-            
-        FOR JSON PATH
 
     END TRY
     BEGIN CATCH

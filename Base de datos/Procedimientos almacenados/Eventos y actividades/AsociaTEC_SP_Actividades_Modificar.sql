@@ -20,7 +20,7 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
-    
+    DECLARE @ID_Evento INT = NULL;
 
 
     BEGIN TRY
@@ -34,6 +34,26 @@ BEGIN
         )
         BEGIN
             RAISERROR('No existe la actividad deseada a modificar', 16, 1)
+        END
+
+        SELECT @ID_Evento = A.[idEvento]
+        FROM dbo.Actividades A
+        WHERE A.uuid = @IN_uuid
+
+        IF @IN_fechaFin <= @IN_fechaInicio
+        BEGIN
+            RAISERROR('La fecha de fin debe ser posterior a la fecha de inicio', 16, 1);
+        END
+
+        IF NOT EXISTS (
+            SELECT 1
+            FROM [dbo].[Eventos] E
+            WHERE E.[id] = @ID_Evento
+            AND @IN_fechaInicio >= E.[fechaInicio]
+            AND @IN_FechaFin <= E.[fechaFin]
+        )
+        BEGIN
+            RAISERROR('Las fechas de inicio y fin de la actividad no están dentro del rango permitido para el evento', 16, 1)
         END
 
         IF LTRIM(RTRIM(@IN_Lugar)) = ''

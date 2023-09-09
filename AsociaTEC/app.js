@@ -10,6 +10,7 @@ const port = 3000;
 const loginRouter = require("./routes/login.js");
 const eventosRouter = require("./routes/eventos.js");
 const recursosRouter = require("./routes/recursos.js");
+const actividadesRouter = require("./routes/actividades.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/", loginRouter);
 app.use("/api/eventos/", eventosRouter);
 app.use("/api/recursos/", recursosRouter);
-
+app.use("/api/actividades/", actividadesRouter);
 
 app.listen(port, () => {
     console.log(`AsociaTEC app listening on port ${port}`);

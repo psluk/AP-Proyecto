@@ -9,7 +9,7 @@ CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Actividades_Agregar]
     @IN_nombre VARCHAR(64),
     @IN_lugar VARCHAR(128),
     @IN_fechaInicio DATETIME,
-    @IN_FechaFin DATETIME
+    @IN_fechaFin DATETIME
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -33,6 +33,11 @@ BEGIN
             RAISERROR('No existe el evento al cual se quiere agregar la actividad',16, 1)
         END
 
+        IF @IN_fechaFin <= @IN_fechaInicio
+        BEGIN
+            RAISERROR('La fecha de fin debe ser posterior a la fecha de inicio', 16, 1);
+        END
+        
         IF NOT EXISTS (
             SELECT 1
             FROM [dbo].[Eventos] E
