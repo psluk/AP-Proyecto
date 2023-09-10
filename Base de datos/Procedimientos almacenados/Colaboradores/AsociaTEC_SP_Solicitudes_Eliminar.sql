@@ -1,18 +1,14 @@
-
-
 --------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
--- Descripci�n: accepta o niega la solicitud del estudiante y lo agrega como
--- un colaborador de evento si fuera necesario.
+-- Descripci�n: elimina una solicitud de un estudiante para ser colaborador
+--               de evento, solo las pendientes.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Solicitudes_Decidir]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Solicitudes_Eliminar]
     -- Par�metros
-	@IN_acceptado BIT,
 	@IN_carnet INT,
-    @IN_identificadorEvento UNIQUEIDENTIFIER,
-	@IN_descripcion VARCHAR(64) = NULL
+    @IN_identificadorEvento UNIQUEIDENTIFIER
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -22,21 +18,19 @@ BEGIN
     DECLARE @transaccionIniciada BIT = 0;
 
     -- DECLARACI�N DE VARIABLES
+	DECLARE @usarActivaPrevia BIT = 0;
+    DECLARE @usarPendientePrevia BIT = 0;
 	DECLARE @usarIDEvento INT = NULL;
 	DECLARE @usarIDEstudiante INT = NULL;
-	DECLARE @usarIDSolicitud INT = NULL;
-	DECLARE @usarIDColaborador INT = NULL;
 
     BEGIN TRY
 
-		--REALIZAR LAS VALIDACIONES
-
         -- VALIDACIONES
-		--encontramos el id del estudiante
 		SELECT  @usarIDEstudiante = E.[id]
         FROM [dbo].[Estudiantes] E
         WHERE E.carnet = @IN_carnet
-		AND E.[eliminado] = 0
+		AND E.[eliminado] = 0;
+		
 		IF (@usarIDEstudiante IS NULL)
         BEGIN
             RAISERROR('El carnet "%s" no existe.', 16, 1, @IN_carnet)
@@ -47,69 +41,64 @@ BEGIN
             -- identificadorEvento vacio
             RAISERROR('Parametro [identificadorEvento] es vacio.', 16, 1)
         END;
-		-- encontramos el id del evento
+
 		SELECT  @usarIDEvento = E.[id]
         FROM [dbo].[Eventos] E
         WHERE E.[uuid] = @IN_identificadorEvento
-		AND E.[eliminado] = 0
+		AND E.[eliminado] = 0;
+		
 		IF(@usarIDEvento IS NULL)
+
         BEGIN
             RAISERROR('El evento no existe.', 16, 1)
         END;
 
-		--revisamos si se recibio una descripcion y si no la dejamos vacio
-		IF(@IN_descripcion IS NULL)
-		BEGIN
-			SET @IN_descripcion = '';
-		END
-		ELSE 
-		BEGIN
-			SET @IN_descripcion = LTRIM(RTRIM(@IN_descripcion))
-		END;
+		--revisamos que exista la solicitud a borrar y que aun este pendiente
 
-		--buscamos el id de la solicitud
-
-		SELECT @usarIDSolicitud = S.[id]
+		IF NOT EXISTS (SELECT 1
 		FROM [dbo].[Solicitudes] S
 		INNER JOIN [dbo].[Estudiantes] E
 			ON E.[id] = S.[idEstudiante]
 		INNER JOIN [dbo].[Eventos] Eve
 			ON Eve.[id] = S.[idEvento]
-		WHERE E.[id] = @usarIDEstudiante
-		AND Eve.[id] = @usarIDEvento
-		AND S.[eliminado] = 0
-		AND (S.[aceptado] IS NULL)
-		
-		IF(@usarIDSolicitud IS NULL)
+        AND E.[eliminado] = 0
+		AND Eve.[eliminado] = 0
+        AND S.[eliminado] = 0
+        AND S.[aceptado] IS NULL
+		AND E.[carnet] = @IN_carnet
+		AND Eve.[uuid] = @IN_identificadorEvento)
 		BEGIN 
-            --La solicitud no existe
-			RAISERROR('La solicitud no existe.', 16, 1);
+            --La solicitud ya existe y ya se colaborador
+			RAISERROR('El estudiante "%s" no tiene ninguna solicitud pendiente para borrar', 16, 1, @IN_carnet);
         END;
 
 
 		-- INICIO DE LA TRANSACCI�N
-			IF @@TRANCOUNT = 0
-			BEGIN
-			    SET @transaccionIniciada = 1;
-			    BEGIN TRANSACTION;
-			END;
+		IF @@TRANCOUNT = 0
+		BEGIN
+		    SET @transaccionIniciada = 1;
+		    BEGIN TRANSACTION;
+		END;
 
-			    UPDATE S
-				SET S.[aceptado] = @IN_acceptado
-				FROM [dbo].[Solicitudes] S
-				WHERE S.[id] = @usarIDSolicitud
-				AND S.[eliminado] = 0;
-
-				IF(@IN_acceptado = 1) -- aagregamos al colaborador
-				BEGIN
-					EXEC [dbo].[AsociaTEC_SP_Colaboradores_Agregar] @IN_carnet, @IN_descripcion, @IN_identificadorEvento;
-				END;
-
-			-- COMMIT DE LA TRANSACCI�N
-			IF @transaccionIniciada = 1
-			BEGIN
-			    COMMIT TRANSACTION;
-			END;
+            UPDATE S
+            SET S.[eliminado] = 1 
+            FROM [dbo].[Solicitudes] S
+            INNER JOIN [dbo].[Estudiantes] E
+		    	ON E.[id] = S.[idEstudiante]
+		    INNER JOIN [dbo].[Eventos] Eve
+		    	ON Eve.[id] = S.[idEvento]
+            AND E.[eliminado] = 0
+		    AND Eve.[eliminado] = 0
+            AND S.[eliminado] = 0
+            AND S.[aceptado] IS NULL
+		    AND E.[carnet] = @IN_carnet
+		    AND Eve.[uuid] = @IN_identificadorEvento
+			
+		-- COMMIT DE LA TRANSACCI�N
+		IF @transaccionIniciada = 1
+		BEGIN
+		    COMMIT TRANSACTION;
+		END;
 
     END TRY
     BEGIN CATCH
