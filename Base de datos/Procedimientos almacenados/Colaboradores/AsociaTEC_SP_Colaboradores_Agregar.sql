@@ -21,6 +21,7 @@ BEGIN
 	DECLARE @usarExistenciaPrevia BIT = 0;
 	DECLARE @usarIDEvento INT = NULL;
 	DECLARE @usarIDEstudiante INT = NULL;
+	DECLARE @usardescripcion VARCHAR(64) = NULL;
 
     BEGIN TRY
 
@@ -69,6 +70,7 @@ BEGIN
 			SET @usarExistenciaPrevia = 1;
         END;
 
+
 		IF (@usarExistenciaPrevia = 1) -- actualizamos eliminado
 		BEGIN
 			-- INICIO DE LA TRANSACCI�N
@@ -79,7 +81,8 @@ BEGIN
 			END;
 
 			    UPDATE CdE
-				SET CdE.[eliminado] = 0
+				SET CdE.[eliminado] = 0, CdE.[descripcion] = CASE WHEN LTRIM(RTRIM(@IN_descripcion)) = '' THEN  CdE.[descripcion]
+																  ELSE LTRIM(RTRIM(@IN_descripcion)) END
 				FROM [dbo].[ColaboradoresDeEvento] CdE
 				INNER JOIN [dbo].[Estudiantes] E
 					ON E.[id] = Cde.[idEstudiante]
