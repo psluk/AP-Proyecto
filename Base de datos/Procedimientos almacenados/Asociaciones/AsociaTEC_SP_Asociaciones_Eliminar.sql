@@ -17,7 +17,7 @@ BEGIN
 
     -- DECLARACI�N DE VARIABLES
 	DECLARE @usarTipoAsociacion VARCHAR(16) = 'Asocia%';
-	DECLARE @usarCiclo INT = 0;
+	DECLARE @usarCiclo INT = 1;
 	DECLARE @usarseleccionar INT = 0;
 	DECLARE @usartempIdentificador UNIQUEIDENTIFIER = NULL;
 
@@ -72,7 +72,7 @@ BEGIN
 							AND U.[eliminado] = 0
 							AND P.[eliminado] = 0;
 						
-							EXEC [dbo].[AsociaTEC_SP_Propuesta_Eliminar] @usartempIdentificador
+							EXEC [dbo].[AsociaTEC_SP_Propuestas_Eliminar] @usartempIdentificador
 						END;
 					IF (@usarseleccionar = 1) --eliminamos (estudiantes de asociacion)
 						BEGIN 
@@ -154,9 +154,6 @@ BEGIN
 		BEGIN
 		    COMMIT TRANSACTION;
 		END;
-
-
-		SELECT 1
 
     END TRY
     BEGIN CATCH

@@ -4,7 +4,7 @@
 -- Descripción: Actualiza el estado de una propuesta.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Detalles]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Modificar]
     -- Parámetros
     @IN_propuesta       UNIQUEIDENTIFIER,
     @IN_estado          VARCHAR(32)

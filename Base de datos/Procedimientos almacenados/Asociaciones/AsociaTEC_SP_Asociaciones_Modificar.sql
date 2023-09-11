@@ -28,6 +28,8 @@ BEGIN
 	DECLARE @usarIDAsociacion INT = NULL;
 	DECLARE @usarIDCarrera INT = NULL;
 	DECLARE @usarIDSede INT = NULL;
+	DECLARE @usarIDCarreraActual INT = NULL;
+	DECLARE @usarIDSedeActual INT = NULL;
 
     BEGIN TRY
 
@@ -35,7 +37,7 @@ BEGIN
 
         IF (LTRIM(RTRIM(@IN_correoActual)) = '')
         BEGIN
-            RAISERROR('No se brindó un correo electrónico identificador del usuario', 16, 1)
+            RAISERROR('No se brindó un correo electrónico identificador del usuario', 16, 1);
         END;
 
 		--revisamos si existe el usuario como asociacion
@@ -43,7 +45,7 @@ BEGIN
 		SELECT @usarIDUsuario = U.[id], @usarIDAsociacion = A.[id]
 			FROM [dbo].[Usuarios] U
 			INNER JOIN [dbo].[TiposUsuario] Tu
-				ON Tu.[nombre] = U.[idTipoUsuario]
+				ON Tu.[id] = U.[idTipoUsuario]
 			INNER JOIN [dbo].[Asociaciones] A
 				ON A.[idUsuario] = U.[id]
 			WHERE U.[correo] = LTRIM(RTRIM(@IN_correoActual))
@@ -61,7 +63,7 @@ BEGIN
                     WHERE   U.[correo] = @IN_correoNueva
                         AND U.[eliminado] = 0 )
         BEGIN
-            RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoNueva)
+            RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoNueva);
         END;
 
         IF (@IN_correoNueva NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correoNueva)) = '@estudiantec.cr')
@@ -70,18 +72,78 @@ BEGIN
         END;
 
 
-		--obtenemos los ID de la Sede y carrera nuevos
+		--obtenemos el ID de la Carrera y Sede actuales
 
-		SELECT @usarIDCarrera = C.[id], @usarIDSede = S.[id]
-		FROM [dbo].[Carreras] C
-		INNER JOIN [dbo].[Sedes] S
-			ON S.[id] = C.[idSede]
-		WHERE @IN_codigoCarreraNueva = LTRIM(RTRIM(C.[codigo]))
-		AND @IN_codigoSedeNueva = LTRIM(RTRIM(S.[codigo]))
+		SELECT @usarIDCarreraActual = C.[id], @usarIDSedeActual = S.[id]
+		FROM [dbo].[Carreras] C 
+		INNER JOIN [dbo].[Sedes] S 
+			ON S.[id] = C.[idSede]  
+		INNER JOIN [dbo].[Asociaciones] A 
+			ON A.[idCarrera] = C.[id] 
+		INNER JOIN [dbo].[Usuarios] U 
+			ON U.[id] = A.[idUsuario] 
+		WHERE U.[correo] = LTRIM(RTRIM(@IN_correoActual))
 
-		IF ((@usarIDCarrera IS NULL) OR (@usarIDSede IS NULL))
+		-- ambos no existen
+		IF( (@IN_codigoCarreraNueva IS NULL 
+				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
+			AND (@IN_codigoCarreraNueva IS NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
 		BEGIN
-			RAISERROR('los codigos de la carrera y sede no coinciden con los existentes', 16, 1);
+			SET @usarIDSede = @usarIDSedeActual;
+			SET @usarIDCarrera = @usarIDCarreraActual;
+		END;
+
+
+		-- solo existe como C
+		IF( (@IN_codigoCarreraNueva IS NULL 
+				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
+			AND (@IN_codigoCarreraNueva IS NOT NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) != '') )
+		BEGIN
+			SET @usarIDSede = @usarIDSedeActual;
+			SELECT @usarIDCarrera = C.[id]
+			FROM [dbo].[Carreras] C
+			INNER JOIN [dbo].[Sedes] S
+				ON S.[id] = C.[idSede]
+			WHERE @IN_codigoCarreraNueva = LTRIM(RTRIM(C.[codigo]))
+			AND S.[id] = @usarIDSedeActual
+		END;
+
+
+		-- solo existe como S
+		IF( (@IN_codigoCarreraNueva IS NOT NULL 
+				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) != '') 
+			AND (@IN_codigoCarreraNueva IS NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
+		BEGIN
+			SET @usarIDCarrera = @usarIDCarreraActual;
+			SELECT @usarIDSede = S.[id] 
+			FROM [dbo].[Carreras] C
+			INNER JOIN [dbo].[Sedes] S
+				ON S.[id] = C.[idSede]
+			WHERE C.[id] = @usarIDCarreraActual
+			AND @IN_codigoSedeNueva = LTRIM(RTRIM(S.[codigo]))
+		END;
+
+		-- ambos no existen
+		IF( (@IN_codigoCarreraNueva IS NULL 
+				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
+			AND (@IN_codigoCarreraNueva IS NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
+		BEGIN
+			SELECT @usarIDCarrera = C.[id],
+			       @usarIDSede = S.[id] 
+			FROM [dbo].[Carreras] C
+			INNER JOIN [dbo].[Sedes] S
+				ON S.[id] = C.[idSede]
+			WHERE @IN_codigoCarreraNueva = LTRIM(RTRIM(C.[codigo]))
+			AND @IN_codigoSedeNueva = LTRIM(RTRIM(S.[codigo]))
+		END;
+
+		IF (@usarIDSede IS NULL OR @usarIDCarrera IS NULL)
+		BEGIN
+			RAISERROR('el codigo sede y/o carrera no existe', 16, 1);
 		END;
 
 
@@ -95,24 +157,24 @@ BEGIN
 			
 			--actualizamos las asociaciones
 			UPDATE A
-			SET A.[idCarrera] = CASE WHEN @usarIDCarrera IS NOT NULL THEN @usarIDCarrera
-									 ELSE A.[idCarrera] END,
-				A.[nombre] = CASE WHEN @IN_nombreNueva IS NOT NULL THEN @IN_nombreNueva
-									 ELSE A.[nombre] END,
-				A.[descripcion] = CASE WHEN @IN_descripcionNueva IS NOT NULL THEN @IN_descripcionNueva
-									 ELSE A.[descripcion] END,
-				A.[telefono] = CASE WHEN @IN_telefonoNueva IS NOT NULL THEN @IN_telefonoNueva
-									 ELSE A.[telefono] END
-			FROM[dbo].[Asociaciones] A
+			SET A.[idCarrera] = CASE WHEN (@usarIDCarrera IS NULL OR LTRIM(RTRIM(@usarIDCarrera)) = '') THEN A.[idCarrera]
+									 ELSE @usarIDCarrera END,
+				A.[nombre] = CASE WHEN (@IN_nombreNueva IS NULL OR LTRIM(RTRIM(@IN_nombreNueva)) = '') THEN A.[nombre]
+									 ELSE @IN_nombreNueva  END,
+				A.[descripcion] = CASE WHEN (@IN_descripcionNueva IS NULL OR LTRIM(RTRIM(@IN_descripcionNueva)) = '') THEN A.[descripcion]
+									 ELSE @IN_descripcionNueva END,
+				A.[telefono] = CASE WHEN (@IN_telefonoNueva IS NULL OR LTRIM(RTRIM(@IN_telefonoNueva)) = '') THEN A.[telefono]
+									 ELSE @IN_telefonoNueva END
+			FROM [dbo].[Asociaciones] A
 			WHERE A.[idUsuario] = @usarIDUsuario
 			AND A.[eliminado] = 0
 
 			--actualizamos a el usuario
 			UPDATE U
-			SET U.[correo] = CASE WHEN @IN_correoNueva IS NOT NULL THEN @IN_correoNueva
-									 ELSE U.[correo] END,
-			    U.[clave] = CASE WHEN @IN_claveNueva IS NOT NULL THEN @IN_claveNueva
-									 ELSE U.[clave] END
+			SET U.[correo] = CASE WHEN (@IN_correoNueva IS NULL OR LTRIM(RTRIM(@IN_correoNueva)) = '') THEN U.[correo]
+									 ELSE @IN_correoNueva END,
+			    U.[clave] = CASE WHEN (@IN_claveNueva IS NULL OR LTRIM(RTRIM(@IN_claveNueva)) = '') THEN U.[clave]
+									 ELSE @IN_claveNueva  END
 			FROM [dbo].[Usuarios] U
 			WHERE U.[id] = @usarIDUsuario
 			AND U.[eliminado] = 0

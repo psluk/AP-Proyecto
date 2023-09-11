@@ -4,7 +4,7 @@
 -- Descripción: Elimina una propuesta.
 --------------------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Detalles]
+CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Eliminar]
     -- Parámetros
     @IN_propuesta       UNIQUEIDENTIFIER
 AS

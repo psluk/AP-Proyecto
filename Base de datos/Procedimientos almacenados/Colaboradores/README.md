@@ -10,4 +10,4 @@ Este directorio contiene procedimientos almacenados (_stored procedures_) utiliz
 
 *AsociaTEC_SP_Colaboradores_Eliminar [carnet, uuidEvento] (desactiva al estudiante como colaborador)
 
-*AsociaTEC_SP_Colaboradores_Agregar [carnet, descripcion, uuidEvento] (se agrega el estudiante o se reactiva como colaborador) (agregar posible modificacion de la descripccion ya existente cuando reactivamos)
+*AsociaTEC_SP_Colaboradores_Agregar [carnet, descripcion, uuidEvento] (se agrega el estudiante o se reactiva como colaborador)
