@@ -11,8 +11,11 @@ const loginRouter = require("./routes/login.js");
 const eventosRouter = require("./routes/eventos.js");
 const recursosRouter = require("./routes/recursos.js");
 const actividadesRouter = require("./routes/actividades.js");
-const colaboradoresRouter = require("./routes/colaboradores.js");
-const solicitudesRouter = require("./routes/solicitudes.js");
+const colaboradoresRouter = require("./routes/colaboradores.js"); //falta validacion usuario
+const solicitudesRouter = require("./routes/solicitudes.js"); //falta validacion usuario
+const asociacionesRouter = require("./routes/asociaciones.js"); //falta validacion usuario
+const conversacionesRouter = require("./routes/conversaciones.js"); //falta validacion usuario
+const mensajesRouter = require("./routes/mensajes.js"); //falta validacion usuario
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,7 +39,10 @@ app.use("/api/eventos/", eventosRouter);
 app.use("/api/recursos/", recursosRouter);
 app.use("/api/actividades/", actividadesRouter);
 app.use("/api/colaboradores/", colaboradoresRouter); 
-app.use("/api/colaboradores/solicitudes/", solicitudesRouter);
+app.use("/api/colaboradores/solicitudes/", solicitudesRouter); 
+app.use("/api/asociaciones/", asociacionesRouter);
+app.use("/api/conversaciones/", conversacionesRouter);
+app.use("/api/conversaciones/mensajes/", mensajesRouter); 
 
 app.listen(port, () => {
     console.log(`AsociaTEC app listening on port ${port}`);
