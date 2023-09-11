@@ -54,7 +54,7 @@ BEGIN
         END;
 
 
-		IF EXISTS (SELECT 1 FROM @IN_tags) 
+		IF EXISTS (SELECT TOP 1 1 FROM @IN_tags) 
 		BEGIN
 			SET @usarTags = 1;
 		END;
@@ -91,7 +91,7 @@ BEGIN
 			)
 			SELECT LTRIM(RTRIM(tTID.[in_tags]))
 			FROM @tempTagsID tTID
-			WHERE tTID.[id] = NULL;
+			WHERE tTID.[id] IS NULL;
 		END;
 
 		-- creamos la nueva conversacion

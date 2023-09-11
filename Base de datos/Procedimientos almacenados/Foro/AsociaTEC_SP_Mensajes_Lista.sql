@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
--- Descripción: Retorna la lista de los mensajes de las conversaciones
+-- Descripciï¿½n: Retorna la lista de los mensajes de las conversaciones
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Mensajes_Lista]
-    -- Parámetros
+    -- Parï¿½metros
     @IN_identificadorConversacion UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -15,7 +15,7 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transaccionIniciada BIT = 0;
 
-    -- DECLARACIÓN DE VARIABLES
+    -- DECLARACIï¿½N DE VARIABLES
 	DECLARE @usarTipoUsuarioAso VARCHAR(16) = 'Asocia%'
 	DECLARE @usarTipoUsuarioEst VARCHAR(16) = 'Estudi%'
 
@@ -39,35 +39,52 @@ BEGIN
 		END;
 
 		SELECT COALESCE(
-            (SELECT M.[contenido] AS 'contenido',
+            (SELECT info.[contenido] AS 'contenido',
+					info.[timestamp] AS 'timestamp',
+					info.[uuid] AS 'identificador',
+					info.[nombre] AS 'autor.nombre',
+					info.[carnet] AS 'autor.carnet'
+            FROM (SELECT M.[contenido] AS 'contenido',
 					M.[timestamp] AS 'timestamp',
-					M.[uuid] AS 'identificador',
-					Case WHEN Tu.[nombre] LIKE @usarTipoUsuarioAso THEN A.[nombre]
-						WHEN Tu.[nombre] LIKE @usarTipoUsuarioEst THEN E.[nombre]
-						ELSE 'upps' END AS 'autor.nombre',
-					Case WHEN Tu.[nombre] LIKE @usarTipoUsuarioAso THEN NULL
-						WHEN Tu.[nombre] LIKE @usarTipoUsuarioEst THEN E.[carnet]
-						ELSE 'upps' END AS 'autor.carnet'
-			FROM [dbo].[Mensajes] M
-			INNER JOIN [dbo].[Conversaciones] C
-				ON C.[id] = M.[idConversacion]
-			INNER JOIN [dbo].[Usuarios] U
-				ON U.[id] = M.[idUsuario]
-			INNER JOIN [dbo].[TiposUsuario] Tu
-				ON Tu.[id] = U.[idTipoUsuario]
-			INNER JOIN [dbo].[Estudiantes] E
-				ON E.[idUsuario] = M.[idUsuario]
-			INNER JOIN [dbo].[Asociaciones] A
-				ON A.[idUsuario] = M.[idUsuario]
-			WHERE M.[eliminado] = 0
-			AND U.[eliminado] = 0
-			AND E.[eliminado] = 0
-			AND A.[eliminado] = 0
-			AND C.[uuid] = @IN_identificadorConversacion
-			ORDER BY M.[timestamp] ASC
+					M.[uuid] AS 'uuid',
+					E.[nombre] AS 'nombre',
+					E.[carnet] AS 'carnet'
+			     FROM [dbo].[Mensajes] M
+                 INNER JOIN [dbo].[Estudiantes] E
+			     	ON M.[idUsuario] = E.[idUsuario]
+			     INNER JOIN [dbo].[Conversaciones] C
+			     	ON C.[id] = M.[idConversacion]
+			     INNER JOIN [dbo].[Usuarios] U
+			     	ON U.[id] = M.[idUsuario]
+			     INNER JOIN [dbo].[TiposUsuario] Tu
+			     	ON Tu.[id] = U.[idTipoUsuario]
+			     WHERE M.[eliminado] = 0
+			     AND U.[eliminado] = 0
+			     AND E.[eliminado] = 0
+			     AND C.[uuid] = @IN_identificadorConversacion
+                UNION
+                SELECT M.[contenido] AS 'contenido',
+					M.[timestamp] AS 'timestamp',
+					M.[uuid] AS 'uuid',
+					A.[nombre] 'nombre',
+					NULL AS 'carnet'
+			    FROM [dbo].[Mensajes] M
+                INNER JOIN [dbo].[Asociaciones] A
+			    	ON M.[idUsuario] = A.[idUsuario]
+			    INNER JOIN [dbo].[Conversaciones] C
+			    	ON C.[id] = M.[idConversacion]
+			    INNER JOIN [dbo].[Usuarios] U
+			    	ON U.[id] = M.[idUsuario]
+			    INNER JOIN [dbo].[TiposUsuario] Tu
+			    	ON Tu.[id] = U.[idTipoUsuario]
+			    WHERE M.[eliminado] = 0
+			    AND U.[eliminado] = 0
+			    AND A.[eliminado] = 0
+			    AND C.[uuid] = @IN_identificadorConversacion) AS info
+			ORDER BY info.[timestamp] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
-                -- que el JSON retornado sea un arreglo vacío
+                -- que el JSON retornado sea un arreglo vacï¿½o
         ) AS 'results';
 
     END TRY

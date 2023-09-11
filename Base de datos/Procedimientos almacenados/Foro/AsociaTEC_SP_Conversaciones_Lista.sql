@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------
 -- Autor:       Luis Fernando Molina
 -- Fecha:       2023-09-03
--- Descripción: Retorna la lista de las conversaciones
+-- Descripciï¿½n: Retorna la lista de las conversaciones segun titulo o tags
 --------------------------------------------------------------------------
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Conversaciones_Lista]
-    -- Parámetros
+    -- Parï¿½metros
     @IN_titulo VARCHAR(64) = NULL,
     @IN_tags Tags READONLY
 AS
@@ -16,10 +16,13 @@ BEGIN
     DECLARE @ErrorNumber INT, @ErrorSeverity INT, @ErrorState INT, @Message VARCHAR(200);
     DECLARE @transaccionIniciada BIT = 0;
 
-    -- DECLARACIÓN DE VARIABLES
+    -- DECLARACIï¿½N DE VARIABLES
 	DECLARE @usartitulo BIT = 0;
 	DECLARE @usartags BIT = 0;
 	DECLARE @usarSeparador VARCHAR(1) = ' ';
+    DECLARE @tablaIdConversaciones TABLE(
+        id INT NOT NULL
+    )
 
     BEGIN TRY
 
@@ -35,14 +38,10 @@ BEGIN
 		BEGIN
 			-- los tags se usara como filtro
             SET @usartags = 1;
-		END;
 
-		SELECT COALESCE(
-            (SELECT C.[titulo] AS 'titulo',
-			   C.[uuid] AS 'identificador',
-			   C.[timestamp] AS 'timestamp',
-			   datos.tags AS 'tags'
-			FROM(SELECT C.[id] AS 'idConversacion', STRING_AGG( E.[etiqueta], @usarSeparador) AS 'tags' 
+            --obtenemos los id de los tags buscados
+            INSERT INTO @tablaIdConversaciones
+            SELECT DISTINCT C.[id]
 			FROM [dbo].[Conversaciones] C
 			INNER JOIN [dbo].[EtiquetasDeConversacion] EdC
 				ON EdC.[idConversacion] = C.[id]
@@ -50,24 +49,54 @@ BEGIN
 				ON E.[id] = EdC.[idEtiqueta]
 			INNER JOIN @IN_tags It
 			ON 1=1
-			WHERE (@usartitulo = 0 
-				  OR C.[titulo] = LTRIM(RTRIM(@IN_titulo))) 
-			AND (@usartags = 0 
+			WHERE (@usartags = 0 
 				OR E.[etiqueta] COLLATE Latin1_General_CI_AI  -- Para omitir tildes
 					LIKE '%' + LTRIM(RTRIM(It.[IN_tags])) + '%')
 			AND C.[eliminado] = 0
 			AND EdC.[eliminado] = 0
-			GROUP BY C.[id]) AS datos
-			INNER JOIN [dbo].[Conversaciones] C
-				ON datos.[idConversacion] = C.[id]
+			GROUP BY C.[id]
+        END;
+        ELSE
+        BEGIN
+            INSERT INTO @tablaIdConversaciones
+            SELECT C.[id] 
+			FROM [dbo].[Conversaciones] C
+        END;
+
+
+		SELECT COALESCE(
+            (SELECT C.[titulo] AS 'titulo',
+			   C.[uuid] AS 'identificador',
+			   C.[timestamp] AS 'timestamp',
+			   CASE WHEN datos.tags IS NULL THEN ''
+               ELSE datos.tags END AS 'tags'
+			FROM [dbo].[Conversaciones] C
+			LEFT JOIN (SELECT C.[id] AS 'idConversacion',
+                              STRING_AGG( E.[etiqueta], @usarSeparador) AS 'tags' 
+			            FROM [dbo].[Conversaciones] C
+			            INNER JOIN [dbo].[EtiquetasDeConversacion] EdC
+			            	ON EdC.[idConversacion] = C.[id]
+			            INNER JOIN [dbo].[Etiquetas] E
+			            	ON E.[id] = EdC.[idEtiqueta]
+                        WHERE C.[eliminado] = 0
+			            AND EdC.[eliminado] = 0
+			            GROUP BY C.[id]
+                      ) AS datos
+				ON C.[id] = datos.[idConversacion]
+            INNER JOIN @tablaIdConversaciones TIC
+                ON TIC.id = C.id
+            WHERE (@usartitulo = 0 
+				  OR C.[titulo] LIKE '%' +  LTRIM(RTRIM(@IN_titulo)) + '%') 
+            AND (@usartags = 0 
+				OR TIC.id = C.id)
             ORDER BY C.[titulo], C.[timestamp] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
-                -- que el JSON retornado sea un arreglo vacío
+                -- que el JSON retornado sea un arreglo vacï¿½o
         ) AS 'results';
 
     END TRY
-    BEGIN CATCH
+    BEGIN CATCH 
 
         SET @ErrorNumber = ERROR_NUMBER();
         SET @ErrorSeverity = ERROR_SEVERITY();
