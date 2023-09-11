@@ -14,12 +14,28 @@ router.get("/", (req, res) => {
 
     const titulo = req.query.titulo;
     const tags = req.query.tags;
+    const tvp = new sqlcon.Table();
+    tvp.columns.add('IN_tags', sqlcon.VarChar(32));
     const request = pool.request();
+    
+
+    try {
+        if (tags == null || tags == '') {
+            
+        } else {
+            tags.forEach(element => {
+                tvp.rows.add(element)
+            });
+        }
+    }
+    catch{
+        tvp.rows.add(tags)
+    }
 
     try {
 
         request.input('IN_titulo', sqlcon.VarChar, titulo)
-        request.input('IN_tags', sqlcon.TVP("Tags"), tags)
+        request.input('IN_tags', tvp)
     }
     catch (error) {
         console.log(error);
@@ -53,8 +69,16 @@ router.post("/agregar", (req, res) => {
     const tvp = new sqlcon.Table();
     tvp.columns.add('IN_tags', sqlcon.VarChar(32));
     const request = pool.request();
-    tags.forEach(element => {
+    
+    try {
+        tags.forEach(element => {
+        tvp.rows.add(element)
     });
+    }
+    catch{
+        tvp.rows.add(tags)
+    }
+
 
     try {
 
@@ -89,7 +113,7 @@ router.delete("/eliminar", (req, res) => {
     const request = pool.request();
 
     try {
-        request.input("IN_correo", sqlcon.UniqueIdentifier, uuid);
+        request.input("IN_identificadorConversacion", sqlcon.UniqueIdentifier, uuid);
     }
     catch (error) {
         return res.status(400).send("Identificador invalido")
