@@ -7,10 +7,9 @@ const config = {
     server: "AsociaTEC.mssql.somee.com",
     database: "AsociaTEC",
     pool: {
-        max:10,
-        min:0,
-        idleTimeoutMillis: 30000
-
+        max: 10,
+        min: 0,
+        idleTimeoutMillis: 30000,
     },
     options: {
         encrypt: true,
@@ -24,13 +23,13 @@ const pool = new sqlcon.ConnectionPool(config);
 // Conexión a la base de datos
 async function conexion() {
     try {
-      await pool.connect();
-      console.log('Conexión exitosa a la base de datos de Somee');
+        await pool.connect();
+        console.log("Conexión exitosa a la base de datos de Somee");
     } catch (err) {
-      console.error('Conexión fallida a la base de datos de Somee', err);
+        console.error("Conexión fallida a la base de datos de Somee", err);
     }
-  }
+}
 
 conexion();
 
-module.exports = {pool, sqlcon};
+module.exports = { pool, sqlcon };

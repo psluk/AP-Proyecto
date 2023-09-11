@@ -50,7 +50,7 @@ router.get("/logout", (req, res) => {
  */
 router.post("/login", async (req, res) => {
     const request = pool.request();
-    
+
     // Se lee el cuerpo de la solicitud
     const { correo, clave } = req.body;
 
@@ -83,8 +83,9 @@ router.post("/login", async (req, res) => {
                                 correo: result.recordset[0].correo,
                                 carnet: result.recordset[0].carnet,
                                 tipoUsuario: result.recordset[0].tipoUsuario,
-                                codigoCarrera: result.recordset[0].codigoCarrera,
-                                codigoSede: result.recordset[0].codigoSede
+                                codigoCarrera:
+                                    result.recordset[0].codigoCarrera,
+                                codigoSede: result.recordset[0].codigoSede,
                             };
                             res.send(req.session.user);
                         } else {
@@ -95,8 +96,7 @@ router.post("/login", async (req, res) => {
                         }
                     }
                 );
-            }
-            else{
+            } else {
                 res.status(401).send({ message: "El usuario no existe" });
             }
         }
