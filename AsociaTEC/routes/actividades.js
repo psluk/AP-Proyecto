@@ -9,6 +9,11 @@ const estaAutenticado = require("../settings/autenticado.js");
  * Retorna la lista de actividades de un evento
  */
 router.get("/", (req, res) => {
+
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const request = pool.request();
 
     const uuid = req.query.uuid;
@@ -36,6 +41,11 @@ router.get("/", (req, res) => {
  * Retorna los detalles de una actividad
  */
 router.get("/detalle", (req, res) => {
+
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const request = pool.request();
 
     const uuid = req.query.uuid;
@@ -63,6 +73,11 @@ router.get("/detalle", (req, res) => {
  * Crea una actividad relacionada a un evento
  */
 router.post("/agregar", (req, res) => {
+
+    if (!estaAutenticado(req, true, true)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const request = pool.request();
 
     const { uuid, nombre, lugar, fechaInicio, fechaFin } = req.body;
@@ -94,6 +109,10 @@ router.post("/agregar", (req, res) => {
  * Modifica una actividad
  */
 router.put("/modificar", (req, res) => {
+    if (!estaAutenticado(req, true, true)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const request = pool.request();
 
     const { uuid, nombre, lugar, fechaInicio, fechaFin } = req.body;
@@ -125,6 +144,11 @@ router.put("/modificar", (req, res) => {
  * Modifica una actividad
  */
 router.delete("/eliminar", (req, res) => {
+
+    if (!estaAutenticado(req, true, true)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const request = pool.request();
 
     const uuid = req.query.uuid;
