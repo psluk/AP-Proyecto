@@ -95,7 +95,7 @@ router.post("/agregar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("agregado con exito con éxito");
+            res.status(200).send("Agregado con éxito");
         }
     });
 });
@@ -160,7 +160,7 @@ router.delete("/eliminar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("Eliminado con éxito.");
+            res.status(200).send("Eliminado con éxito");
         }
     });
 });

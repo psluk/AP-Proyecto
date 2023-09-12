@@ -47,7 +47,7 @@ router.get("/", (req, res) => {
  * Metodo GET
  * Retorna los detalles de un evento
  */
-router.get("/evento", (req, res) => {
+router.get("/detalle", (req, res) => {
     if (!estaAutenticado(req, false, false)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
