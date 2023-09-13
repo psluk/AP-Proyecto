@@ -1,5 +1,4 @@
 const express = require("express");
-const sqlcon = require("mssql");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");

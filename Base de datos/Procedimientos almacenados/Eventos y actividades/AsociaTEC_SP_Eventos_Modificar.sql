@@ -41,6 +41,11 @@ BEGIN
             RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar);
         END
 
+        SELECT  @ID_Evento = E.[id]
+        FROM    [dbo].[Eventos] E
+        WHERE   E.[uuid] = @IN_uuid
+            AND E.[eliminado] = 0;
+
 		SELECT @ID_Categoria = C.[id]
 		FROM [dbo].[Categorias] C
 		WHERE C.[nombre] = @IN_Categoria
@@ -95,6 +100,42 @@ BEGIN
         BEGIN
             COMMIT TRANSACTION;
         END;
+
+        -- Se devuelve la lista de correos de aquellos usuarios
+        -- inscritos al evento o que lo tienen marcado como
+        -- evento de interés, para notificarlos del cambio
+        SELECT (
+                SELECT  A.[nombre] AS 'asociacion.nombre',
+                Ev.[titulo] AS 'evento.titulo',
+                Ev.[fechaInicio] AS 'evento.inicio',
+                Ev.[fechaFin] AS 'evento.fin',
+                (SELECT COALESCE(
+                    (SELECT DISTINCT 
+                            U.[correo]  AS 'correo'
+                    FROM    [dbo].[Eventos] Ev2
+                    LEFT JOIN [dbo].[Inscripciones] I
+                        ON  I.[idEvento] = Ev2.[id]
+                    LEFT JOIN [dbo].[EventosDeInteres] It
+                        ON  It.[idEvento] = Ev2.[id]
+                    LEFT JOIN [dbo].[Estudiantes] E
+                        ON  I.[idEstudiante] = E.[id]
+                        OR  It.[idEstudiante] = E.[id]
+                    INNER JOIN [dbo].[Usuarios] U
+                        ON  E.[idUsuario] = U.[id]
+                    WHERE   I.[eliminado] = 0
+                        AND It.[eliminado] = 0
+                        AND Ev2.[id] = @ID_Evento
+                    FOR JSON PATH),
+                    '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
+                            -- que el JSON retornado sea un arreglo vacío
+                    )
+                ) AS 'evento.correos'
+                FROM [dbo].[Eventos] Ev
+                INNER JOIN [dbo].[Asociaciones] A
+                    ON  Ev.[idAsociacion] = A.[id]
+                WHERE Ev.[id] = @ID_Evento
+                FOR JSON PATH
+        ) AS 'results';
 
     END TRY
     BEGIN CATCH

@@ -137,7 +137,9 @@ router.post("/agregar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            return res.status(200).send({ mensaje: "Registrado con éxito" });
+            return res
+                .setHeader("Content-Type", "application/json")
+                .send(result.recordset[0]["results"]);
         }
     });
 });
@@ -174,7 +176,7 @@ router.put("/modificar", (req, res) => {
  * Método DELETE
  * Elimina una propuesta
  */
-router.delete("/delete", (req, res) => {
+router.delete("/eliminar", (req, res) => {
     if (!estaAutenticado(req)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }

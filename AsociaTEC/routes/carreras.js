@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
     }
 
     const codigoSede = req.query.codigoSede;
-    
+
     const request = pool.request();
 
     try {

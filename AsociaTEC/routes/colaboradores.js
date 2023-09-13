@@ -4,17 +4,15 @@ const { pool, sqlcon } = require("../settings/database.js");
 const manejarError = require("../settings/errores.js");
 const estaAutenticado = require("../settings/autenticado.js");
 
-
 //descripcion: retorna la lista de los estudiantes que son colaboradores
 //parametros: correo, uuidEvento
 //Retorna: {carnet, apellido1, apellido2, nombre}
 //SP : AsociaTEC_SP_Colaboradores_Lista
 router.get("/", (req, res) => {
-    
     if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
-    
+
     const request = pool.request();
     const correo = req.query.correo;
     const uuid = req.query.uuid;
@@ -42,15 +40,14 @@ router.get("/", (req, res) => {
 //Retorna: null
 //SP : AsociaTEC_SP_Colaboradores_Eliminar
 router.delete("/eliminar", (req, res) => {
-    
     const carnet = req.query.carnet;
 
     if (!estaAutenticado(req, true, true, carnet)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
-    
+
     const request = pool.request();
-    
+
     const uuid = req.query.uuid;
 
     try {
@@ -76,11 +73,10 @@ router.delete("/eliminar", (req, res) => {
 //Retorna: null
 //SP : AsociaTEC_SP_Colaboradores_Agregar
 router.post("/agregar", (req, res) => {
-    
     if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
-    
+
     const request = pool.request();
     const carnet = req.body.carnet;
     const descripcion = req.body.descripcion;

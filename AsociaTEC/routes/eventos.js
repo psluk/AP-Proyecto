@@ -3,6 +3,12 @@ const router = express.Router();
 const { pool, sqlcon } = require("../settings/database.js");
 const manejarError = require("../settings/errores.js");
 const estaAutenticado = require("../settings/autenticado.js");
+const { enviarCorreo } = require("../settings/correos.js");
+const {
+    idiomaLocal,
+    formatoFecha,
+    formatoHora,
+} = require("../settings/formatos.js");
 
 /**
  * Metodo GET
@@ -83,7 +89,7 @@ router.post("/agregar", (req, res) => {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
-    const titulo = req.body.titul;
+    const titulo = req.body.titulo;
     const descripcion = req.body.descripcion;
     const fechaInicio = req.body.fechaInicio;
     const fechaFin = req.body.fechaFin;
@@ -159,7 +165,44 @@ router.put("/modificar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("Modificado con éxito");
+            res.status(200).send({ mensaje: "Modificado con éxito" });
+
+            // Se notifican los cambios
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+            const horaInicio =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.inicio))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.inicio)
+                ) +
+                ")";
+            const horaFin =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.fin))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.fin)
+                ) +
+                ")";
+
+            enviarCorreo(
+                [],
+                "Actualización: " + resultado.evento.titulo,
+                `<p>Hola:</p>
+                <p>Se han efectuado cambios en el siguiente evento, al que está inscrito o que ha marcado como evento de interés:</p>
+                <ul>
+                    <li><b>Nombre:</b> ${resultado.evento.titulo}</li>
+                    <li><b>Inicio:</b> ${horaInicio}</li>
+                    <li><b>Fin:</b> ${horaFin}</li>
+                    <li><b>Asociación:</b> ${resultado.asociacion.nombre}</li>
+                </ul>`,
+                [],
+                // Correos ocultos (CCO/BCC)
+                JSON.parse(resultado.evento.correos).map((c) => c.correo)
+            );
         }
     });
 });
@@ -186,7 +229,44 @@ router.delete("/eliminar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("Eliminado con éxito.");
+            res.status(200).send({ mensaje: "Eliminado con éxito." });
+
+            // Se notifican los cambios
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+            const horaInicio =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.inicio))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.inicio)
+                ) +
+                ")";
+            const horaFin =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.fin))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.fin)
+                ) +
+                ")";
+
+            enviarCorreo(
+                [],
+                "Cancelado: " + resultado.evento.titulo,
+                `<p>Hola:</p>
+                <p>Se canceló el siguiente evento, al que estaba inscrito o que había marcado como evento de interés:</p>
+                <ul>
+                    <li><b>Nombre:</b> ${resultado.evento.titulo}</li>
+                    <li><b>Inicio:</b> ${horaInicio}</li>
+                    <li><b>Fin:</b> ${horaFin}</li>
+                    <li><b>Asociación:</b> ${resultado.asociacion.nombre}</li>
+                </ul>`,
+                [],
+                // Correos ocultos (CCO/BCC)
+                JSON.parse(resultado.evento.correos).map((c) => c.correo)
+            );
         }
     });
 });
@@ -215,7 +295,7 @@ router.put("/compartir", (req, res) => {
             manejarError(res, error);
         } else {
             // Falta manejar el envio (Probablemente se hace desde la app)
-            res.status(200).send("Compartido con éxito.");
+            res.status(200).send({ mensaje: "Compartido con éxito." });
         }
     });
 });
