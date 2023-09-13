@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
-    const { evento, carnet } = req.body;
+    const { evento, carnet } = req.query;
 
     const request = pool.request();
 
@@ -45,7 +45,7 @@ router.get("/", (req, res) => {
  * Retorna los detalles de una encuesta en particular
  */
 router.get("/detalles", (req, res) => {
-    const { evento, carnet } = req.body;
+    const { evento, carnet } = req.query;
 
     if (!estaAutenticado(req, true, true, carnet)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
@@ -79,11 +79,11 @@ router.get("/detalles", (req, res) => {
  * Agrega una encuesta en particular
  */
 router.post("/agregar", (req, res) => {
+    const { evento, carnet, calificacion, comentario } = req.body;
+
     if (!estaAutenticado(req, true, true, carnet)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
-
-    const { evento, carnet, calificacion, comentario } = req.body;
 
     const request = pool.request();
 

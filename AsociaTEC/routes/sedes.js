@@ -6,7 +6,7 @@ const estaAutenticado = require("../settings/autenticado.js");
 
 /**
  * Metodo GET
- * Retorna la lista de recursos
+ * Retorna la lista de sedes
  */
 router.get("/", (req, res) => {
     if (!estaAutenticado(req, false, false)) {
@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 
     const request = pool.request();
 
-    request.execute("AsociaTEC_SP_Recursos_Lista", (error, result) => {
+    request.execute("AsociaTEC_SP_Sedes_Lista", (error, result) => {
         if (error) {
             manejarError(res, error);
         } else {

@@ -19,7 +19,9 @@ const encuestasRouter = require("./routes/encuestas.js");
 const estudiantesRouter = require("./routes/estudiantes.js");
 const inscripcionesRouter = require("./routes/inscripciones.js");
 const interesRouter = require("./routes/interes.js");
-const propuestasRouter = require("./routes/solicitudes.js");
+const propuestasRouter = require("./routes/propuestas.js");
+const sedesRouter = require("./routes/sedes.js");
+const carrerasRouter = require("./routes/carreras.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -52,6 +54,8 @@ app.use("/api/estudiantes", estudiantesRouter);
 app.use("/api/inscripciones", inscripcionesRouter);
 app.use("/api/interes", interesRouter);
 app.use("/api/propuestas", propuestasRouter);
+app.use("/api/sedes", sedesRouter);
+app.use("/api/carreras", carrerasRouter);
 
 app.get("/", (req, res) => {
     res.setHeader("Content-Type", "application/json");

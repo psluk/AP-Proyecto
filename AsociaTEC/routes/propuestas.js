@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
         estado,
         fechaInicio,
         fechaFin,
-    } = req.body;
+    } = req.query;
 
     const request = pool.request();
 
@@ -144,7 +144,7 @@ router.post("/agregar", (req, res) => {
 
 /**
  * Método PUT
- * Agrega una propuesta
+ * Modifica el estado de una propuesta una propuesta
  */
 router.put("/modificar", (req, res) => {
     if (!estaAutenticado(req, true, true, carnet)) {
@@ -165,7 +165,7 @@ router.put("/modificar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            return res.status(200).send({ mensaje: "Registrado con éxito" });
+            return res.status(200).send({ mensaje: "Modificado con éxito" });
         }
     });
 });

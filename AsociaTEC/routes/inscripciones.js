@@ -14,7 +14,7 @@ const { enviarCorreo } = require("../settings/correos.js");
  * Retorna la lista de inscripciones
  */
 router.get("/", (req, res) => {
-    const { evento, carnet } = req.body;
+    const { evento, carnet } = req.query;
 
     if (carnet) {
         if (!estaAutenticado(req, true, true, carnet)) {
@@ -58,14 +58,8 @@ router.get("/", (req, res) => {
 router.get("/detalles", (req, res) => {
     const { evento, carnet } = req.query;
 
-    if (carnet) {
-        if (!estaAutenticado(req, true, true, carnet)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
-    } else {
-        if (!estaAutenticado(req, true, true)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
+    if (!estaAutenticado(req, true, true, carnet)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
     const request = pool.request();
@@ -100,14 +94,8 @@ router.get("/detalles", (req, res) => {
 router.get("/qr", (req, res) => {
     const { evento, carnet } = req.query;
 
-    if (carnet) {
-        if (!estaAutenticado(req, true, true, carnet)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
-    } else {
-        if (!estaAutenticado(req, true, true)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
+    if (!estaAutenticado(req, true, true, carnet)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
     const request = pool.request();
@@ -150,7 +138,7 @@ router.get("/qr", (req, res) => {
                     }
                 );
             } else {
-                return res.status(403).send("Acceso denegado");
+                return res.status(403).send({ mensaje: "Acceso denegado" });
             }
         }
     });
@@ -161,16 +149,10 @@ router.get("/qr", (req, res) => {
  * Agrega una inscripción
  */
 router.post("/agregar", (req, res) => {
-    const { evento, carnet } = req.query;
+    const { evento, carnet } = req.body;
 
-    if (carnet) {
-        if (!estaAutenticado(req, true, true, carnet)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
-    } else {
-        if (!estaAutenticado(req, true, true)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
+    if (!estaAutenticado(req, true, true, carnet)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
     const request = pool.request();
@@ -201,18 +183,11 @@ router.post("/agregar", (req, res) => {
  * Confirma una inscripción
  */
 router.put("/confirmar", (req, res) => {
-    const { evento, carnet } = req.query;
+    const { evento, carnet } = req.body;
 
-    if (carnet) {
-        if (!estaAutenticado(req, true, true, carnet)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
-    } else {
-        if (!estaAutenticado(req, true, true)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
+    if (!estaAutenticado(req, true, true, carnet)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
     }
-
     const request = pool.request();
 
     try {
@@ -453,14 +428,8 @@ router.put("/confirmar", (req, res) => {
 router.delete("/eliminar", (req, res) => {
     const { evento, carnet } = req.query;
 
-    if (carnet) {
-        if (!estaAutenticado(req, true, true, carnet)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
-    } else {
-        if (!estaAutenticado(req, true, true)) {
-            return res.status(403).send({ mensaje: "Acceso denegado" });
-        }
+    if (!estaAutenticado(req, true, true, carnet)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
     const request = pool.request();
