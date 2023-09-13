@@ -171,20 +171,20 @@ router.put("/modificar", (req, res) => {
             const resultado = JSON.parse(result.recordset[0]["results"])[0];
             const horaInicio =
                 new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                    .format(new Date(resultado.evento.inicio))
+                    .format(new Date(resultado.evento.inicio + "Z"))
                     .replace(/(00)(:\d{2})/, "12$2") +
                 " (" +
                 new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                    new Date(resultado.evento.inicio)
+                    new Date(resultado.evento.inicio + "Z")
                 ) +
                 ")";
             const horaFin =
                 new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                    .format(new Date(resultado.evento.fin))
+                    .format(new Date(resultado.evento.fin + "Z"))
                     .replace(/(00)(:\d{2})/, "12$2") +
                 " (" +
                 new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                    new Date(resultado.evento.fin)
+                    new Date(resultado.evento.fin + "Z")
                 ) +
                 ")";
 
@@ -235,20 +235,20 @@ router.delete("/eliminar", (req, res) => {
             const resultado = JSON.parse(result.recordset[0]["results"])[0];
             const horaInicio =
                 new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                    .format(new Date(resultado.evento.inicio))
+                    .format(new Date(resultado.evento.inicio + "Z"))
                     .replace(/(00)(:\d{2})/, "12$2") +
                 " (" +
                 new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                    new Date(resultado.evento.inicio)
+                    new Date(resultado.evento.inicio + "Z")
                 ) +
                 ")";
             const horaFin =
                 new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                    .format(new Date(resultado.evento.fin))
+                    .format(new Date(resultado.evento.fin + "Z"))
                     .replace(/(00)(:\d{2})/, "12$2") +
                 " (" +
                 new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                    new Date(resultado.evento.fin)
+                    new Date(resultado.evento.fin + "Z")
                 ) +
                 ")";
 

@@ -174,7 +174,7 @@ router.post("/agregar", (req, res) => {
             const resultado = JSON.parse(result.recordset[0]["results"])[0];
 
             // Formato de la hora
-            const hora_obj = new Date(info.timestamp);
+            const hora_obj = new Date(resultado.timestamp + "Z");
 
             // Se agrega "la" o "las" dependiendo de la hora
             const hora =
@@ -190,8 +190,8 @@ router.post("/agregar", (req, res) => {
 
             if (resultado.maximoAlcanzado) {
                 enviarCorreo(
-                    resultado.correo,
-                    "Cupo alcanzado:" + resultado.evento.titulo,
+                    resultado.asociacion.correo,
+                    "Cupo alcanzado: " + resultado.evento.titulo,
                     `<p>Hola:</p>
                     <p>Se le notifica a su asociación (${resultado.asociacion.nombre}) que a 
                     ${hora} se alcanzó la capacidad máxima de ${resultado.evento.capacidad} en el
@@ -339,11 +339,11 @@ router.put("/confirmar", (req, res) => {
 
                 const horaInicio_texto =
                     new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                        .format(new Date(info.evento.inicio))
+                        .format(new Date(info.evento.inicio + "Z"))
                         .replace(/(00)(:\d{2})/, "12$2") +
                     " (" +
                     new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                        new Date(info.evento.inicio)
+                        new Date(info.evento.inicio + "Z")
                     ) +
                     ")";
                 const horaInicio_label = "· Inicio: ";
@@ -369,11 +369,11 @@ router.put("/confirmar", (req, res) => {
                 // se muestren como 0:## a. m. o 0:## p. m., entonces para eso es el .replace()
                 const horaFin_texto =
                     new Intl.DateTimeFormat(idiomaLocal, formatoHora)
-                        .format(new Date(info.evento.fin))
+                        .format(new Date(info.evento.fin + "Z"))
                         .replace(/(00)(:\d{2})/, "12$2") +
                     " (" +
                     new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
-                        new Date(info.evento.fin)
+                        new Date(info.evento.fin + "Z")
                     ) +
                     ")";
                 const horaFin_label = "· Fin: ";
@@ -422,7 +422,8 @@ router.put("/confirmar", (req, res) => {
                 enviarCorreo(
                     info.estudiante.correo,
                     "Confirmación de inscripción",
-                    `<p>Se ha confirmado su inscripción.</p>
+                    `<p>Hola</p>
+                    <p>Se ha confirmado su inscripción para un evento.</p>
                     <p>Los datos son los siguientes:<p>
                     <ul>
                         <li><b>Evento:</b> ${info.evento.nombre}</li>

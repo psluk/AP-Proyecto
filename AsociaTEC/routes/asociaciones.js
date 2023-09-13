@@ -108,7 +108,7 @@ router.post("/agregar", (req, res) => {
 //parametros: correoActual, nombre?, descripcion?, telefono?, codigosede?, codigocarrera?, correo?, clave?
 //Retorna: NULL
 //SP : AsociaTEC_SP_Asociaciones_Modificar
-router.put("/modificar", (req, res) => {
+router.put("/modificar", async (req, res) => {
     if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
@@ -123,6 +123,7 @@ router.put("/modificar", (req, res) => {
     const claveNueva = req.body.claveNueva;
 
     const request = pool.request();
+    
     try {
         request.input("IN_correoActual", sqlcon.VarChar, correoActual);
         request.input("IN_nombreNueva", sqlcon.VarChar, nombreNueva);
@@ -135,7 +136,24 @@ router.put("/modificar", (req, res) => {
             codigoCarreraNueva
         );
         request.input("IN_correoNueva", sqlcon.VarChar, correoNueva);
-        request.input("IN_claveNueva", sqlcon.VarChar, claveNueva);
+        
+        if (claveNueva) {
+            let claveConHash;
+
+            try {
+                claveConHash = await bcrypt.hash(clave, saltRounds);
+            } catch (error) {
+                console.log(error);
+                return res
+                    .status(500)
+                    .send({ mensaje: "Error interno del servidor" });
+            }
+
+            request.input("IN_claveNueva", sqlcon.VarChar(64), claveConHash);
+        } else {
+            request.input("IN_claveNueva", sqlcon.VarChar(64), "");
+        }
+
     } catch (error) {
         console.log(error);
         return res.status(400).send({ mensaje: "Datos inválidos" });

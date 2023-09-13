@@ -61,14 +61,15 @@ BEGIN
 		IF EXISTS ( SELECT  1
                     FROM    [dbo].[Usuarios] U
                     WHERE   U.[correo] = @IN_correoNueva
-                        AND U.[eliminado] = 0 )
+                        AND U.[eliminado] = 0
+						AND U.[id] != @usarIDUsuario )
         BEGIN
             RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoNueva);
         END;
 
-        IF (@IN_correoNueva NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correoNueva)) = '@estudiantec.cr')
+        IF (LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@itcr.ac.cr' AND LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@estudiantec.cr')
         BEGIN
-            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr', 16, 1, @IN_correoNueva);
+            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr ni @itcr.ac.cr', 16, 1, @IN_correoNueva);
         END;
 
 
@@ -87,8 +88,8 @@ BEGIN
 		-- ambos no existen
 		IF( (@IN_codigoCarreraNueva IS NULL 
 				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
-			AND (@IN_codigoCarreraNueva IS NULL 
-			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
+			AND (@IN_codigoSedeNueva IS NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoSedeNueva)) = '') )
 		BEGIN
 			SET @usarIDSede = @usarIDSedeActual;
 			SET @usarIDCarrera = @usarIDCarreraActual;
@@ -98,8 +99,8 @@ BEGIN
 		-- solo existe como C
 		IF( (@IN_codigoCarreraNueva IS NULL 
 				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
-			AND (@IN_codigoCarreraNueva IS NOT NULL 
-			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) != '') )
+			AND (@IN_codigoSedeNueva IS NOT NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoSedeNueva)) != '') )
 		BEGIN
 			SET @usarIDSede = @usarIDSedeActual;
 			SELECT @usarIDCarrera = C.[id]
@@ -114,8 +115,8 @@ BEGIN
 		-- solo existe como S
 		IF( (@IN_codigoCarreraNueva IS NOT NULL 
 				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) != '') 
-			AND (@IN_codigoCarreraNueva IS NULL 
-			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
+			AND (@IN_codigoSedeNueva IS NULL 
+			   	OR LTRIM(RTRIM(@IN_codigoSedeNueva)) = '') )
 		BEGIN
 			SET @usarIDCarrera = @usarIDCarreraActual;
 			SELECT @usarIDSede = S.[id] 
@@ -126,11 +127,11 @@ BEGIN
 			AND @IN_codigoSedeNueva = LTRIM(RTRIM(S.[codigo]))
 		END;
 
-		-- ambos no existen
-		IF( (@IN_codigoCarreraNueva IS NULL 
-				OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') 
-			AND (@IN_codigoCarreraNueva IS NULL 
-			   	OR LTRIM(RTRIM(@IN_codigoCarreraNueva)) = '') )
+		-- ambos existen
+		IF( (@IN_codigoCarreraNueva IS NOT NULL 
+				AND LTRIM(RTRIM(@IN_codigoCarreraNueva)) <> '') 
+			AND (@IN_codigoSedeNueva IS NOT NULL 
+			   	AND LTRIM(RTRIM(@IN_codigoSedeNueva)) <> '') )
 		BEGIN
 			SELECT @usarIDCarrera = C.[id],
 			       @usarIDSede = S.[id] 
