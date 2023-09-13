@@ -50,7 +50,6 @@ router.get("/", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Conversaciones_Agregar
 router.post("/agregar", (req, res) => {
-        
     const correo = req.body.correo;
     const titulo = req.body.titulo;
     const tags = req.body.tags;
@@ -79,7 +78,7 @@ router.post("/agregar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("Agregado con éxito");
+            res.status(200).send({ mensaje: "Agregado con éxito" });
         }
     });
 });
@@ -89,7 +88,6 @@ router.post("/agregar", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Conversaciones_Eliminar
 router.delete("/eliminar", (req, res) => {
-    
     const carnet = req.body.carnet;
     if (!estaAutenticado(req, true, true, carnet)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
@@ -100,9 +98,12 @@ router.delete("/eliminar", (req, res) => {
     const request = pool.request();
 
     try {
-        request.input("IN_identificadorConversacion",sqlcon.UniqueIdentifier,uuid);
+        request.input(
+            "IN_identificadorConversacion",
+            sqlcon.UniqueIdentifier,
+            uuid
+        );
         //request.input("IN_correo",sqlcon.UniqueIdentifier,correo);
-
     } catch (error) {
         return res.status(400).send("Identificador invalido");
     }
@@ -111,7 +112,7 @@ router.delete("/eliminar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            res.status(200).send("Eliminado con éxito");
+            res.status(200).send({ mensaje: "Eliminado con éxito" });
         }
     });
 });

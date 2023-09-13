@@ -124,6 +124,37 @@ BEGIN
             COMMIT TRANSACTION;
         END;
 
+        SELECT (
+            SELECT  CAST(
+                (   CASE (  SELECT  COUNT(I.[id])
+                            FROM    [dbo].[Inscripciones] I
+                            WHERE   I.[idEvento] = @idEvento
+                                AND I.[eliminado] = 0)
+                    WHEN (  (SELECT  E2.[capacidad]
+                            FROM    [dbo].[Eventos] E2
+                            WHERE   E2.[id] = @idEvento
+                                AND E2.[eliminado] = 0 ))
+                    THEN    1
+                    ELSE    0
+                    END
+                )   AS BIT) AS 'maximoAlcanzado',
+                A.[nombre]  AS 'asociacion.nombre',
+                U.[correo]  AS 'asociacion.correo',
+                E.[titulo]  AS 'evento.titulo',
+                E.[capacidad] AS 'evento.capacidad',
+                (SELECT  MAX(I.[timestamp])
+                FROM    [dbo].[Inscripciones] I
+                WHERE   I.[idEvento] = @idEvento
+                    AND I.[eliminado] = 0)  AS 'timestamp'
+            FROM    [dbo].[Eventos] E
+            INNER JOIN  [dbo].[Asociaciones] A
+                ON  E.[idAsociacion] = A.[id]
+            INNER JOIN  [dbo].[Usuarios] U
+                ON  A.[idUsuario] = U.[id]
+            WHERE   E.[id] = @idEvento
+            FOR JSON PATH
+        ) AS 'results';
+
     END TRY
     BEGIN CATCH
 

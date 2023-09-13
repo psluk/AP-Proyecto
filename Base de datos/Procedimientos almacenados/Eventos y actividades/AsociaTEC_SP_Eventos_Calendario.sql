@@ -23,7 +23,7 @@ BEGIN
         --
 
         SELECT
-        CONVERT(DATE, E.fechaInicio) as 'Fecha',
+        CONVERT(DATE, E.fechaInicio) as 'fecha',
         (
             SELECT
                 E2.[uuid],
@@ -40,7 +40,7 @@ BEGIN
                 ON C.[id] = E2.[idCategoria]
             WHERE CONVERT(DATE, E2.fechaInicio) = CONVERT(DATE, E.fechaInicio)
             FOR JSON PATH
-        ) as 'Eventos'
+        ) as 'eventos'
         FROM [dbo].[Eventos] E
         GROUP BY CONVERT(DATE, E.fechaInicio)
         FOR JSON PATH;

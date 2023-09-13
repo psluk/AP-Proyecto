@@ -128,6 +128,7 @@ BEGIN
                     Es.[nombre]         AS  'estudiante.nombre',
                     Es.[apellido1]      AS  'estudiante.apellido1',
                     Es.[apellido2]      AS  'estudiante.apellido2',
+                    U.[correo]          AS  'estudiante.correo',
                     I.[timestamp]       AS  'inscripcion.fecha'
             FROM    [dbo].[Inscripciones] I
             INNER JOIN  [dbo].[Estudiantes] Es
@@ -142,6 +143,8 @@ BEGIN
                 ON  A.[idCarrera] = Cr.[id]
             INNER JOIN  [dbo].[Sedes] S
                 ON  Cr.[idSede] = S.[id]
+            INNER JOIN  [dbo].[Usuarios] U
+                ON  Es.[idUsuario] = U.[id]
             WHERE   I.[idEvento] = @idEvento
                 AND I.[idEstudiante] = @idEstudiante
                 AND I.[eliminado] = 0

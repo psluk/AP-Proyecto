@@ -3,6 +3,12 @@ const router = express.Router();
 const { pool, sqlcon } = require("../settings/database.js");
 const manejarError = require("../settings/errores.js");
 const estaAutenticado = require("../settings/autenticado.js");
+const { enviarCorreo } = require("../settings/correos.js");
+const {
+    idiomaLocal,
+    formatoFecha,
+    formatoHora,
+} = require("../settings/formatos.js");
 
 /**
  * Metodo GET
@@ -97,6 +103,43 @@ router.post("/agregar", (req, res) => {
             res.status(200).send({
                 mensaje: "Actividad agregada correctamente",
             });
+
+            // Se notifican los cambios
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+            const horaInicio =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.inicio))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.inicio)
+                ) +
+                ")";
+            const horaFin =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.fin))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.fin)
+                ) +
+                ")";
+
+            enviarCorreo(
+                [],
+                "Actualización: " + resultado.evento.titulo,
+                `<p>Hola:</p>
+                <p>Se agregaron actividades al siguiente evento, al que está inscrito o que ha marcado como evento de interés:</p>
+                <ul>
+                    <li><b>Nombre:</b> ${resultado.evento.titulo}</li>
+                    <li><b>Inicio:</b> ${horaInicio}</li>
+                    <li><b>Fin:</b> ${horaFin}</li>
+                    <li><b>Asociación:</b> ${resultado.asociacion.nombre}</li>
+                </ul>`,
+                [],
+                // Correos ocultos (CCO/BCC)
+                JSON.parse(resultado.evento.correos).map((c) => c.correo)
+            );
         }
     });
 });
@@ -132,6 +175,43 @@ router.put("/modificar", (req, res) => {
             res.status(200).send({
                 mensaje: "Actividad modificada correctamente",
             });
+
+            // Se notifican los cambios
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+            const horaInicio =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.inicio))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.inicio)
+                ) +
+                ")";
+            const horaFin =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.fin))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.fin)
+                ) +
+                ")";
+
+            enviarCorreo(
+                [],
+                "Actualización: " + resultado.evento.titulo,
+                `<p>Hola:</p>
+                <p>Se agregaron modificó una actividad del siguiente evento, al que está inscrito o que ha marcado como evento de interés:</p>
+                <ul>
+                    <li><b>Nombre:</b> ${resultado.evento.titulo}</li>
+                    <li><b>Inicio:</b> ${horaInicio}</li>
+                    <li><b>Fin:</b> ${horaFin}</li>
+                    <li><b>Asociación:</b> ${resultado.asociacion.nombre}</li>
+                </ul>`,
+                [],
+                // Correos ocultos (CCO/BCC)
+                JSON.parse(resultado.evento.correos).map((c) => c.correo)
+            );
         }
     });
 });
@@ -163,6 +243,43 @@ router.delete("/eliminar", (req, res) => {
             res.status(200).send({
                 mensaje: "Actividad eliminada correctamente",
             });
+
+            // Se notifican los cambios
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+            const horaInicio =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.inicio))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.inicio)
+                ) +
+                ")";
+            const horaFin =
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(new Date(resultado.evento.fin))
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " (" +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    new Date(resultado.evento.fin)
+                ) +
+                ")";
+
+            enviarCorreo(
+                [],
+                "Actualización: " + resultado.evento.titulo,
+                `<p>Hola:</p>
+                <p>Se eliminaron actividades del siguiente evento, al que está inscrito o que ha marcado como evento de interés:</p>
+                <ul>
+                    <li><b>Nombre:</b> ${resultado.evento.titulo}</li>
+                    <li><b>Inicio:</b> ${horaInicio}</li>
+                    <li><b>Fin:</b> ${horaFin}</li>
+                    <li><b>Asociación:</b> ${resultado.asociacion.nombre}</li>
+                </ul>`,
+                [],
+                // Correos ocultos (CCO/BCC)
+                JSON.parse(resultado.evento.correos).map((c) => c.correo)
+            );
         }
     });
 });

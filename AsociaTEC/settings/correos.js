@@ -1,23 +1,32 @@
 const nodemailer = require("nodemailer");
 
-const mail = "notificaciones.asociatec@gmail.com";
+const mail = "asociatec.notificaciones@gmail.com";
+const firma = `<hr style="border: 1px solid #ccc; margin: 20px 0;" />
+<img src="https://i.imgur.com/vLz5SDw.png" style="max-width: 250px" />`;
 
 // Configuración del correo
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: mail,
-        pass: "notificasocia",
+        pass: "xzezctqbtpxdevfz",
     },
 });
 
 // Enviar correo
-const enviarCorreo = async (destinatario, asunto, html, adjuntos) => {
+const enviarCorreo = async (
+    destinatario = [],
+    asunto,
+    html,
+    adjuntos = [],
+    cco = []
+) => {
     const mailOptions = {
-        from: transporter.options.auth.user,
+        from: "Notificaciones AsociaTEC <" + mail + ">",
         to: destinatario,
+        bcc: cco,
         subject: asunto,
-        html: html,
+        html: html + firma,
         attachments: adjuntos,
     };
 

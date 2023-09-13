@@ -8,6 +8,11 @@ const { PDFDocument, rgb } = require("pdf-lib");
 const fontkit = require("@pdf-lib/fontkit");
 const fs = require("fs");
 const { enviarCorreo } = require("../settings/correos.js");
+const {
+    idiomaLocal,
+    formatoFecha,
+    formatoHora,
+} = require("../settings/formatos.js");
 
 /**
  * Método GET
@@ -116,30 +121,20 @@ router.get("/qr", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            if (
-                saved.tipoUsuario === "Administrador" ||
-                salida.idEstudiante === saved.idEstudiante
-            ) {
-                qr.toBuffer(
-                    result.recordset[0]["results"],
-                    async (err, texto) => {
-                        if (err) {
-                            console.error("Error generating QR code:", err);
-                            return res.sendStatus(500);
-                        }
+            qr.toBuffer(result.recordset[0]["results"], async (err, texto) => {
+                if (err) {
+                    console.error("Error generating QR code:", err);
+                    return res.sendStatus(500);
+                }
 
-                        res.setHeader("Content-Type", "image/png");
-                        res.setHeader(
-                            "Content-Disposition",
-                            'inline; filename="qr.png"'
-                        );
-
-                        return res.send(texto);
-                    }
+                res.setHeader("Content-Type", "image/png");
+                res.setHeader(
+                    "Content-Disposition",
+                    'inline; filename="qr.png"'
                 );
-            } else {
-                return res.status(403).send({ mensaje: "Acceso denegado" });
-            }
+
+                return res.send(texto);
+            });
         }
     });
 });
@@ -173,7 +168,36 @@ router.post("/agregar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            return res.status(200).send({ mensaje: "Registrado con éxito" });
+            res.status(200).send({ mensaje: "Registrado con éxito" });
+
+            // En caso de que se haya alcanzado el límite, hay que notificar a la asociación
+            const resultado = JSON.parse(result.recordset[0]["results"])[0];
+
+            // Formato de la hora
+            const hora_obj = new Date(info.timestamp);
+
+            // Se agrega "la" o "las" dependiendo de la hora
+            const hora =
+                (hora_obj.getHours() % 12 == 1 ? "la" : "las") +
+                " " +
+                new Intl.DateTimeFormat(idiomaLocal, formatoHora)
+                    .format(hora_obj)
+                    .replace(/(00)(:\d{2})/, "12$2") +
+                " del " +
+                new Intl.DateTimeFormat(idiomaLocal, formatoFecha).format(
+                    hora_obj
+                );
+
+            if (resultado.maximoAlcanzado) {
+                enviarCorreo(
+                    resultado.correo,
+                    "Cupo alcanzado:" + resultado.evento.titulo,
+                    `<p>Hola:</p>
+                    <p>Se le notifica a su asociación (${resultado.asociacion.nombre}) que a 
+                    ${hora} se alcanzó la capacidad máxima de ${resultado.evento.capacidad} en el
+                    evento <b>${resultado.evento.titulo}</b>.</p>`
+                );
+            }
         }
     });
 });
@@ -206,8 +230,8 @@ router.put("/confirmar", (req, res) => {
         if (error) {
             manejarError(res, error);
         } else {
-            const info = JSON.parse(result.recordset[1]["results"])[0];
-            const stJson = result.recordset[0]["results"];
+            const info = JSON.parse(result.recordset[0]["results"])[0];
+            const stJson = result.recordset[1]["results"];
 
             qr.toDataURL(stJson, async (err, url) => {
                 const pdfDoc = await PDFDocument.create();
@@ -294,7 +318,7 @@ router.put("/confirmar", (req, res) => {
                 // Inserción del QR
                 ultimo_inicioY = ultimo_inicioY - altoTitulo - 30;
                 const qrImage = await pdfDoc.embedPng(imageBytes);
-                const qrDims = qrImage.scale(1);
+                const qrDims = qrImage.scale(0.75);
                 page.drawImage(qrImage, {
                     x: page.getWidth() - qrDims.width - margenLateral + 15,
                     y: ultimo_inicioY - qrDims.height + 15,
@@ -396,9 +420,9 @@ router.put("/confirmar", (req, res) => {
 
                 // Envío de correos
                 enviarCorreo(
-                    req.session.user.correo,
+                    info.estudiante.correo,
                     "Confirmación de inscripción",
-                    `<p>Se ha confirmado su reserva.</p>
+                    `<p>Se ha confirmado su inscripción.</p>
                     <p>Los datos son los siguientes:<p>
                     <ul>
                         <li><b>Evento:</b> ${info.evento.nombre}</li>
