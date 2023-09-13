@@ -1,5 +1,4 @@
 # ASP.NET specific
-bin/
 obj/
 *.suo
 *.user

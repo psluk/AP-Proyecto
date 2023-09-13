@@ -44,6 +44,9 @@ app.use("/api/asociaciones/", asociacionesRouter);
 app.use("/api/conversaciones/", conversacionesRouter);
 app.use("/api/conversaciones/mensajes/", mensajesRouter); 
 
-app.listen(port, () => {
-    console.log(`AsociaTEC app listening on port ${port}`);
+app.get("/", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send({ mensaje: "AsociaTEC" });
 });
+
+module.exports = app;
