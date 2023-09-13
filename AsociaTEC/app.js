@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const port = 3000;
 
 const loginRouter = require("./routes/login.js");
 const eventosRouter = require("./routes/eventos.js");
