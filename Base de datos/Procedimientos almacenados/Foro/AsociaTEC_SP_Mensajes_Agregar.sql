@@ -91,7 +91,7 @@ BEGIN
 			@usarIDConversacion,
             NEWID(),
             LTRIM(RTRIM(@IN_contenido)),
-            GETDATE(),
+            GETUTCDATE(),
             0
         )
 

@@ -108,7 +108,7 @@ BEGIN
 			)
 			VALUES(@usarIDEvento,
 				   @usarIDEstudiante,
-				   GETDATE(),
+				   GETUTCDATE(),
 				   0,
                    NULL);
 			

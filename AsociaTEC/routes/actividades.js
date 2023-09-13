@@ -9,7 +9,6 @@ const estaAutenticado = require("../settings/autenticado.js");
  * Retorna la lista de actividades de un evento
  */
 router.get("/", (req, res) => {
-
     if (!estaAutenticado(req, false, false)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
@@ -40,8 +39,7 @@ router.get("/", (req, res) => {
  * Metodo GET
  * Retorna los detalles de una actividad
  */
-router.get("/detalle", (req, res) => {
-
+router.get("/detalles", (req, res) => {
     if (!estaAutenticado(req, false, false)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
@@ -73,7 +71,6 @@ router.get("/detalle", (req, res) => {
  * Crea una actividad relacionada a un evento
  */
 router.post("/agregar", (req, res) => {
-
     if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
@@ -144,7 +141,6 @@ router.put("/modificar", (req, res) => {
  * Modifica una actividad
  */
 router.delete("/eliminar", (req, res) => {
-
     if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }

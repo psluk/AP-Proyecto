@@ -16,6 +16,12 @@ const solicitudesRouter = require("./routes/solicitudes.js");
 const asociacionesRouter = require("./routes/asociaciones.js");
 const conversacionesRouter = require("./routes/conversaciones.js");
 const mensajesRouter = require("./routes/mensajes.js");
+const encuestasRouter = require("./routes/encuestas.js");
+const estudiantesRouter = require("./routes/estudiantes.js");
+const inscripcionesRouter = require("./routes/inscripciones.js");
+const interesRouter = require("./routes/interes.js");
+const propuestasRouter = require("./routes/solicitudes.js");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -37,11 +43,16 @@ app.use("/api/", loginRouter);
 app.use("/api/eventos/", eventosRouter);
 app.use("/api/recursos/", recursosRouter);
 app.use("/api/actividades/", actividadesRouter);
-app.use("/api/colaboradores/", colaboradoresRouter); 
-app.use("/api/colaboradores/solicitudes/", solicitudesRouter); 
+app.use("/api/colaboradores/", colaboradoresRouter);
+app.use("/api/colaboradores/solicitudes/", solicitudesRouter);
 app.use("/api/asociaciones/", asociacionesRouter);
 app.use("/api/conversaciones/", conversacionesRouter);
-app.use("/api/conversaciones/mensajes/", mensajesRouter); 
+app.use("/api/conversaciones/mensajes/", mensajesRouter);
+app.use("/api/encuestas", encuestasRouter);
+app.use("/api/estudiantes", estudiantesRouter);
+app.use("/api/inscripciones", inscripcionesRouter);
+app.use("/api/interes", interesRouter);
+app.use("/api/propuestas", propuestasRouter);
 
 app.get("/", (req, res) => {
     res.setHeader("Content-Type", "application/json");

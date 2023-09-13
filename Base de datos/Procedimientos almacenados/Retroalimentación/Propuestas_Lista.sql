@@ -10,7 +10,7 @@ CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Propuestas_Lista]
     @IN_carnet          INT = NULL,
     @IN_codigoCarrera   VARCHAR(4) = NULL,
     @IN_codigoSede      VARCHAR(4) = NULL,
-    @IN_descripcion     VARCHAR(32) = NULL,
+    @IN_estado          VARCHAR(32) = NULL,
     @IN_fechaInicio     DATETIME = NULL,
     @IN_fechaFin        DATETIME = NULL
 AS
@@ -53,7 +53,7 @@ BEGIN
             SET @usarFiltroDeSede = 1;
         END;
 
-        IF (@IN_descripcion IS NOT NULL) AND (LTRIM(RTRIM(@IN_descripcion)) <> '')
+        IF (@IN_estado IS NOT NULL) AND (LTRIM(RTRIM(@IN_estado)) <> '')
         BEGIN
             SET @usarFiltroDeEstado = 1;
         END;
@@ -113,7 +113,7 @@ BEGIN
                     OR  S.[codigo] = @IN_codigoSede
                 ) AND (
                         @usarFiltroDeEstado = 0
-                    OR  EdP.[descripcion] = @IN_descripcion
+                    OR  EdP.[descripcion] = @IN_estado
                 ) AND (
                         @usarFiltroDeFechaInicio = 0
                     OR  P.[timestamp] >= @IN_fechaInicio

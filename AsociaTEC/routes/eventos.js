@@ -47,7 +47,7 @@ router.get("/", (req, res) => {
  * Metodo GET
  * Retorna los detalles de un evento
  */
-router.get("/detalle", (req, res) => {
+router.get("/detalles", (req, res) => {
     if (!estaAutenticado(req, false, false)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
@@ -250,4 +250,5 @@ router.get("/reporte", (req, res) => {
         }
     });
 });
+
 module.exports = router;
