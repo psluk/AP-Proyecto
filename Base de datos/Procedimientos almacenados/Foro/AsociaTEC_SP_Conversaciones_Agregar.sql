@@ -107,7 +107,7 @@ BEGIN
 			@usarIDUsuario,
 			NEWID(),
 			@IN_titulo,
-			LTRIM(RTRIM(GETDATE())),
+			GETUTCDATE(),
 			0,
 			0
 		);

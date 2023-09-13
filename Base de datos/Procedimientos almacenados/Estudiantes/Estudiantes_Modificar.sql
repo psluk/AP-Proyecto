@@ -38,11 +38,6 @@ BEGIN
             RAISERROR('No se brindó un correo electrónico', 16, 1)
         END;
 
-        IF (LTRIM(RTRIM(@IN_clave)) = '')
-        BEGIN
-            RAISERROR('No se brindó una contraseña', 16, 1)
-        END;
-
         IF (LTRIM(RTRIM(@IN_codigoCarrera)) = '')
         BEGIN
             RAISERROR('No se brindó un código de carrera', 16, 1)

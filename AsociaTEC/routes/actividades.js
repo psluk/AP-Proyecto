@@ -35,7 +35,7 @@ router.get("/", (req, res) => {
  * Metodo GET
  * Retorna los detalles de una actividad
  */
-router.get("/detalle", (req, res) => {
+router.get("/detalles", (req, res) => {
     const request = pool.request();
 
     const uuid = req.query.uuid;

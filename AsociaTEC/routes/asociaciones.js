@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
 //parametros: correo
 //Retorna: asociacion: [nombre, correo, telefono, descripcion], carrera: [nombre, codigo], sede:[nombre, codigo]
 //SP : AsociaTEC_SP_Asociaciones_Detalles
-router.get("/detalle", (req, res) => {
+router.get("/detalles", (req, res) => {
     const correo = req.query.correo;
     const request = pool.request();
 

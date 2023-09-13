@@ -97,6 +97,57 @@ BEGIN
             COMMIT TRANSACTION;
         END;
 
+        -- Se retorna la información
+        SELECT (
+            SELECT  Ev.[uuid]       AS  'evento.id',
+                    Es.[carnet]     AS  'estudiante.carnet',
+                    I.[timestamp]   AS  'inscripcion.fecha'
+            FROM    [dbo].[Inscripciones] I
+            INNER JOIN  [dbo].[Estudiantes] Es
+                ON  I.[idEstudiante] = Es.[id]
+            INNER JOIN  [dbo].[Eventos] Ev
+                ON  I.[idEvento] = Ev.[id]
+            WHERE   I.[idEvento] = @idEvento
+                AND I.[idEstudiante] = @idEstudiante
+                AND I.[eliminado] = 0
+            FOR JSON PATH
+        ) AS 'results'
+        UNION
+        SELECT (
+            SELECT  Ev.[uuid]           AS  'evento.id',
+                    Ev.[titulo]         AS  'evento.nombre',
+                    Ev.[fechaInicio]    AS  'evento.inicio',
+                    Ev.[fechaFin]       AS  'evento.fin',
+                    Ev.[descripcion]    AS  'evento.descripcion',
+                    Ev.[lugar]          AS  'evento.lugar',
+                    Ct.[nombre]         AS  'evento.categoria',
+                    A.[nombre]          AS  'asociacion.nombre',
+                    Cr.[codigo]         AS  'asociacion.carrera',
+                    S.[codigo]          AS  'asociacion.sede',
+                    Es.[carnet]         AS  'estudiante.carnet',
+                    Es.[nombre]         AS  'estudiante.nombre',
+                    Es.[apellido1]      AS  'estudiante.apellido1',
+                    Es.[apellido2]      AS  'estudiante.apellido2',
+                    I.[timestamp]       AS  'inscripcion.fecha'
+            FROM    [dbo].[Inscripciones] I
+            INNER JOIN  [dbo].[Estudiantes] Es
+                ON  I.[idEstudiante] = Es.[id]
+            INNER JOIN  [dbo].[Eventos] Ev
+                ON  I.[idEvento] = Ev.[id]
+            INNER JOIN  [dbo].[Categorias] Ct
+                ON  Ev.[idCategoria] = Ct.[id]
+            INNER JOIN  [dbo].[Asociaciones] A
+                ON  Ev.[idAsociacion] = A.[id]
+            INNER JOIN  [dbo].[Carreras] Cr
+                ON  A.[idCarrera] = Cr.[id]
+            INNER JOIN  [dbo].[Sedes] S
+                ON  Cr.[idSede] = S.[id]
+            WHERE   I.[idEvento] = @idEvento
+                AND I.[idEstudiante] = @idEstudiante
+                AND I.[eliminado] = 0
+            FOR JSON PATH
+        ) AS 'results';
+
     END TRY
     BEGIN CATCH
 
