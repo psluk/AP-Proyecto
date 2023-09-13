@@ -38,40 +38,83 @@
                     style="@style/MenuCategoryText"
                     android:text = "Eventos" />
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Ver_Eventos"
+                    android:id="@+id/VerEventosButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuEventosImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/eventos_icon" />
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Ver_Eventos"
+                        app:layout_constraintStart_toEndOf="@+id/MenuEventosImage"
                         android:text="Ver eventos"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Eventos_asocia"
+                    android:id="@+id/EventosAsociaButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuEventosAsociaImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/mis_eventos_icon" />
+
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Eventos_asocia"
+                        app:layout_constraintStart_toEndOf="@+id/MenuEventosAsociaImage"
                         android:text="Eventos de la asociación"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Ver_propuestas"
+                    android:id="@+id/VerPropuestasButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuPropuestasImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/propuesta_icon" />
+
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Ver_propuestas"
+                        app:layout_constraintStart_toEndOf="@+id/MenuPropuestasImage"
                         android:text="Ver propuestas"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/CrearPropuestaButton"
+                    style="@style/MenuItem">
+
+                    <ImageView
+                        android:id="@+id/CrearPropuestaImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/agregar_propuesta_icon" />
+
+                    <TextView
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemText"
+                        app:layout_constraintStart_toEndOf="@+id/CrearPropuestaImage"
+                        android:text="Crear propuesta"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
@@ -85,33 +128,50 @@
                     style="@style/MenuCategoryText"
                     android:text = "Inscripciones" />
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Ver_inscripciones"
+                    android:id="@+id/VerInscripcionesButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuInscripcionesImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/inscripcion_icon" />
+
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Ver_inscripciones"
+                        app:layout_constraintStart_toEndOf="@+id/MenuInscripcionesImage"
                         android:text="Ver inscripciones"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Inscripciones_Estudiante"
+                    android:id="@+id/InscripcionesEstudianteButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuMisInscripcionesImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/inscripcion_icon" />
+
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Inscripciones_Estudiante"
+                        app:layout_constraintStart_toEndOf="@+id/MenuMisInscripcionesImage"
                         android:text="Mis inscripciones"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <!-- Estudiantes -->
             <LinearLayout
+                android:id="@+id/EstudiantesMenuCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -120,15 +180,22 @@
                     style="@style/MenuCategoryText"
                     android:text = "Estudiantes" />
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Ver_estudiantes"
+                    android:id="@+id/VerEstudiantesButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuEstudiantesImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/estudiante_icon" />
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Ver_estudiantes"
+                        app:layout_constraintStart_toEndOf="@+id/MenuEstudiantesImage"
                         android:text="Ver estudiantes"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -143,15 +210,23 @@
                     style="@style/MenuCategoryText"
                     android:text = "Foro" />
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/Ver_foro"
+                    android:id="@+id/VerForoButton"
                     style="@style/MenuItem">
-                    <!---Falta imagen y constraint a la imagen en el texto-->
+
+                    <ImageView
+                        android:id="@+id/MenuForoImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/foro_icon" />
+
                     <TextView
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
-                        app:layout_constraintStart_toStartOf="@+id/Ver_foro"
+                        app:layout_constraintStart_toEndOf="@+id/MenuForoImage"
                         android:text="Ver foro"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>

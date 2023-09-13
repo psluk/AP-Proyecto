@@ -20,5 +20,8 @@
         android:name="com.example.asociatec.MenuFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_MenuFragment_to_LoginFragment"
+            app:destination="@id/LoginFragment" />
     </fragment>
 </navigation>
