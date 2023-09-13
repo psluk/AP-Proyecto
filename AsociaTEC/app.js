@@ -11,12 +11,11 @@ const loginRouter = require("./routes/login.js");
 const eventosRouter = require("./routes/eventos.js");
 const recursosRouter = require("./routes/recursos.js");
 const actividadesRouter = require("./routes/actividades.js");
-const colaboradoresRouter = require("./routes/colaboradores.js"); //falta validacion usuario
-const solicitudesRouter = require("./routes/solicitudes.js"); //falta validacion usuario
-const asociacionesRouter = require("./routes/asociaciones.js"); //falta validacion usuario
-const conversacionesRouter = require("./routes/conversaciones.js"); //falta validacion usuario
-const mensajesRouter = require("./routes/mensajes.js"); //falta validacion usuario
-
+const colaboradoresRouter = require("./routes/colaboradores.js");
+const solicitudesRouter = require("./routes/solicitudes.js");
+const asociacionesRouter = require("./routes/asociaciones.js");
+const conversacionesRouter = require("./routes/conversaciones.js");
+const mensajesRouter = require("./routes/mensajes.js");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
