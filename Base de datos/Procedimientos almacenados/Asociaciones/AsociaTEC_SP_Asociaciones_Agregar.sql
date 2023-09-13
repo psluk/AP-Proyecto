@@ -92,6 +92,20 @@ BEGIN
 			RAISERROR('No se encontro la Sede "%s" o Carrera "%s" a la cual pertenecera la asociacion', 16, 1,@IN_codigoSede ,@IN_codigoCarrera)
 		END;
 
+        --validacion de que existe unicamente una asociacion
+        IF EXISTS (SELECT 1 
+                    FROM [dbo].[Asociaciones] A
+                    INNER JOIN [dbo].[Carreras] C
+                        ON A.[idCarrera] = C.[id]
+		            INNER JOIN [dbo].[Sedes] S
+		            	ON S.[id] = C.[idSede]
+		            WHERE C.[id] = LTRIM(RTRIM(@usarIDCarrera))
+		            AND S.[id] = LTRIM(RTRIM(@usarIDSede)))
+
+        BEGIN
+			RAISERROR('ya existe una asociacion con los codigos: (carrera: "%s"), (Sede: "%s")', 16, 1,@IN_codigoCarrera, @IN_codigoSede)
+		END;
+
 
 		SELECT @usarIDtipoUsuario = Tu.[id]
 		FROM [dbo].[TiposUsuario] Tu
