@@ -9,6 +9,7 @@ const estaAutenticado = require("../settings/autenticado.js");
 //Retorna: nombreAsocia, correo, nombreSede, codigoSede, nombreCarrera, codigoCarrera
 //SP : AsociaTEC_SP_Asociaciones_Lista
 router.get("/", (req, res) => {
+    
     const codigoCarrera = req.query.codigoCarrera;
     const codigoSede = req.query.codigoSede;
     const request = pool.request();
@@ -68,6 +69,12 @@ router.get("/detalle", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Asociaciones_Agregar
 router.post("/agregar", (req, res) => {
+    
+    if (!estaAutenticado(req, true, true)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
+    
     const nombre = req.body.nombre;
     const descripcion = req.body.descripcion;
     const telefono = req.body.telefono;
@@ -105,6 +112,11 @@ router.post("/agregar", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Asociaciones_Modificar
 router.put("/modificar", (req, res) => {
+    
+    if (!estaAutenticado(req, true, true)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+    
     const correoActual = req.body.correoActual;
     const nombreNueva = req.body.nombreNueva;
     const descripcionNueva = req.body.descripcionNueva;
@@ -147,6 +159,11 @@ router.put("/modificar", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Asociaciones_Eliminar
 router.delete("/eliminar", (req, res) => {
+    
+    if (!estaAutenticado(req, true, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+    
     const correo = req.query.correo;
     const request = pool.request();
 
