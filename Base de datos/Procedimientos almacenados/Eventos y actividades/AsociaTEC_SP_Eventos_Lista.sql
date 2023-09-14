@@ -50,7 +50,7 @@ BEGIN
             E.[fechaInicio],
             E.[lugar],
             E.[especiales],
-            C.[nombre]
+            C.[nombre] as 'categoria'
             FROM [dbo].[Eventos] E
             INNER JOIN [dbo].[Categorias] C
             ON C.[id] = E.[idCategoria]

@@ -31,5 +31,15 @@
         <action
             android:id="@+id/action_MenuFragment_to_LoginFragment"
             app:destination="@id/LoginFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_NewEventFragment"
+            app:destination="@id/NewEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/NewEventFragment"
+        android:name="com.example.asociatec.NewEventFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_new_event">
+
     </fragment>
 </navigation>
