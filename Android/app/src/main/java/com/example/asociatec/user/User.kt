@@ -108,6 +108,13 @@ class User private constructor(context: Context) {
         return this.studentNumber
     }
 
+    fun getCareerCode(): String?{
+        return this.careerCode
+    }
+
+    fun getLocationCode(): String?{
+        return this.locationCode
+    }
     private fun SharedPreferences.getIntOrNull(key: String): Int? {
         // Función para retornar un Int solo si existe
         if (contains(key)) {

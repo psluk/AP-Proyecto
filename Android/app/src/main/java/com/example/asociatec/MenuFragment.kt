@@ -46,6 +46,7 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val verEventosButton = view.findViewById<ConstraintLayout>(R.id.VerEventosButton)
+        val agregarEventoButton = view.findViewById<ConstraintLayout>(R.id.AgregarEventoButton)
         val eventosAsociaButton = view.findViewById<ConstraintLayout>(R.id.EventosAsociaButton)
         val verPropuestasButton = view.findViewById<ConstraintLayout>(R.id.VerPropuestasButton)
         val crearPropuestaButton = view.findViewById<ConstraintLayout>(R.id.CrearPropuestaButton)
@@ -55,6 +56,10 @@ class MenuFragment : Fragment() {
         val verForoButton = view.findViewById<ConstraintLayout>(R.id.VerForoButton)
 
         verEventosButton.setOnTouchListener { view, event ->
+            buttonPressed(view, event)
+            false
+        }
+        agregarEventoButton.setOnTouchListener { view, event ->
             buttonPressed(view, event)
             false
         }
@@ -90,6 +95,9 @@ class MenuFragment : Fragment() {
         verEventosButton.setOnClickListener {
             notImplementedWarning("Ver eventos")
         }
+        agregarEventoButton.setOnClickListener {
+            findNavController().navigate(R.id.action_MenuFragment_to_NewEventFragment)
+        }
         eventosAsociaButton.setOnClickListener {
             notImplementedWarning("Eventos Asocia")
         }
@@ -124,6 +132,7 @@ class MenuFragment : Fragment() {
             eventosAsociaButton.visibility = View.GONE
         }
         if(user.userType() != "Asociación" && user.userType() != "Administrador" ){
+            agregarEventoButton.visibility = View.GONE
             verInscripcionesButton.visibility = View.GONE
         }
 
