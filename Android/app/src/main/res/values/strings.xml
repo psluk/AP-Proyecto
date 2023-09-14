@@ -1,0 +1,29 @@
+<resources>
+    <string name="action_settings">Settings</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="app_name">AsociaTEC</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="asociatec_label"></string>
+    <string name="session_timeout_title">Sesión expirada</string>
+    <string name="session_timeout">Su sesión ha expirado. Por favor, inicie sesión nuevamente.</string>
+    <string name="request_timeout">No fue posible establecer una conexión con el servidor. Revise su conexión de red.</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="clave">Contraseña</string>
+    <string name="iniciar_sesion_btn">Iniciar sesión</string>
+    <string name="buscar_btn">Buscar</string>
+    <string name="titulo_btn">titulo a buscar</string>
+    <string name="registrarse">Registrarse</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="foro">Foro</string>
+    <string name="titulo">Titulo</string>
+    <string name="tag">tag</string>
+    <string name="contenido">contenido</string>
+</resources>
