@@ -34,12 +34,22 @@
         <action
             android:id="@+id/action_MenuFragment_to_NewEventFragment"
             app:destination="@id/NewEventFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_CalendarFragment"
+            app:destination="@id/CalendarFragment"/>
     </fragment>
     <fragment
         android:id="@+id/NewEventFragment"
         android:name="com.example.asociatec.NewEventFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_new_event">
+    </fragment>
+
+    <fragment
+        android:id="@+id/CalendarFragment"
+        android:name="com.example.asociatec.CalendarFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_calendar">
 
     </fragment>
 </navigation>

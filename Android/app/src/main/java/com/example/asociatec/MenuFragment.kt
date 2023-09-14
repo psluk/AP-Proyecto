@@ -92,7 +92,7 @@ class MenuFragment : Fragment() {
         }
 
         verEventosButton.setOnClickListener {
-            notImplementedWarning("Ver eventos")
+            findNavController().navigate(R.id.action_MenuFragment_to_CalendarFragment)
         }
         agregarEventoButton.setOnClickListener {
             findNavController().navigate(R.id.action_MenuFragment_to_NewEventFragment)

@@ -54,7 +54,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
                         app:layout_constraintStart_toEndOf="@+id/MenuEventosImage"
-                        android:text="Ver eventos"/>
+                        android:text="Calendario de eventos"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/AgregarEventoButton"

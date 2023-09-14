@@ -46,7 +46,8 @@ class  CalendarFragment : Fragment() {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         user = User.getInstance(requireContext())
         apiRequest = ApiRequest.getInstance(requireContext())
-
+        dateItemList = mutableListOf()
+        completeDateItemList = listOf()
         return binding.root
     }
 
@@ -55,7 +56,7 @@ class  CalendarFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.calendar_recycler)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter= CalendarAdapter(dateItemList)
+        val adapter= CalendarAdapter(dateItemList, requireContext())
         recyclerView.adapter = adapter
 
         // Se agrega un listener para agregar elementos a la lista al hacer scroll al final
@@ -100,7 +101,6 @@ class  CalendarFragment : Fragment() {
             if (responseStatus) {
                 completeDateItemList =
                     gson.fromJson(responseString, Array<DateItem>::class.java).toList()
-
 
                 if (completeDateItemList.isNullOrEmpty()) {
                     val message = "No hay eventos existentes"
