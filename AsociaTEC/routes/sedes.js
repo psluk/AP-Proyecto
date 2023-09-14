@@ -9,10 +9,6 @@ const estaAutenticado = require("../settings/autenticado.js");
  * Retorna la lista de sedes
  */
 router.get("/", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
     const request = pool.request();
 
     request.execute("AsociaTEC_SP_Sedes_Lista", (error, result) => {

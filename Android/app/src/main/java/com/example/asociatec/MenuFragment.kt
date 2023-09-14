@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import com.example.asociatec.databinding.FragmentMenuBinding
-import com.example.asociatec.R
 import com.example.asociatec.user.User
 import com.example.asociatec.api.ApiRequest
 import com.google.gson.Gson

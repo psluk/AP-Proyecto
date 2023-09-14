@@ -14,7 +14,15 @@
         <action
             android:id="@+id/action_LoginFragment_to_MenuFragment"
             app:destination="@id/MenuFragment" />
+        <action
+            android:id="@+id/action_LoginFragment_to_SignUpFragment"
+            app:destination="@id/SignUpFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/SignUpFragment"
+        android:name="com.example.asociatec.SignUpFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_signup" />
     <fragment
         android:id="@+id/MenuFragment"
         android:name="com.example.asociatec.MenuFragment"

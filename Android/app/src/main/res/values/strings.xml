@@ -18,6 +18,14 @@
     <string name="clave">Contraseña</string>
     <string name="iniciar_sesion_btn">Iniciar sesión</string>
     <string name="registrarse">Registrarse</string>
+    <string name="registro">Registro</string>
+    <string name="edit_text_placeholder">Digite un valor</string>
+    <string name="signup_stud_name_label">Nombre</string>
+    <string name="signup_stud_lastname1_label">Primer apellido</string>
+    <string name="signup_stud_lastname2_label">Segundo apellido</string>
+    <string name="signup_student_number_label">Carné</string>
+    <string name="signup_student_email_label">Correo electrónico</string>
+    <string name="signup_student_password_label">Contraseña</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

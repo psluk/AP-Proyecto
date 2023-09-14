@@ -18,7 +18,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/Theme.AsociaTEC.PopupOverlay"
-            style="@style/ToolbarStyle">
+            style="@style/ToolbarStyle"
+            app:layout_scrollFlags="enterAlways">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

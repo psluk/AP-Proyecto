@@ -18,7 +18,7 @@ router.get("/categorias", (req, res) => {
 
     const request = pool.request();
 
-    request.execute("AsociaTEC_SP_Sedes_Lista", (error, result) => {
+    request.execute("AsociaTEC_SP_Eventos_Categorias", (error, result) => {
         if (error) {
             manejarError(res, error);
         } else {

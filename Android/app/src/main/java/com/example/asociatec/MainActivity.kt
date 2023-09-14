@@ -2,19 +2,17 @@ package com.example.asociatec
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import com.example.asociatec.R
-import android.view.MenuItem
-import com.example.asociatec.databinding.ActivityMainBinding
 import com.example.asociatec.api.ApiRequest
+import com.example.asociatec.databinding.ActivityMainBinding
 import com.example.asociatec.user.User
-import com.example.asociatec.MenuFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -89,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
         val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
 
-        return (currentFragment !is LoginFragment) && (currentFragment !is RegistroFragment)
+        return (currentFragment !is LoginFragment) && (currentFragment !is SignUpFragment) && (currentFragment !is StudentSignUpFragment)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
@@ -100,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
 
         logoutItem?.isVisible =
-            (currentFragment !is LoginFragment) && (currentFragment !is RegistroFragment)
+            (currentFragment !is LoginFragment) && (currentFragment !is SignUpFragment) && (currentFragment !is StudentSignUpFragment)
 
         return true
     }
@@ -130,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
         val currentFragment = navHostFragment?.childFragmentManager?.fragments?.get(0)
 
-        if (currentFragment is MenuFragment  || currentFragment is LoginFragment) {
+        if (currentFragment is MenuFragment || currentFragment is LoginFragment) {
             this.finish()
         } else {
             super.onBackPressed() // Llama al super método para el comportamiento predeterminado

@@ -49,41 +49,65 @@ class LoginFragment : Fragment() {
             val username = editTextUsername.text.toString()
             val password = editTextPassword.text.toString()
 
-            // Se abre un popup de "Cargando"
-            val progressDialog = ProgressDialog(requireContext())
-            progressDialog.setMessage("Iniciando sesión...")
-            progressDialog.setCancelable(false)
-            progressDialog.show()
+            var fieldsOk = true
+            var message = ""
 
-            // Solicitud POST del inicio de sesión
-            GlobalScope.launch(Dispatchers.IO) {
-                val url = "https://asociatec.azurewebsites.net/api/login"
-                val requestBody =
-                    "{\"correo\": \"${username}\", \"clave\":\"${password}\"}".toRequestBody("application/json".toMediaTypeOrNull())
+            if (username.isNullOrEmpty()) {
+                fieldsOk = false
+                message = "El correo electrónico no debe estar vacío"
+            } else if (password.isNullOrEmpty()) {
+                fieldsOk = false
+                message = "La contraseña no debe estar vacía"
+            }
 
-                val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
+            if (!fieldsOk) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Datos inválidos")
+                    .setMessage(message)
+                    .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    .show()
+            } else {
 
-                // Se quita el popup de "Cargando"
-                progressDialog.dismiss()
+                // Se abre un popup de "Cargando"
+                val progressDialog = ProgressDialog(requireContext())
+                progressDialog.setMessage("Iniciando sesión...")
+                progressDialog.setCancelable(false)
+                progressDialog.show()
 
-                if (responseStatus) {
-                    user.storeUserInfo(responseString)
-                    user.setCheckedInCurrentSession()
+                // Solicitud POST del inicio de sesión
+                GlobalScope.launch(Dispatchers.IO) {
+                    val url = "https://asociatec.azurewebsites.net/api/login"
+                    val requestBody =
+                        "{\"correo\": \"${username}\", \"clave\":\"${password}\"}".toRequestBody("application/json".toMediaTypeOrNull())
 
-                    requireActivity().runOnUiThread {
-                        findNavController().navigate(R.id.action_LoginFragment_to_MenuFragment)
-                    }
+                    val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
 
-                } else {
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Error")
-                            .setMessage(responseString)
-                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                            .show()
+                    // Se quita el popup de "Cargando"
+                    progressDialog.dismiss()
+
+                    if (responseStatus) {
+                        user.storeUserInfo(responseString)
+                        user.setCheckedInCurrentSession()
+
+                        requireActivity().runOnUiThread {
+                            findNavController().navigate(R.id.action_LoginFragment_to_MenuFragment)
+                        }
+
+                    } else {
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Error")
+                                .setMessage(responseString)
+                                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                                .show()
+                        }
                     }
                 }
             }
+        }
+
+        binding.buttonRegistrarse.setOnClickListener {
+            findNavController().navigate(R.id.action_LoginFragment_to_SignUpFragment)
         }
     }
 

@@ -9,10 +9,6 @@ const estaAutenticado = require("../settings/autenticado.js");
  * Retorna la lista de carreras de una sede
  */
 router.get("/", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
     const codigoSede = req.query.codigoSede;
 
     const request = pool.request();
