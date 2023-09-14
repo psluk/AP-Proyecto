@@ -77,7 +77,7 @@ class StudentSignUpFragment : Fragment() {
             } else if (!isValidEmail(studentEmail)) {
                 fieldsOk = false
                 message = "El correo electrónico no es una dirección válida del dominio \"@estudiantec.cr\""
-            } else if (studentEmail.isNullOrEmpty()) {
+            } else if (studentPassword.isNullOrEmpty()) {
                 fieldsOk = false
                 message = "La contraseña no debe estar vacía"
             }

@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { pool, sqlcon } = require("../settings/database.js");
+const bcrypt = require("bcrypt");
 const manejarError = require("../settings/errores.js");
 const estaAutenticado = require("../settings/autenticado.js");
+
+// Para el hash de las contraseñas
+const saltRounds = 10;
 
 //descripcion: devuelve una lista de las asociaciones
 //parametros: codigoSede?, codigoCarrera?
@@ -67,11 +71,7 @@ router.get("/detalles", (req, res) => {
 //parametros: nombre, descripcion, telefono, codigoCarreda, codigoSede,  correo, clave
 //Retorna: NULL
 //SP : AsociaTEC_SP_Asociaciones_Agregar
-router.post("/agregar", (req, res) => {
-    if (!estaAutenticado(req, true, true)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
+router.post("/agregar", async (req, res) => {
     const nombre = req.body.nombre;
     const descripcion = req.body.descripcion;
     const telefono = req.body.telefono;
@@ -89,7 +89,17 @@ router.post("/agregar", (req, res) => {
         request.input("IN_codigoSede", sqlcon.VarChar(4), codigoSede);
         request.input("IN_codigoCarrera", sqlcon.VarChar(4), codigoCarrera);
         request.input("IN_correo", sqlcon.VarChar(128), correo);
-        request.input("IN_clave", sqlcon.VarChar(64), clave);
+        
+        try {
+            claveConHash = await bcrypt.hash(clave, saltRounds);
+        } catch (error) {
+            console.log(error);
+            return res
+                .status(500)
+                .send({ mensaje: "Error interno del servidor" });
+        }
+
+        request.input("IN_clave", sqlcon.VarChar(64), claveConHash);
     } catch (error) {
         console.log(error);
         return res.status(400).send({ mensaje: "Datos inválidos" });
