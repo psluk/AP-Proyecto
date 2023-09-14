@@ -37,6 +37,18 @@
         <action
             android:id="@+id/action_MenuFragment_to_CalendarFragment"
             app:destination="@id/CalendarFragment"/>
+        <action
+            android:id="@+id/action_MenuFragment_to_ForumFragment"
+            app:destination="@id/ForumFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/ForumFragment"
+        android:name="com.example.asociatec.ForumFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_forum">
+        <action
+            android:id="@+id/action_ForumFragment_to_MenuFragment"
+            app:destination="@id/MenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/NewEventFragment"
@@ -51,5 +63,4 @@
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_calendar">
 
-    </fragment>
 </navigation>
