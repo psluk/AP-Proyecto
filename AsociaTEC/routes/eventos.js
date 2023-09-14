@@ -10,6 +10,27 @@ const {
     formatoHora,
 } = require("../settings/formatos.js");
 
+
+router.get("/categorias", (req, res) => {
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
+    const request = pool.request();
+
+    request.execute("AsociaTEC_SP_Sedes_Lista", (error, result) => {
+        if (error) {
+            manejarError(res, error);
+        } else {
+            res.setHeader("Content-Type", "application/json").send(
+                result.recordset[0]["results"]
+            );
+        }
+    });
+});
+
+
+
 /**
  * Metodo GET
  * Retorna la lista de eventos
