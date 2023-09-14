@@ -12,7 +12,7 @@ const {
 
 
 router.get("/categorias", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
+    if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
