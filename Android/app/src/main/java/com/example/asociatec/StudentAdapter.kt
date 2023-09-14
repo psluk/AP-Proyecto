@@ -1,10 +1,12 @@
 package com.example.asociatec
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.data.StudentItem
 import com.example.asociatec.R
@@ -37,6 +39,20 @@ class StudentAdapter(private val elements: List<StudentItem>) :
             item.findViewById<TextView>(R.id.studentNumberText).text = element.carnet.toString()
             item.findViewById<TextView>(R.id.studentLocationText).text = element.sede.nombre
             item.findViewById<TextView>(R.id.studentCareerText).text = element.carrera.nombre
+
+            // Se agrega el listener
+            itemView.setOnClickListener {
+                // Se obtiene el índice del elemento tocado
+
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    // Si es un índice válido, entra aquí
+                    val clickedItem = elements[adapterPosition]
+                    val bundle = Bundle()
+                    bundle.putInt("studentNumber", clickedItem.carnet)
+                    itemView.findNavController()
+                        .navigate(R.id.action_StudentListFragment_to_ModifyStudentFragment, bundle)
+                }
+            }
         }
     }
 }

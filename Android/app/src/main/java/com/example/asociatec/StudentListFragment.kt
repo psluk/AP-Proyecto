@@ -2,11 +2,11 @@ package com.example.asociatec
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,8 +24,8 @@ class StudentListFragment : Fragment() {
     private lateinit var user: User
     private lateinit var recyclerView: RecyclerView
     private val elementsPerPage = 7
-    private var studentList: MutableList<StudentItem> = mutableListOf()
-    private var completeStudentList: List<StudentItem> = listOf()
+    private lateinit var studentList: MutableList<StudentItem>
+    private lateinit var completeStudentList: List<StudentItem>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +33,8 @@ class StudentListFragment : Fragment() {
     ): View? {
         user = User.getInstance(requireContext())
         apiRequest = ApiRequest.getInstance(requireContext())
+        studentList = mutableListOf()
+        completeStudentList = listOf()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_student_list, container, false)
     }
@@ -42,7 +44,7 @@ class StudentListFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.studentListRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter= StudentAdapter(studentList)
+        val adapter = StudentAdapter(studentList)
         recyclerView.adapter = adapter
 
         // Se agrega un listener para agregar elementos a la lista al hacer scroll al final
@@ -87,7 +89,8 @@ class StudentListFragment : Fragment() {
             val (responseStatus, responseString) = apiRequest.getRequest(url)
 
             if (responseStatus) {
-                completeStudentList = gson.fromJson(responseString, Array<StudentItem>::class.java).toList()
+                completeStudentList =
+                    gson.fromJson(responseString, Array<StudentItem>::class.java).toList()
 
                 if (completeStudentList.isNullOrEmpty()) {
                     val message = "No hay estudiantes existentes"

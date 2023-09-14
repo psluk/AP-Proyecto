@@ -28,4 +28,8 @@
     <string name="signup_student_password_label">Contraseña</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save_changes_label">Guardar cambios</string>
+    <string name="delete_student_label">Eliminar estudiante</string>
+    <string name="update_password_placeholder">Digite un valor si desea actualizarla</string>
+    <string name="modify_student_title">Editar estudiante</string>
 </resources>
