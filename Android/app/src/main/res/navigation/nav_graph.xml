@@ -63,4 +63,7 @@
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_calendar">
 
+    </fragment>
+
+
 </navigation>

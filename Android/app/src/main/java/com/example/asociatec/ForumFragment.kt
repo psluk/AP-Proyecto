@@ -20,12 +20,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.google.gson.Gson
 import okhttp3.Response
-
+import com.example.asociatec.user.Conversacion
 import com.google.gson.JsonArray
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.asociatec.user.Conversacion
-import com.example.asociatec.user.Adaptadorconversacion
+//import com.example.asociatec.user.Adaptadorconversacion
 
 class ForumFragment : Fragment() {
 
@@ -36,7 +35,7 @@ class ForumFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var conversaciones : List<Conversacion>
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: AdaptadorConversacion // Create your custom adapter
+    //private lateinit var adapter: AdaptadorConversacion // Create your custom adapter
 
 
     override fun onCreateView(
@@ -56,18 +55,17 @@ class ForumFragment : Fragment() {
 
         getconveracionlist("")
 
-            recyclerView = findViewById(R.id.recyclerconversacion)
-            recyclerView.layoutManager = LinearLayoutManager(this)
-
-            // Initialize your custom adapter and set it to the RecyclerView
-            adapter = MyAdapter(getSampleItemList()) // Implement your custom adapter
-            recyclerView.adapter = adapter
+            //recyclerView = findViewById(R.id.recyclerconversacion)
+            //recyclerView.layoutManager = LinearLayoutManager(this)
+//
+            //// Initialize your custom adapter and set it to the RecyclerView
+            //adapter = MyAdapter(getSampleItemList()) // Implement your custom adapter
+            //recyclerView.adapter = adapter
 
 
 
             // Se quita el popup de "Cargando"
             progressDialog.dismiss()
-        }
 
         return binding.root
     }
@@ -131,9 +129,6 @@ class ForumFragment : Fragment() {
                 } catch (e: Exception) {
                     "Error inesperado"
                 }
-
-                // Se quita el popup de "Cargando"
-                progressDialog.dismiss()
 
                 //requireActivity().runOnUiThread {
                 //    findNavController().navigate(R.id.action_MenuFragment_to_ForumFragment)
