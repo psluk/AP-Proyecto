@@ -51,6 +51,30 @@ router.get("/", (req, res) => {
 
 /**
  * Metodo GET
+ * Retorna la lista de eventos
+ * Puede ser filtrada por codigo de carrera y/o codigo de sede
+ */
+router.get("/calendario", (req, res) => {
+    
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
+    const request = pool.request();
+
+    request.execute("AsociaTEC_SP_Eventos_Calendario", (error, result) => {
+        if (error) {
+            manejarError(res, error);
+        } else {
+            res.setHeader("Content-Type", "application/json").send(
+                result.recordset[0]["results"]
+            );
+        }
+    });
+});
+
+/**
+ * Metodo GET
  * Retorna los detalles de un evento
  */
 router.get("/detalles", (req, res) => {

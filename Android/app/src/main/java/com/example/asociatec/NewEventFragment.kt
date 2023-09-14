@@ -140,16 +140,6 @@ class NewEventFragment : Fragment() {
                                 "\"carrera\":\"${user.getCareerCode()}\"}").toRequestBody(
                             "application/json".toMediaTypeOrNull()
                         )
-                    println("{\"titulo\": \"${titleBox.text}\"," +
-                            "\"descripcion\":\"${descriptionBox.text}\"," +
-                            "\"capacidad\":\"${capacity}\"," +
-                            "\"lugar\":\"${placeBox.text}\"," +
-                            "\"categoria\":\"${selectedCategory}\"," +
-                            "\"especiales\":\"${especialesBox.text}\","+
-                            "\"fechaInicio\":\"${LocalDate.toUtc(startCalendar)}\","+
-                            "\"fechaFin\":\"${LocalDate.toUtc(endCalendar)}\"," +
-                            "\"sede\":\"${user.getLocationCode()}\"," +
-                            "\"carrera\":\"${user.getCareerCode()}\"}")
 
                     val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
 
@@ -212,6 +202,7 @@ class NewEventFragment : Fragment() {
             if (responseStatus) {
                 val json = gson.fromJson(responseString, JsonArray::class.java)
                 val categoriasString = json.map { it.asJsonObject.get("categoria").asString }
+
                 selectedCategory = categoriasString[0]
 
 

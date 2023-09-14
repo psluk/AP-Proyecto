@@ -22,28 +22,35 @@ BEGIN
         -- VALIDACIONES
         --
 
-        SELECT
-        CONVERT(DATE, E.fechaInicio) as 'fecha',
-        (
-            SELECT
-                E2.[uuid],
-                E2.[titulo],
-                E2.[descripcion],
-                E2.[capacidad],
-                E2.[fechaFin],
-                E2.[fechaInicio],
-                E2.[lugar],
-                E2.[especiales],
-                C.[nombre]
-                FROM [dbo].[Eventos] E2
-                INNER JOIN [dbo].[Categorias] C
-                ON C.[id] = E2.[idCategoria]
-            WHERE CONVERT(DATE, E2.fechaInicio) = CONVERT(DATE, E.fechaInicio)
-            FOR JSON PATH
-        ) as 'eventos'
-        FROM [dbo].[Eventos] E
-        GROUP BY CONVERT(DATE, E.fechaInicio)
-        FOR JSON PATH;
+        SELECT COALESCE(
+            (
+                SELECT
+                CONVERT(DATE, E.fechaInicio) as 'fecha',
+                (
+                    SELECT
+                        E2.[uuid],
+                        E2.[titulo],
+                        E2.[descripcion],
+                        E2.[capacidad],
+                        E2.[fechaFin],
+                        E2.[fechaInicio],
+                        E2.[lugar],
+                        E2.[especiales],
+                        C.[nombre] as'categoria'
+                    FROM [dbo].[Eventos] E2
+                    INNER JOIN [dbo].[Categorias] C
+                    ON C.[id] = E2.[idCategoria]
+                    WHERE E2.[eliminado] = 0
+                    AND
+                    CONVERT(DATE, E2.fechaInicio) = CONVERT(DATE, E.fechaInicio)
+                    FOR JSON PATH
+                ) as 'eventos'
+                FROM [dbo].[Eventos] E
+                GROUP BY CONVERT(DATE, E.fechaInicio)
+                FOR JSON PATH),
+                '[]'
+            ) as 'results'
+        
 
     END TRY
     BEGIN CATCH
