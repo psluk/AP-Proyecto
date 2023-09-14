@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/default_elevation"
+    android:background="@drawable/item_card"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:id="@+id/student_item"
+    android:clickable="true"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:id="@+id/studentNameLayout"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/StudentImage"
+        app:layout_constraintStart_toEndOf="@+id/StudentImage"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            style="@style/MenuItemText"
+            android:focusable="true"
+            android:fontFamily="@font/robotoslab_bold"
+            app:fontFamily="@font/robotoslab_bold"
+            android:textColor="@color/blue_500"
+            android:layout_marginStart="0dp"
+            android:text="Juan Martínez Pérez"
+            android:textSize="15sp"
+            android:id="@+id/studentNameText" />
+
+        <TextView
+            android:id="@+id/studentNumberText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF222222"
+            tools:text="2020123456" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/studentLocationLayout"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/StudentImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studentNameLayout"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:layout_width="0dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/location_icon" />
+
+        <TextView
+            android:id="@+id/studentLocationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF222222"
+            tools:text="Campus Tecnológico Central Cartago"
+            android:layout_marginStart="10dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/studentCareerLayout"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/StudentImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studentLocationLayout"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:layout_width="0dp">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/career_icon" />
+
+        <TextView
+            android:id="@+id/studentCareerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FF222222"
+            tools:text="Bachillerato en Administración de Empresas"
+            android:layout_marginStart="10dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/StudentImage"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/MenuItemImage"
+        android:src="@drawable/estudiante_icon"
+        android:focusable="true" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

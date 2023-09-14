@@ -113,7 +113,7 @@ class MenuFragment : Fragment() {
             notImplementedWarning("Inscripciones Estudiante")
         }
         verEstudiantesButton.setOnClickListener {
-            notImplementedWarning("Ver estudiantes")
+            findNavController().navigate(R.id.action_MenuFragment_to_StudentListFragment)
         }
         verForoButton.setOnClickListener {
             notImplementedWarning("Ver foro")
