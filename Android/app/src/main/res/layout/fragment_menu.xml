@@ -57,24 +57,6 @@
                         android:text="Calendario de eventos"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/AgregarEventoButton"
-                    style="@style/MenuItem">
-                    <ImageView
-                        android:id="@+id/MenuAgregarEventoImage"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        style="@style/MenuItemImage"
-                        android:src="@drawable/agregar_eventos_icon" />
-                    <TextView
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        style="@style/MenuItemText"
-                        app:layout_constraintStart_toEndOf="@+id/MenuAgregarEventoImage"
-                        android:text="Agregar evento"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/EventosAsociaButton"
                     style="@style/MenuItem">
 
@@ -92,7 +74,25 @@
                         app:layout_constraintTop_toTopOf="parent"
                         style="@style/MenuItemText"
                         app:layout_constraintStart_toEndOf="@+id/MenuEventosAsociaImage"
-                        android:text="Eventos de la asociación"/>
+                        android:text="Lista de eventos"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/AgregarEventoButton"
+                    style="@style/MenuItem">
+                    <ImageView
+                        android:id="@+id/MenuAgregarEventoImage"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemImage"
+                        android:src="@drawable/agregar_eventos_icon" />
+                    <TextView
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/MenuItemText"
+                        app:layout_constraintStart_toEndOf="@+id/MenuAgregarEventoImage"
+                        android:text="Agregar evento"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/VerPropuestasButton"

@@ -51,7 +51,7 @@ class LocalDate {
         }
 
         fun date(date: String, isIso: Boolean, fullDate: Boolean = false): String {
-            val dateObject = if (isIso) parseIso(date+".000Z") else parseUtc(date)
+            val dateObject = if (isIso) parseIso(date) else parseUtc(date)
             val dateFormat =
                 DateFormat.getDateInstance(if (fullDate) DateFormat.FULL else DateFormat.MEDIUM)
             dateFormat.timeZone = TimeZone.getDefault()
@@ -82,7 +82,7 @@ class LocalDate {
         fun parseIso(utcString: String): Date {
             val sourceFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
             sourceFormat.timeZone = TimeZone.getTimeZone("UTC")
-            return sourceFormat.parse(utcString)
+            return sourceFormat.parse(utcString+".000Z")
         }
 
         fun toUtc(calendar: Calendar): String {

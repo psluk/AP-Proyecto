@@ -1,27 +1,24 @@
 package com.example.asociatec
 
-import android.content.Context
+import com.example.asociatec.data.EventItem
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.R
-import com.example.asociatec.data.ActivityItem
 import com.example.asociatec.data.DateItem
 import com.example.asociatec.misc.LocalDate
 
-class EventDetailAdapter(private val elements: List<ActivityItem>) :
-    RecyclerView.Adapter<EventDetailAdapter.ViewHolder>() {
+class EventsListAdapter(private val elements: List<EventItem>) :
+    RecyclerView.Adapter<EventsListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_item, parent, false)
+            .inflate(R.layout.events_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -35,13 +32,20 @@ class EventDetailAdapter(private val elements: List<ActivityItem>) :
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val item: ConstraintLayout = itemView.findViewById(R.id.ActivityItem)
 
-        fun bind(element: ActivityItem) {
-            item.findViewById<TextView>(R.id.ActivityTitleItemText).text = element.nombre
-            item.findViewById<TextView>(R.id.ActivityPlaceItemText).text = element.lugar
-            item.findViewById<TextView>(R.id.ActivityStartItemText).text = LocalDate.date(element.fechaInicio,true, true)
-            item.findViewById<TextView>(R.id.ActivityEndItemText).text = LocalDate.date(element.fechaFin,true, true)
+        private val item: ConstraintLayout = itemView.findViewById(R.id.EventItem)
+
+        fun bind(element: EventItem) {
+
+            item.findViewById<TextView>(R.id.EventItemText).text = element.titulo
+            item.findViewById<TextView>(R.id.EventPlaceItemText).text = element.lugar
+
+            item.setOnClickListener {
+                println(element.uuid)
+                val bundle = Bundle()
+                bundle.putString("uuid", element.uuid)
+                itemView.findNavController().navigate(R.id.action_EventsListFragment_to_ModifyEventFragment,bundle)
+            }
         }
     }
 }
