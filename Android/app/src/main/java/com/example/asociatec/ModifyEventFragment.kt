@@ -79,6 +79,8 @@ class ModifyEventFragment : Fragment() {
         val modificarButton  = view.findViewById<Button>(R.id.btnModificarEvento)
         val eliminarButton  = view.findViewById<Button>(R.id.btnEliminarEvento)
         val verActivButton  = view.findViewById<Button>(R.id.btnVerActividades)
+        val colaboradoresButton = view.findViewById<Button>(R.id.btnColaboradoresEvento)
+        val informeButton = view.findViewById<Button>(R.id.btnInforme)
 
         modificarButton.setOnClickListener {
             var fieldsOk = true
@@ -243,6 +245,14 @@ class ModifyEventFragment : Fragment() {
             bundle.putString("uuid", uuid)
             findNavController().navigate(R.id.action_ModifyEventFragment_to_ActivityListFragment,bundle)
         }
+
+        colaboradoresButton.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString("uuid", uuid)
+            findNavController().navigate(R.id.action_ModifyEventFragment_to_CollaboratorListFragment, bundle)
+        }
+
+
         // Se abre un popup de "Cargando"
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setMessage("Cargando...")

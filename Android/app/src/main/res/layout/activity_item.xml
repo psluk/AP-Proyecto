@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         style="@style/MenuItemText"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Nombre del evento"
+        tools:text="Nombre de la actividad"
         android:textSize="18sp"/>
     <TextView
         android:id="@+id/ActivityPlaceItemText"
