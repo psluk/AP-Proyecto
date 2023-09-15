@@ -29,10 +29,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="buscar_btn">Buscar</string>
-    <string name="titulo_btn">titulo a buscar</string>
+    <string name="titulo_btn">Título a buscar</string>
     <string name="foro">Foro</string>
-    <string name="titulo">Titulo</string>
-    <string name="tag">tag</string>
+    <string name="titulo">Título</string>
+    <string name="tag">Tag</string>
     <string name="contenido">contenido</string>
     <string name="save_changes_label">Guardar cambios</string>
     <string name="delete_student_label">Eliminar estudiante</string>

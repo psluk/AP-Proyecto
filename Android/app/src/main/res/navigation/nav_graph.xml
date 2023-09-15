@@ -243,6 +243,12 @@
         android:name="com.example.asociatec.CollaboratorListFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_collaborator_list">
+        <action
+            android:id="@+id/action_CollaboratorListFragment_self"
+            app:destination="@id/CollaboratorListFragment"
+            app:popUpTo="@+id/ModifyEventFragment"
+            app:popUpToInclusive="false" />
+
     </fragment>
     <fragment
         android:id="@+id/proposalListFragment"

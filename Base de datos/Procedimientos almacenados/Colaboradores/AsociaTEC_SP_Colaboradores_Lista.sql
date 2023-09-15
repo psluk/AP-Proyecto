@@ -61,6 +61,7 @@ BEGIN
 			AND Tpu.[nombre] LIKE @tipoasociacion --que sea tipo asociacion
 			AND U.[correo] = LTRIM(RTRIM(@IN_Correo)) -- identificador de asociacion
 			AND U.[eliminado] = 0 --no eliminados (usuario)
+            AND Eve.[uuid] = @IN_identificadorEvento
             ORDER BY E.[apellido1], E.[apellido2], E.[nombre] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace

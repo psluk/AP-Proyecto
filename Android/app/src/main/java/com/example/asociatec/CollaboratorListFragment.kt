@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
@@ -23,6 +24,8 @@ import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class CollaboratorListFragment : Fragment() {
     private var _binding: FragmentCollaboratorListBinding? = null
@@ -132,6 +135,66 @@ class CollaboratorListFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("uuid", uuid)
 
+        }
+
+        view.findViewById<Button>(R.id.addCollaboratorButton).setOnClickListener {
+            val newStudentNumber = view.findViewById<EditText>(R.id.newCollaboratorEdit).text.toString()
+
+            if (newStudentNumber.isNullOrEmpty()) {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Datos inválidos")
+                    .setMessage("Digite un número de carné")
+                    .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    .show()
+            } else {
+                // Se abre un popup de "Cargando"
+                val progressDialog = ProgressDialog(requireContext())
+                progressDialog.setMessage("Cargando...")
+                progressDialog.setCancelable(false)
+                progressDialog.show()
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    val url = "https://asociatec.azurewebsites.net/api/colaboradores/agregar"
+
+                    val requestBody =
+                        ("{\"carnet\": \"$newStudentNumber\"," +
+                                "\"uuid\": \"$uuid\"," +
+                                "\"descripcion\": \"Colaborador\"}").toRequestBody(
+                            "application/json".toMediaTypeOrNull()
+                        )
+
+                    val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
+
+                    progressDialog.dismiss()
+
+                    if (responseStatus) {
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Éxito")
+                                .setMessage("Se agregó al colaborador exitosamente")
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    val bundle = Bundle()
+                                    bundle.putString("uuid", uuid)
+                                    findNavController().navigate(R.id.action_CollaboratorListFragment_self, bundle)
+                                    dialog.dismiss()
+                                }
+                                .show()
+                        }
+
+                    } else {
+                        // Ocurrió un error al hacer la consulta
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Error")
+                                .setMessage(responseString)
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .show()
+                        }
+                    }
+                }
+            }
         }
     }
 }
