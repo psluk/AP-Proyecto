@@ -99,7 +99,7 @@ class MenuFragment : Fragment() {
             findNavController().navigate(R.id.action_MenuFragment_to_NewEventFragment)
         }
         eventosAsociaButton.setOnClickListener {
-            notImplementedWarning("Eventos Asocia")
+            findNavController().navigate(R.id.action_MenuFragment_to_EventsListFragment)
         }
         verPropuestasButton.setOnClickListener {
             notImplementedWarning("Ver propuestas")
@@ -123,6 +123,7 @@ class MenuFragment : Fragment() {
         if(user.userType() != "Estudiante"){
             inscripcionesEstudianteButton.visibility = View.GONE
             crearPropuestaButton.visibility = View.GONE
+            verEventosButton.visibility = View.GONE
         }
         if(user.userType() != "Administrador"){
             val categoriaEstudiantes = view.findViewById<LinearLayout>(R.id.EstudiantesMenuCategoria)
