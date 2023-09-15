@@ -59,7 +59,7 @@ class CollaboratorListFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.collaboratorList_recycler)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = CollaboratorListAdapter(collaboratorList, uuid!!)
+        val adapter = CollaboratorListAdapter(collaboratorList, uuid!!, requireActivity())
         recyclerView.adapter = adapter
 
         // Se agrega un listener para agregar elementos a la lista al hacer scroll al final

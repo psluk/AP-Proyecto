@@ -185,10 +185,16 @@
                     android:src="@drawable/compartir_icon"
                     android:layout_marginEnd="7dp"/>
                 <Button
+                    android:id="@+id/btnColaborador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Solicitar colaborador"
+                    />
+                <Button
                     android:id="@+id/btnInscribirse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Inscribirme"
+                    android:text="Inscribirme al evento"
                      />
             </LinearLayout>
 

@@ -188,7 +188,7 @@
         android:id="@+id/newProposalFragment"
         android:name="com.example.asociatec.NewProposalFragment"
         android:label="fragment_new_proposal"
-        tools:layout="@layout/fragment_new_proposal" />
+        tools:layout="@layout/fragment_new_proposal">
     </fragment>
     <fragment
         android:id="@+id/NewActivityFragment"
