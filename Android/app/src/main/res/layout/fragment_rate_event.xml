@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:paddingHorizontal="30dp"
+    tools:context=".RateEventFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/menuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calificar evento" />
+
+            <TextView
+                style="@style/menuHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_event_hint"
+                android:paddingHorizontal="5dp"/>
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Evento" />
+
+            <EditText
+                android:id="@+id/event_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:inputType="text"
+                android:padding="5dp"
+                tools:text="Semana de Computación"
+                android:enabled="false"
+                android:textStyle="italic" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Calificación" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:scaleY="0.8"
+                android:scaleX="0.8"/>
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentario" />
+
+            <EditText
+                android:id="@+id/comment_edit"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="textMultiLine"
+                android:gravity="start|top"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enviar calificación"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
