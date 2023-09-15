@@ -67,7 +67,7 @@ BEGIN
             RAISERROR('Ya existe un usuario con el correo "%s"', 16, 1, @IN_correoNueva);
         END;
 
-        IF (LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@itcr.ac.cr' AND LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@estudiantec.cr')
+        IF (LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@itcr.ac.cr' AND LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@estudiantec.cr' AND LTRIM(RTRIM(@IN_correoNueva)) NOT LIKE '%@tec.ac.cr')
         BEGIN
             RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr ni @itcr.ac.cr', 16, 1, @IN_correoNueva);
         END;
