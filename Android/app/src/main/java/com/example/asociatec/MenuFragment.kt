@@ -99,7 +99,7 @@ class MenuFragment : Fragment() {
             findNavController().navigate(R.id.action_MenuFragment_to_NewEventFragment)
         }
         eventosAsociaButton.setOnClickListener {
-            notImplementedWarning("Eventos Asocia")
+            findNavController().navigate(R.id.action_MenuFragment_to_EventsListFragment)
         }
         verPropuestasButton.setOnClickListener {
             notImplementedWarning("Ver propuestas")

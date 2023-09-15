@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/LoginFragment">
 
+    <!--Login-->
     <fragment
         android:id="@+id/LoginFragment"
         android:name="com.example.asociatec.LoginFragment"
@@ -18,11 +19,13 @@
             android:id="@+id/action_LoginFragment_to_SignUpFragment"
             app:destination="@id/SignUpFragment" />
     </fragment>
+    <!--SignUp-->
     <fragment
         android:id="@+id/SignUpFragment"
         android:name="com.example.asociatec.SignUpFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_signup" />
+    <!--Menu-->
     <fragment
         android:id="@+id/MenuFragment"
         android:name="com.example.asociatec.MenuFragment"
@@ -40,7 +43,11 @@
         <action
             android:id="@+id/action_MenuFragment_to_ForumFragment"
             app:destination="@id/ForumFragment"/>
+        <action
+            android:id="@+id/action_MenuFragment_to_EventsListFragment"
+            app:destination="@id/EventsListFragment"/>
     </fragment>
+    <!--Forum-->
     <fragment
         android:id="@+id/ForumFragment"
         android:name="com.example.asociatec.ForumFragment"
@@ -50,12 +57,14 @@
             android:id="@+id/action_ForumFragment_to_MenuFragment"
             app:destination="@id/MenuFragment" />
     </fragment>
+    <!--New Event-->
     <fragment
         android:id="@+id/NewEventFragment"
         android:name="com.example.asociatec.NewEventFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_new_event">
     </fragment>
+    <!--Calendar-->
     <fragment
         android:id="@+id/CalendarFragment"
         android:name="com.example.asociatec.CalendarFragment"
@@ -65,12 +74,28 @@
             android:id="@+id/action_CalendarFragment_to_EventDetailFragment"
             app:destination="@id/EventDetailFragment"/>
     </fragment>
+    <!--Event Detail-->
     <fragment
         android:id="@+id/EventDetailFragment"
         android:name="com.example.asociatec.EventDetailFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_event_detail">
     </fragment>
-
-
+    <!--Events List-->
+    <fragment
+        android:id="@+id/EventsListFragment"
+        android:name="com.example.asociatec.EventsListFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_events_list">
+        <action
+            android:id="@+id/action_EventsListFragment_to_ModifyEventFragment"
+            app:destination="@id/ModifyFragment"/>
+    </fragment>
+    <!--Modify Event-->
+    <fragment
+        android:id="@+id/ModifyFragment"
+        android:name="com.example.asociatec.ModifyEventFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_modify_event">
+    </fragment>
 </navigation>

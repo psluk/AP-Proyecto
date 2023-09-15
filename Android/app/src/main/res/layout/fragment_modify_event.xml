@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EventsListFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="30dp">
+            <!-- Titulo -->
+            <TextView
+                style="@style/menuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:text="Modificar evento"/>
+
+            <!-- Inputs -->
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Titulo" />
+            <EditText
+                android:id="@+id/titulo_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Digite un titulo para el evento"
+                android:inputType="text" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripción" />
+            <EditText
+                android:id="@+id/descripcion_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:gravity="start|top"
+                android:hint="Digite la descripción del evento" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recursos especiales" />
+            <EditText
+                android:id="@+id/especiales_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:gravity="start|top"
+                android:hint="Digite los recursos especiales" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lugar" />
+            <EditText
+                android:id="@+id/lugar_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Digite el lugar del evento"
+                android:inputType="text" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Capacidad" />
+            <EditText
+                android:id="@+id/capacidad_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Digite la capacidad de inscripciones"
+                android:inputType="number" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categoría" />
+            <Spinner
+                android:id="@+id/categoria_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de inicio" />
+            <EditText
+                android:id="@+id/fechaInicio_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Seleccione la fecha de inicio"
+                android:clickable="true"
+                android:focusable="false" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha de finalización" />
+            <EditText
+                android:id="@+id/fechaFin_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Seleccione la fecha de finalización"
+                android:clickable="true"
+                android:focusable="false"/>
+            <Button
+                android:id="@+id/btnVerActividades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Ver Actividades"
+                android:backgroundTint="#39cc85"
+                android:layout_marginTop="30dp" />
+            <Button
+                android:id="@+id/btnEliminarEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Eliminar Evento"
+                android:backgroundTint="#ab0505" />
+            <Button
+                android:id="@+id/btnModificarEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Modificar"
+
+                android:layout_marginBottom="30dp" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
