@@ -62,7 +62,8 @@ class OwnRegistrationAdapter(private val elements: List<RegistrationItem>, priva
             }
 
             if (element.confirmed) {
-                item.findViewById<Button>(R.id.buttonQrCode).visibility = View.VISIBLE
+                //item.findViewById<Button>(R.id.buttonQrCode).visibility = View.VISIBLE
+                item.findViewById<Button>(R.id.buttonQrCode).visibility = View.GONE
             } else {
                 item.findViewById<Button>(R.id.buttonQrCode).visibility = View.GONE
             }
@@ -112,6 +113,15 @@ class OwnRegistrationAdapter(private val elements: List<RegistrationItem>, priva
                 itemView.findNavController()
                     .navigate(R.id.action_OwnRegistrationFragment_to_RateEventFragment, bundle)
             }
+
+            itemView.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("uuid", element.eventId)
+                bundle.putBoolean("registered", true)
+                itemView.findNavController()
+                    .navigate(R.id.action_OwnRegistrationFragment_to_EventDetailFragment, bundle)
+            }
+
         }
 
         private fun confirmarInscripcion(view: View, eventId: String) {

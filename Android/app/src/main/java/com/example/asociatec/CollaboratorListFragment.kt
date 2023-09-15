@@ -83,7 +83,7 @@ class CollaboratorListFragment : Fragment() {
 
                 requireActivity().runOnUiThread {
                     if (collaboratorList.isNullOrEmpty()) {
-                        val message = "No hay actividades en este evento"
+                        val message = "No hay colaboradores en este evento"
                         requireActivity().runOnUiThread {
                             AlertDialog.Builder(requireContext())
                                 .setTitle("Sin resultados")

@@ -149,7 +149,7 @@ router.post("/agregar", (req, res) => {
  * Modifica el estado de una propuesta una propuesta
  */
 router.put("/modificar", (req, res) => {
-    if (!estaAutenticado(req, true, true, carnet)) {
+    if (!estaAutenticado(req, true, true)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
@@ -157,7 +157,7 @@ router.put("/modificar", (req, res) => {
     const request = pool.request();
 
     try {
-        request.input("IN_propuesto", sqlcon.UniqueIdentifier, propuesta);
+        request.input("IN_propuesta", sqlcon.UniqueIdentifier, propuesta);
         request.input("IN_estado", sqlcon.VarChar(32), estado);
     } catch (error) {
         return res.status(400).send({ mensaje: "Datos inválidos" });

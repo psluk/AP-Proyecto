@@ -33,7 +33,7 @@ BEGIN
 		
 		IF (@usarIDEstudiante IS NULL)
         BEGIN
-            RAISERROR('El carnet "%s" no existe.', 16, 1, @IN_carnet)
+            RAISERROR('El carnet "%d" no existe.', 16, 1, @IN_carnet)
         END;
     
 		IF (LTRIM(RTRIM(@IN_identificadorEvento)) = '')
@@ -72,7 +72,7 @@ BEGIN
 		AND Eve.[uuid] = @IN_identificadorEvento)
 		BEGIN 
             --La solicitud ya existe y ya se colaborador
-			RAISERROR('El estudiante "%s" ya es colaborador', 16, 1, @IN_carnet);
+			RAISERROR('El estudiante ya es colaborador', 16, 1, @IN_carnet);
         END;
 
         --revisamos si ya hay una solicitud pendiente
@@ -90,7 +90,7 @@ BEGIN
 		AND Eve.[uuid] = @IN_identificadorEvento)
 		BEGIN 
             --La solicitud ya existe
-			RAISERROR('El estudiante "%s" ya tiene una solicitud pendiente', 16, 1, @IN_carnet);
+			RAISERROR('El estudiante ya tiene una solicitud pendiente', 16, 1, @IN_carnet);
         END;
 
 		-- INICIO DE LA TRANSACCI�N

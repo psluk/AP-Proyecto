@@ -45,7 +45,7 @@
                 android:id="@+id/association_progressBar"/>
 
             <Spinner
-                android:id="@+id/association_spinner"
+                android:id="@+id/proposal_spinner"
                 android:layout_height="50dp"
                 android:layout_width="match_parent"
                 android:visibility="gone"/>

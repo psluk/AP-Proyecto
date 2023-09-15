@@ -46,7 +46,7 @@ class NewProposalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val progressBar = view.findViewById<ProgressBar>(R.id.association_progressBar)
-        val associationSpinner = view.findViewById<Spinner>(R.id.association_spinner)
+        val associationSpinner = view.findViewById<Spinner>(R.id.proposal_spinner)
 
         view.findViewById<Button>(R.id.buttonSubmit).setOnClickListener {
             val title = view.findViewById<EditText>(R.id.title_edit).text.toString()

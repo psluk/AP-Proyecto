@@ -34,6 +34,7 @@ class EventDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private var uuid: String? = null
     private var puedeIns:Boolean = true
+    private var registered:Boolean = false
     private lateinit var apiRequest: ApiRequest
     private lateinit var recyclerView: RecyclerView
     private lateinit var activityList: MutableList<ActivityItem>
@@ -51,6 +52,7 @@ class EventDetailFragment : Fragment() {
 
         arguments?.let {
             uuid = it.getString("uuid")
+            registered = it.getBoolean("registered", false)
         }
         return binding.root
     }
@@ -75,6 +77,7 @@ class EventDetailFragment : Fragment() {
         val asocia = view.findViewById<TextView>(R.id.AsociaEvento)
         val btnInscribirse = view.findViewById<Button>(R.id.btnInscribirse)
         val btnColaborador = view.findViewById<Button>(R.id.btnColaborador)
+        val btnInteres = view.findViewById<Button>(R.id.btnInteres)
 
         if(user.userType() != "Estudiante"){
             btnInscribirse.visibility = View.GONE
@@ -108,6 +111,9 @@ class EventDetailFragment : Fragment() {
                 val asociaIN = valores.get("asociacion").asString
                 puedeIns = valores.get("puedeInscribirse").asBoolean
 
+                if (registered) {
+                    puedeIns = false
+                }
 
                 requireActivity().runOnUiThread {
                     titulo.text = tituloIN
@@ -219,7 +225,7 @@ class EventDetailFragment : Fragment() {
                             .setMessage("Se ha inscrito al evento")
                             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                             .show()
-                        findNavController().navigateUp()
+                        findNavController().navigate(R.id.action_EventDetailFragment_to_OwnRegistrationFragment)
                     }
                 } else {
                     if (user.isLoggedIn()) {
@@ -230,7 +236,56 @@ class EventDetailFragment : Fragment() {
                                 .setMessage(responseString)
                                 .setPositiveButton("OK") { dialog, _ ->
                                     dialog.dismiss()
-                                    findNavController().navigateUp()
+                                }
+                                .show()
+                        }
+                    } else {
+                        // La sesión expiró
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle(R.string.session_timeout_title)
+                                .setMessage(R.string.session_timeout)
+                                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                                .show()
+                            findNavController().navigate(R.id.LoginFragment)
+                        }
+                    }
+                }
+            }
+        }
+
+        btnInteres.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                val url = "https://asociatec.azurewebsites.net/api/interes/agregar"
+
+                val requestBody =
+                    ("{\"evento\": \"${uuid}\"," +
+                            "\"carnet\":\"${user.getStudentNumber()}\"}").toRequestBody(
+                        "application/json".toMediaTypeOrNull()
+                    )
+
+                val (responseStatus, responseString) = apiRequest.postRequest(url,requestBody)
+
+                // Se quita el popup de "Cargando"
+                progressDialog.dismiss()
+
+                if (responseStatus) {
+                    requireActivity().runOnUiThread {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Éxito")
+                            .setMessage("Se ha marcado el evento como evento de interés")
+                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                            .show()
+                    }
+                } else {
+                    if (user.isLoggedIn()) {
+                        // Ocurrió un error al hacer la consulta
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Error")
+                                .setMessage(responseString)
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
                                 }
                                 .show()
                         }

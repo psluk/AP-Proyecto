@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Titulo:"
+                android:text="Título:"
                 style="@style/SectionTitle" />
 
             <TextView
@@ -171,31 +171,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <ImageView
+                android:id="@+id/EventItemImage"
+                style="@style/MenuItemImage"
+                android:src="@drawable/compartir_icon"
+                android:layout_marginEnd="7dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"/>
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:orientation="vertical"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="30dp">
 
-                <ImageView
-                    android:id="@+id/EventItemImage"
-                    style="@style/MenuItemImage"
-                    android:src="@drawable/compartir_icon"
-                    android:layout_marginEnd="7dp"/>
+
                 <Button
                     android:id="@+id/btnColaborador"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Solicitar colaborador"
                     />
                 <Button
                     android:id="@+id/btnInscribirse"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Inscribirme al evento"
                      />
+                <Button
+                    android:id="@+id/btnInteres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Marcarse como interesado"
+                    />
             </LinearLayout>
 
 

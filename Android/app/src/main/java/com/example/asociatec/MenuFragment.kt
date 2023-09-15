@@ -102,7 +102,7 @@ class MenuFragment : Fragment() {
             findNavController().navigate(R.id.action_MenuFragment_to_EventsListFragment)
         }
         verPropuestasButton.setOnClickListener {
-            notImplementedWarning("Ver propuestas")
+            findNavController().navigate(R.id.action_MenuFragment_to_proposalListFragment)
         }
         crearPropuestaButton.setOnClickListener {
             findNavController().navigate(R.id.action_MenuFragment_to_NewProposalFragment)
@@ -135,6 +135,7 @@ class MenuFragment : Fragment() {
         if(user.userType() != "Asociación" && user.userType() != "Administrador" ){
             agregarEventoButton.visibility = View.GONE
             verInscripcionesButton.visibility = View.GONE
+            verPropuestasButton.visibility = View.GONE
         }
 
         // Si no se ha revisado el estado de la sesión desde que se abrió la aplicación,

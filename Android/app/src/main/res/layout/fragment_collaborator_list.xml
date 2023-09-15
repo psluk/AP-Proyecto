@@ -24,7 +24,7 @@
                 style="@style/menuTitle"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="5dp"
-                android:text="Lista de eventos" />
+                android:text="Lista de colaboradores" />
 
             <Button
                 android:id="@+id/btnVerSolicitudes"
