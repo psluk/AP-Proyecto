@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_ForumFragment_to_MenuFragment"
             app:destination="@id/MenuFragment" />
+        <action
+            android:id="@+id/action_ForumFragment_to_MessageFragment"
+            app:destination="@id/MessageFragment" />
     </fragment>
     <fragment
         android:id="@+id/NewEventFragment"
@@ -62,6 +65,17 @@
         android:name="com.example.asociatec.CalendarFragment"
         android:label="@string/asociatec_label"
         tools:layout="@layout/fragment_calendar">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/MessageFragment"
+        android:name="com.example.asociatec.MessageFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_messages">
+        <action
+            android:id="@+id/action_MessageFragment_to_ForumFragment"
+            app:destination="@id/ForumFragment" />
 
     </fragment>
 
