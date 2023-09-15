@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/verCrearMensaje"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/MenuItem"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    style="@style/MenuItem">
 
     <TextView
         android:id="@+id/TextTitulo"
         style="@style/menuTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:text="Crear Mensaje" />
+        android:text="Crear Mensaje"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toTopOf="@id/buttonCrearMensaje"
         app:layout_constraintTop_toBottomOf="@+id/TextTitulo"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="8dp">
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +38,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/editTextTag1"
+                android:id="@+id/editTextContenido"
                 style="@style/MenuItemText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

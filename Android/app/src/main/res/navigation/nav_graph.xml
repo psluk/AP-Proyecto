@@ -71,6 +71,21 @@
         <action
             android:id="@+id/action_ForumFragment_to_MessageFragment"
             app:destination="@id/MessageFragment" />
+        <action
+            android:id="@+id/action_ForumFragment_to_AddDiscutionFragment"
+            app:destination="@id/AddDiscutionFragment" />
+    </fragment>
+
+    <!--Add Discution  -->
+    <fragment
+        android:id="@+id/AddDiscutionFragment"
+        android:name="com.example.asociatec.AddDiscutionFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_discution_add">
+        <action
+            android:id="@+id/action_AddDiscutionFragment_to_ForumFragment"
+            app:destination="@id/ForumFragment" />
+
     </fragment>
     <!--New Event-->
     <fragment
@@ -102,6 +117,7 @@
             app:popUpToInclusive="false"/>
     </fragment>
 
+    <!--Message  -->
     <fragment
         android:id="@+id/MessageFragment"
         android:name="com.example.asociatec.MessageFragment"
@@ -110,7 +126,22 @@
         <action
             android:id="@+id/action_MessageFragment_to_ForumFragment"
             app:destination="@id/ForumFragment" />
+        <action
+            android:id="@+id/action_MessageFragment_to_AddMessageFragment"
+            app:destination="@id/AddMessageFragment" />
     </fragment>
+
+    <!--Add Message  -->
+    <fragment
+        android:id="@+id/AddMessageFragment"
+        android:name="com.example.asociatec.AddMessageFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_message_add">
+    <action
+        android:id="@+id/action_AddMessageFragment_to_MessageFragment"
+        app:destination="@id/MessageFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/StudentListFragment"
         android:name="com.example.asociatec.StudentListFragment"

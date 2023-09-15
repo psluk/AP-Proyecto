@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.findNavController
 import com.example.asociatec.api.ApiRequest
 import com.example.asociatec.databinding.FragmentForumBinding
 import com.example.asociatec.user.User
@@ -19,6 +20,8 @@ import com.google.gson.Gson
 import com.example.asociatec.data.Conversacion
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.concurrent.thread
 
 class ForumFragment : Fragment() {
 
@@ -31,10 +34,6 @@ class ForumFragment : Fragment() {
     private lateinit var conversaciones: MutableList<Conversacion>
     private val elementsPerPage = 10
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,17 +61,17 @@ class ForumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Thread.sleep(1000)
-
         recyclerView = view.findViewById(R.id.recyclerconversacion)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter= ForumAdapter(conversaciones, requireContext())
         recyclerView.adapter = adapter
 
-        adapter.updatelista(conversaciones)
-        adapter.notifyDataSetChanged()
+        val btnCrearConversacion: FloatingActionButton = view.findViewById(R.id.addConversacion_btn)
 
+        btnCrearConversacion.setOnClickListener{
 
+            view.findNavController().navigate(R.id.action_ForumFragment_to_AddDiscutionFragment)
+        }
 
         binding.buttonBuscar.setOnClickListener {
             val editTextitulo = view.findViewById<EditText>(R.id.editTextforo)
@@ -112,6 +111,9 @@ class ForumFragment : Fragment() {
                 }
             }
         }
+        Thread.sleep(1000)
+        adapter.updatelista(conversaciones)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

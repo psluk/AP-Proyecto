@@ -7,18 +7,19 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/AgregarConversacion_btn"
+        android:id="@+id/addConversacion_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="Add Button"
-        app:backgroundTint="@color/blue_500"
+        app:backgroundTint="@color/blue_200"
         app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:pressedTranslationZ="12dp"
-        app:srcCompat="@drawable/agregar_propuesta_icon" />
+        app:srcCompat="@drawable/agregar_propuesta_icon"
+        />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
