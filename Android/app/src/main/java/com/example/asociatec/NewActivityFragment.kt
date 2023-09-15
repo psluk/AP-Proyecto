@@ -14,9 +14,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
-import com.example.asociatec.databinding.FragmentModifyActivityBinding
+import com.example.asociatec.databinding.FragmentNewActivityBinding
 import com.example.asociatec.api.ApiRequest
+import com.example.asociatec.databinding.FragmentNewEventBinding
 import com.example.asociatec.user.User
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -27,34 +27,30 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
 import com.example.asociatec.misc.LocalDate
-import com.google.gson.JsonObject
 
-class ModifyActivityFragment : Fragment() {
+class NewActivityFragment : Fragment() {
 
-    private var _binding: FragmentModifyActivityBinding? = null
+    private var _binding: FragmentNewEventBinding? = null
+    private var uuid: String? = null
     private lateinit var apiRequest: ApiRequest
     private val binding get() = _binding!!
     private val gson = Gson()
     private lateinit var user: User
-    private var uuid: String? = ""
-    private var uuidE: String? =""
-    private var selectedCategory: String? = null
     private var startCalendar = Calendar.getInstance()
     private var endCalendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
+        // Inflate the layout for this fragment
         apiRequest = ApiRequest.getInstance(requireContext())
-        _binding = FragmentModifyActivityBinding.inflate(inflater, container, false)
+        _binding = FragmentNewEventBinding.inflate(inflater, container, false)
         user = User.getInstance(requireContext())
         arguments?.let {
             uuid = it.getString("uuid")
-            uuidE= it.getString("uuide")
         }
-        return binding.root
-
+        return inflater.inflate(R.layout.fragment_new_activity, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,8 +58,6 @@ class ModifyActivityFragment : Fragment() {
 
         val startBox= view.findViewById<EditText>(R.id.fechaInicio_edit)
         val endBox= view.findViewById<EditText>(R.id.fechaFin_edit)
-        val nameBox = view.findViewById<EditText>(R.id.nombre_edit)
-        val placeBox = view.findViewById<EditText>(R.id.lugar_edit)
 
         startBox.setOnClickListener {
             onClickDatePicker(startBox, startCalendar)
@@ -73,14 +67,13 @@ class ModifyActivityFragment : Fragment() {
             onClickDatePicker(endBox, endCalendar)
         }
 
-        val modificarButton  = view.findViewById<Button>(R.id.btnModificarActividad)
-        val eliminarButton  = view.findViewById<Button>(R.id.btnEliminarActividad)
-
-        modificarButton.setOnClickListener {
+        val agregarButton  = view.findViewById<Button>(R.id.btnAgregarActividad)
+        agregarButton.setOnClickListener {
             var fieldsOk = true
             var message = ""
             var capacity = 1
-
+            val nameBox = view.findViewById<EditText>(R.id.nombre_edit)
+            val placeBox = view.findViewById<EditText>(R.id.lugar_edit)
 
             if(nameBox.text.toString().isNullOrEmpty()){
                 message = "Debe insertar un titulo"
@@ -102,8 +95,6 @@ class ModifyActivityFragment : Fragment() {
                 message = "La fecha de finalización no puede ser antes de la fecha de inicio"
                 fieldsOk = false
             }
-            else{
-            }
             if (!fieldsOk) {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Datos inválidos")
@@ -118,7 +109,7 @@ class ModifyActivityFragment : Fragment() {
                 progressDialog.show()
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    val url = "https://asociatec.azurewebsites.net/api/actividades/modificar"
+                    val url = "https://asociatec.azurewebsites.net/api/actividades/agregar"
 
                     val requestBody =
                         ("{\"nombre\": \"${nameBox.text}\"," +
@@ -129,7 +120,7 @@ class ModifyActivityFragment : Fragment() {
                             "application/json".toMediaTypeOrNull()
                         )
 
-                    val (responseStatus, responseString) = apiRequest.putRequest(url, requestBody)
+                    val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
 
                     progressDialog.dismiss()
 
@@ -137,7 +128,7 @@ class ModifyActivityFragment : Fragment() {
                         requireActivity().runOnUiThread {
                             AlertDialog.Builder(requireContext())
                                 .setTitle("Éxito")
-                                .setMessage("Actividad modificada exitosamente")
+                                .setMessage("Actividad agregada exitosamente")
                                 .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                                 .show()
                             findNavController().navigateUp()
@@ -171,110 +162,6 @@ class ModifyActivityFragment : Fragment() {
             }
 
         }
-
-        eliminarButton.setOnClickListener {
-            GlobalScope.launch(Dispatchers.IO) {
-                val url = "https://asociatec.azurewebsites.net/api/actividades/eliminar?uuid=$uuid"
-
-                val (responseStatus, responseString) = apiRequest.deleteRequest(url)
-
-                if (responseStatus) {
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Éxito")
-                            .setMessage("Actividad eliminada exitosamente")
-                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                            .show()
-                        findNavController().navigateUp()
-                    }
-
-                } else {
-                    if (user.isLoggedIn()) {
-                        // Ocurrió un error al hacer la consulta
-                        requireActivity().runOnUiThread {
-                            AlertDialog.Builder(requireContext())
-                                .setTitle("Error")
-                                .setMessage(responseString)
-                                .setPositiveButton("OK") { dialog, _ ->
-                                    dialog.dismiss()
-                                }
-                                .show()
-                        }
-                    } else {
-                        // La sesión expiró
-                        requireActivity().runOnUiThread {
-                            AlertDialog.Builder(requireContext())
-                                .setTitle(R.string.session_timeout_title)
-                                .setMessage(R.string.session_timeout)
-                                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                                .show()
-                            findNavController().navigate(R.id.LoginFragment)
-                        }
-                    }
-                }
-            }
-        }
-
-
-        // Se abre un popup de "Cargando"
-        val progressDialog = ProgressDialog(requireContext())
-        progressDialog.setMessage("Cargando...")
-        progressDialog.setCancelable(false)
-        progressDialog.show()
-
-        GlobalScope.launch(Dispatchers.IO) {
-            val url = "https://asociatec.azurewebsites.net/api/actividades/detalles?uuid=$uuid"
-
-            println(url)
-            val (responseStatus, responseString) = apiRequest.getRequest(url)
-
-            // Se quita el popup de "Cargando"
-            progressDialog.dismiss()
-
-            if (responseStatus) {
-                val json = gson.fromJson(responseString, JsonArray::class.java)
-                val valores = (json[0] as JsonObject)
-
-                val nombreIN = valores.get("Nombre").asString
-                val lugarIN = valores.get("lugar").asString
-                val fechaInicioIN = valores.get("fechaInicio").asString
-                val fechaFinIN = valores.get("fechaFin").asString
-
-                requireActivity().runOnUiThread {
-                    nameBox.setText(nombreIN)
-                    placeBox.setText(lugarIN)
-                    startBox.setText(LocalDate.date(fechaInicioIN,true,true))
-                    endBox.setText(LocalDate.date(fechaFinIN,true,true))
-                    startCalendar.time= LocalDate.parseIso(fechaInicioIN)
-                    endCalendar.time= LocalDate.parseIso(fechaFinIN)
-                }
-            } else {
-                if (user.isLoggedIn()) {
-                    // Ocurrió un error al hacer la consulta
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Error")
-                            .setMessage(responseString)
-                            .setPositiveButton("OK") { dialog, _ ->
-                                dialog.dismiss()
-                                findNavController().navigateUp()
-                            }
-                            .show()
-                    }
-                } else {
-                    // La sesión expiró
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle(R.string.session_timeout_title)
-                            .setMessage(R.string.session_timeout)
-                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                            .show()
-                        findNavController().navigate(R.id.LoginFragment)
-                    }
-                }
-            }
-        }
-
     }
 
     // Función para el datepicker de la fecha de inicio

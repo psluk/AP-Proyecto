@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ActivityListFragment">
+    tools:context=".CollaboratorListFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,25 +24,18 @@
                 style="@style/menuTitle"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="5dp"
-                android:text="Lista de actividades" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seleccione la actividad que desee modificar"
-                android:layout_marginBottom="15dp"
-                android:textSize="13sp"
-                android:textColor="@color/black" />
+                android:text="Lista de eventos" />
 
             <Button
-                android:id="@+id/btnAgregarActividad"
+                android:id="@+id/btnVerSolicitudes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Agregar actividad"
+                android:text="Ver solicitudes"
                 android:layout_marginBottom="30dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activityList_recycler"
+                android:id="@+id/collaboratorList_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

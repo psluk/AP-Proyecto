@@ -124,28 +124,66 @@
                 android:hint="Seleccione la fecha de finalización"
                 android:clickable="true"
                 android:focusable="false"/>
-            <Button
-                android:id="@+id/btnVerActividades"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Ver Actividades"
-                android:backgroundTint="#1ab068"
-                android:layout_marginTop="30dp" />
-            <Button
-                android:id="@+id/btnEliminarEvento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Eliminar Evento"
-                android:backgroundTint="@color/red" />
+
             <Button
                 android:id="@+id/btnModificarEvento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Modificar"
-                android:layout_marginBottom="30dp" />
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/green"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/btnVerActividades"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Ver Actividades" />
+
+                <Button
+                    android:id="@+id/btnInforme"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Ver informe"
+                    android:backgroundTint="#09a0ba" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp" >
+                <Button
+                    android:id="@+id/btnEliminarEvento"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Eliminar Evento"
+                    android:backgroundTint="@color/red" />
+
+                <Button
+                    android:id="@+id/btnColaboradoresEvento"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:text="Colaboradores"
+                    android:backgroundTint="#e82c3f" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

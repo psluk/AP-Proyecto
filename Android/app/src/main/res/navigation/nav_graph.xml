@@ -160,6 +160,9 @@
         <action
             android:id="@+id/action_ModifyEventFragment_to_ActivityListFragment"
             app:destination="@id/ActivityListFragment"/>
+        <action
+            android:id="@+id/action_ModifyEventFragment_to_CollaboratorListFragment"
+            app:destination="@id/CollaboratorListFragment"/>
     </fragment>
     <!--Activity List-->
     <fragment
@@ -170,6 +173,9 @@
         <action
             android:id="@+id/action_ActivityListFragment_to_ModifyActivityFragment"
             app:destination="@id/ModifyActivityFragment"/>
+        <action
+            android:id="@+id/action_ActivityListFragment_to_NewActivityFragment"
+            app:destination="@id/NewActivityFragment"/>
     </fragment>
     <!--Modify Activity-->
     <fragment
@@ -183,4 +189,17 @@
         android:name="com.example.asociatec.NewProposalFragment"
         android:label="fragment_new_proposal"
         tools:layout="@layout/fragment_new_proposal" />
+    </fragment>
+    <fragment
+        android:id="@+id/NewActivityFragment"
+        android:name="com.example.asociatec.NewActivityFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_new_activity">
+    </fragment>
+    <fragment
+        android:id="@+id/CollaboratorListFragment"
+        android:name="com.example.asociatec.CollaboratorListFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_collaborator_list">
+    </fragment>
 </navigation>
