@@ -40,6 +40,12 @@
         <action
             android:id="@+id/action_MenuFragment_to_ForumFragment"
             app:destination="@id/ForumFragment"/>
+        <action
+            android:id="@+id/action_MenuFragment_to_StudentListFragment"
+            app:destination="@id/StudentListFragment" />
+        <action
+            android:id="@+id/action_MenuFragment_to_OwnRegistrationFragment"
+            app:destination="@id/OwnRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/ForumFragment"
@@ -52,12 +58,6 @@
         <action
             android:id="@+id/action_ForumFragment_to_MessageFragment"
             app:destination="@id/MessageFragment" />
-        <action
-            android:id="@+id/action_MenuFragment_to_StudentListFragment"
-            app:destination="@id/StudentListFragment" />
-        <action
-            android:id="@+id/action_MenuFragment_to_OwnRegistrationFragment"
-            app:destination="@id/OwnRegistrationFragment" />
     </fragment>
     <fragment
         android:id="@+id/NewEventFragment"
