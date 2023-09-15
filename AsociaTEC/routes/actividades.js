@@ -168,7 +168,7 @@ router.put("/modificar", (req, res) => {
         return res.status(400).send({ mensaje: "Datos invalidos" });
     }
 
-    request.execute("AsociaTEC_SP_Actividades_Agregar", (error, result) => {
+    request.execute("AsociaTEC_SP_Actividades_Modificar", (error, result) => {
         if (error) {
             manejarError(res, error);
         } else {
