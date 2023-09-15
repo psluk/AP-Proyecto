@@ -8,11 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.asociatec.R
-import com.example.asociatec.data.DateItem
-import com.example.asociatec.misc.LocalDate
 import com.example.asociatec.data.Conversacion
 
 class ForumAdapter(private var elements: MutableList<Conversacion>,private val context: Context) :
@@ -20,7 +16,7 @@ class ForumAdapter(private var elements: MutableList<Conversacion>,private val c
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.discutions_template, parent, false)
+            .inflate(R.layout.discution_item, parent, false)
         return ViewHolder(view)
     }
 

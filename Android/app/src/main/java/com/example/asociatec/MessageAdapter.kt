@@ -1,18 +1,12 @@
 package com.example.asociatec
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.asociatec.R
-import com.example.asociatec.data.DateItem
-import com.example.asociatec.misc.LocalDate
 import com.example.asociatec.data.Mensaje
 
 class MessageAdapter(private var elements: List<Mensaje>, private val context: Context) :
@@ -20,7 +14,7 @@ class MessageAdapter(private var elements: List<Mensaje>, private val context: C
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.message_template, parent, false)
+            .inflate(R.layout.message_item, parent, false)
         return ViewHolder(view)
     }
 

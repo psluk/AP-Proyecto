@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verCrearDiscusion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/MenuItem"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/menuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="Crear Discusión"/>
+
+            <TextView
+                style="@style/MenuItemText"
+                android:text="Nombre de la discusión:"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <EditText
+                android:id="@+id/editTextTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="7dp"
+                android:ems="10"
+                style="@style/MenuItemText"
+                android:hint="Titulo de la discusión (requerido)"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                style="@style/MenuItemText"
+                android:text="@string/nombre_del_tag"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <EditText
+                android:id="@+id/editTextTag1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="7dp"
+                android:ems="10"
+                style="@style/MenuItemText"
+                android:hint="Titulo de la discusión"
+                android:inputType="textEmailAddress" />
+            <TextView
+                style="@style/MenuItemText"
+                android:text="@string/nombre_del_tag"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <EditText
+                android:id="@+id/editTextTag2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="7dp"
+                android:ems="10"
+                style="@style/MenuItemText"
+                android:hint="Titulo de la discusión"
+                android:inputType="textEmailAddress" />
+            <TextView
+                style="@style/MenuItemText"
+                android:text="@string/nombre_del_tag"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="5dp"/>
+
+
+            <EditText
+                android:id="@+id/editTextTag3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="7dp"
+                android:ems="10"
+                style="@style/MenuItemText"
+                android:hint="Titulo de la discusión"
+                android:inputType="textEmailAddress" />
+
+            <Button
+                android:id="@+id/buttonCrearDiscusion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
