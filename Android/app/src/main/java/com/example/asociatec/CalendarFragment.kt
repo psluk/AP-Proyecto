@@ -74,7 +74,7 @@ class  CalendarFragment : Fragment() {
                     if (dateItemList.isNotEmpty() && lastVisibleItemPosition == totalItemCount - 1 && completeDateItemList.size > dateItemList.size) {
                         // Se cargan más elementos
                         val endIndex =
-                            (totalItemCount + elementsPerPage).coerceAtMost(dateItemList.size)
+                            (totalItemCount + elementsPerPage).coerceAtMost(completeDateItemList.size)
 
                         dateItemList.addAll(
                             completeDateItemList.subList(

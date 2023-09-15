@@ -1,0 +1,45 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ActivityItem"
+    style="@style/MenuItem"
+    android:paddingVertical="8dp">
+
+    <TextView
+        android:id="@+id/ActivityTitleItemText"
+        app:layout_constraintBottom_toTopOf="@+id/ActivityPlaceItemText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/MenuItemText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Nombre del evento"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/ActivityPlaceItemText"
+        app:layout_constraintBottom_toTopOf="@+id/ActivityStartItemText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ActivityTitleItemText"
+        style="@style/MenuItemText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Lugar"
+        android:textStyle="normal"/>
+    <TextView
+        android:id="@+id/ActivityStartItemText"
+        app:layout_constraintBottom_toTopOf="@+id/ActivityEndItemText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ActivityPlaceItemText"
+        style="@style/MenuItemText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Fecha de inicio"
+        android:textStyle="normal"/>
+    <TextView
+        android:id="@+id/ActivityEndItemText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ActivityStartItemText"
+        style="@style/MenuItemText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Fecha de finalización"
+        android:textStyle="normal"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
