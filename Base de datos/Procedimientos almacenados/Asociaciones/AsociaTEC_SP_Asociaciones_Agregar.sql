@@ -66,9 +66,9 @@ BEGIN
             RAISERROR('No se brindó una contraseña', 16, 1)
         END;
 		--validacion del dominio del correo
-        IF (@IN_correo NOT LIKE '%@estudiantec.cr' OR LTRIM(RTRIM(@IN_correo)) = '@estudiantec.cr')
+        IF (LTRIM(RTRIM(@IN_correo)) NOT LIKE '%@itcr.ac.cr' AND LTRIM(RTRIM(@IN_correo)) NOT LIKE '%@estudiantec.cr' AND LTRIM(RTRIM(@IN_correo)) NOT LIKE '%@tec.ac.cr')
         BEGIN
-            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr', 16, 1, @IN_correo);
+            RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr ni @itcr.ac.cr', 16, 1, @IN_correo);
         END;
 
 		--validacion de que no exista el usuario
@@ -100,10 +100,11 @@ BEGIN
 		            INNER JOIN [dbo].[Sedes] S
 		            	ON S.[id] = C.[idSede]
 		            WHERE C.[id] = LTRIM(RTRIM(@usarIDCarrera))
-		            AND S.[id] = LTRIM(RTRIM(@usarIDSede)))
+		            AND S.[id] = LTRIM(RTRIM(@usarIDSede))
+                    AND A.[eliminado] = 0)
 
         BEGIN
-			RAISERROR('ya existe una asociacion con los codigos: (carrera: "%s"), (Sede: "%s")', 16, 1,@IN_codigoCarrera, @IN_codigoSede)
+			RAISERROR('Ya existe una asociación para esta carrera en esta sede', 16, 1)
 		END;
 
 

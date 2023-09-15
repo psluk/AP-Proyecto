@@ -34,4 +34,11 @@
     <string name="titulo">Titulo</string>
     <string name="tag">tag</string>
     <string name="contenido">contenido</string>
+    <string name="save_changes_label">Guardar cambios</string>
+    <string name="delete_student_label">Eliminar estudiante</string>
+    <string name="update_password_placeholder">Digite un valor si desea actualizarla</string>
+    <string name="modify_student_title">Editar estudiante</string>
+    <string name="description_label">Descripción</string>
+    <string name="delete_label">Eliminar</string>
+    <string name="own_registrarions_hint">Aquí puede ver sus inscripciones pasadas y futuras. Recuerde que puede confirmar su asistencia en las 24 horas previas al inicio del evento. También puede enviar retroalimentación sobre sus eventos confirmados una vez que hayan finalizado.</string>
 </resources>

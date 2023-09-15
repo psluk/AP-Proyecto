@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AssociationSignUpFragment">
+    android:layout_height="wrap_content"
+    tools:context=".ModifyStudentFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,6 +12,12 @@
         android:layout_marginVertical="10dp"
         android:orientation="vertical"
         android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/menuTitle"
+            android:text="@string/modify_student_title"/>
 
         <TextView
             style="@style/FilterLabel"
@@ -30,28 +36,40 @@
             style="@style/FilterLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/description_label" />
+            android:text="@string/signup_stud_lastname1_label" />
 
         <EditText
-            android:id="@+id/description_edit"
+            android:id="@+id/lastname1_edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="@string/edit_text_placeholder"
-            android:inputType="textMultiLine"
-            android:gravity="start|top" />
+            android:inputType="text" />
 
         <TextView
             style="@style/FilterLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Teléfono" />
+            android:text="@string/signup_stud_lastname2_label" />
 
         <EditText
-            android:id="@+id/phone_edit"
+            android:id="@+id/lastname2_edit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/edit_text_placeholder"
-            android:inputType="phone" />
+            android:inputType="text" />
+
+        <TextView
+            style="@style/FilterLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_student_number_label" />
+
+        <EditText
+            android:id="@+id/student_number_edit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/edit_text_placeholder"
+            android:inputType="number" />
 
         <TextView
             style="@style/FilterLabel"
@@ -96,7 +114,7 @@
             android:text="@string/signup_student_email_label" />
 
         <EditText
-            android:id="@+id/email_edit"
+            android:id="@+id/student_email_edit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="@string/edit_text_placeholder"
@@ -109,21 +127,34 @@
             android:text="@string/signup_student_password_label" />
 
         <EditText
-            android:id="@+id/password_edit"
+            android:id="@+id/student_password_edit"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="@string/edit_text_placeholder"
+            android:hint="@string/update_password_placeholder"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/buttonSignUp"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/registrarse"
+            android:orientation="vertical"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp" />
+            android:layout_marginBottom="30dp">
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_changes_label" />
+
+            <Button
+                android:id="@+id/buttonDelete"
+                android:backgroundTint="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_student_label"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
 
 </ScrollView>
