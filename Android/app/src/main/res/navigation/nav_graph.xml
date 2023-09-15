@@ -127,8 +127,16 @@
             app:destination="@id/OwnRegistrationFragment"
             app:popUpTo="@+id/MenuFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_OwnRegistrationFragment_to_RateEventFragment"
+            app:destination="@id/RateEventFragment"/>
     </fragment>
-
+    <fragment
+        android:id="@+id/RateEventFragment"
+        android:name="com.example.asociatec.RateEventFragment"
+        android:label="@string/asociatec_label"
+        tools:layout="@layout/fragment_rate_event">
+    </fragment>
 
     <!--Events List-->
     <fragment

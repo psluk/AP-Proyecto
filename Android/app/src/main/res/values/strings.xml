@@ -41,4 +41,5 @@
     <string name="description_label">Descripción</string>
     <string name="delete_label">Eliminar</string>
     <string name="own_registrarions_hint">Aquí puede ver sus inscripciones pasadas y futuras. Recuerde que puede confirmar su asistencia en las 24 horas previas al inicio del evento. También puede enviar retroalimentación sobre sus eventos confirmados una vez que hayan finalizado.</string>
+    <string name="rate_event_hint">A continuación, seleccione una calificación para el evento y, opcionalmente, ingrese un comentario para la asociación organizadora.</string>
 </resources>

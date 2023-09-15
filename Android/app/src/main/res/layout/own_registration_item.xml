@@ -74,10 +74,17 @@
             android:textSize="10sp" />
 
         <Button
-            android:id="@+id/buttonSurvey"
+            android:id="@+id/buttonNewSurvey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Encuesta"
+            android:text="Calificar"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/buttonSeeSurvey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calificado"
             android:textSize="10sp" />
 
         <Button
