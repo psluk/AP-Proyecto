@@ -105,7 +105,7 @@ class MenuFragment : Fragment() {
             notImplementedWarning("Ver propuestas")
         }
         crearPropuestaButton.setOnClickListener {
-            notImplementedWarning("Crear propuesta")
+            findNavController().navigate(R.id.action_MenuFragment_to_NewProposalFragment)
         }
         verInscripcionesButton.setOnClickListener {
             notImplementedWarning("Ver inscripciones")
