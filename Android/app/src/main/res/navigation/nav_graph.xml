@@ -89,7 +89,7 @@
         <action
             android:id="@+id/action_MessageFragment_to_ForumFragment"
             app:destination="@id/ForumFragment" />
-    
+    </fragment>
     <fragment
         android:id="@+id/StudentListFragment"
         android:name="com.example.asociatec.StudentListFragment"
