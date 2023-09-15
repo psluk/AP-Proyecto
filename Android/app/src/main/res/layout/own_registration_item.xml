@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="@dimen/default_elevation"
+    android:background="@drawable/item_card"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:id="@+id/student_item"
+    android:clickable="true"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:id="@+id/studentNameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@+id/RegistrationImage"
+        app:layout_constraintTop_toTopOf="@+id/RegistrationImage">
+
+        <TextView
+            android:id="@+id/eventNameText"
+            style="@style/MenuItemText"
+            android:layout_marginStart="0dp"
+            android:focusable="true"
+            android:fontFamily="@font/robotoslab_bold"
+            android:textColor="@color/blue_500"
+            android:textSize="15sp"
+            app:fontFamily="@font/robotoslab_bold"
+            tools:text="Evento" />
+
+        <TextView
+            android:id="@+id/eventDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF222222"
+            tools:text="14 de septiembre del 2023" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/RegistrationImage"
+        style="@style/MenuItemImage"
+        android:focusable="true"
+        android:src="@drawable/inscripcion_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green"
+            android:text="Confirmar"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/buttonQrCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Código QR"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/buttonSurvey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Encuesta"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="@string/delete_label"
+            android:textSize="10sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

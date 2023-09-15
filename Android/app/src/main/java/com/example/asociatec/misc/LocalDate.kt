@@ -80,7 +80,7 @@ class LocalDate {
         }
 
         fun parseIso(utcString: String): Date {
-            val sourceFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val sourceFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             sourceFormat.timeZone = TimeZone.getTimeZone("UTC")
             return sourceFormat.parse(utcString)
         }

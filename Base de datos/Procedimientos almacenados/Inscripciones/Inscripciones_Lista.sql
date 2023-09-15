@@ -67,7 +67,17 @@ BEGIN
                     Es.[nombre]         AS  'estudiante.nombre',
                     Es.[apellido1]      AS  'estudiante.apellido1',
                     Es.[apellido2]      AS  'estudiante.apellido2',
-                    I.[timestamp]       AS  'inscripcion.fecha'
+                    I.[timestamp]       AS  'inscripcion.fecha',
+                    I.[asistencia]      AS  'inscripcion.confirmada',
+                    CAST (CASE
+                    WHEN EXISTS (
+                        SELECT 1
+                        FROM [dbo].[Encuestas] En
+                        WHERE En.[idInscripcion] = I.[id]
+                            AND En.[eliminado] = 0
+                    )
+                    THEN 0
+                    ELSE 1 END AS BIT) AS 'inscripcion.encuestaActiva'
             FROM    [dbo].[Inscripciones] I
             INNER JOIN  [dbo].[Estudiantes] Es
                 ON  I.[idEstudiante] = Es.[id]

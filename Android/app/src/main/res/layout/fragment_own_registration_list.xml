@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintTop_toTopOf="parent"
-    tools:context=".StudentListFragment">
+    tools:context=".OwnRegistrationListFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,13 +17,13 @@
             style="@style/menuTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Estudiantes" />
+            android:text="Inscripciones" />
 
         <TextView
             style="@style/menuHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seleccione un estudiante para ver sus detalles o gestionarlo" />
+            android:text="@string/own_registrarions_hint" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/studentListRecyclerView"

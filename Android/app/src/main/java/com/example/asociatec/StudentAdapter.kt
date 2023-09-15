@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.data.StudentItem
-import com.example.asociatec.R
 
 class StudentAdapter(private val elements: List<StudentItem>) :
     RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
@@ -35,8 +34,8 @@ class StudentAdapter(private val elements: List<StudentItem>) :
 
         fun bind(element: StudentItem) {
             concatName = element.nombre + " " + element.apellido1 + " " + element.apellido2
-            item.findViewById<TextView>(R.id.studentNameText).text = concatName.trim()
-            item.findViewById<TextView>(R.id.studentNumberText).text = element.carnet.toString()
+            item.findViewById<TextView>(R.id.eventNameText).text = concatName.trim()
+            item.findViewById<TextView>(R.id.eventDateText).text = element.carnet.toString()
             item.findViewById<TextView>(R.id.studentLocationText).text = element.sede.nombre
             item.findViewById<TextView>(R.id.studentCareerText).text = element.carrera.nombre
 

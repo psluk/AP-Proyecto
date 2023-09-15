@@ -151,7 +151,7 @@ router.put("/modificar", async (req, res) => {
             let claveConHash;
 
             try {
-                claveConHash = await bcrypt.hash(clave, saltRounds);
+                claveConHash = await bcrypt.hash(claveNueva, saltRounds);
             } catch (error) {
                 console.log(error);
                 return res
