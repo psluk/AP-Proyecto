@@ -16,23 +16,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.R
 import com.example.asociatec.api.ApiRequest
 import com.example.asociatec.data.ActivityItem
-import com.example.asociatec.data.EventItem
-import com.example.asociatec.databinding.FragmentActivityListBinding
+import com.example.asociatec.data.CollaboratorItem
+import com.example.asociatec.databinding.FragmentCollaboratorListBinding
 import com.example.asociatec.user.User
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ActivityListFragment : Fragment() {
-    private var _binding: FragmentActivityListBinding? = null
+class CollaboratorListFragment : Fragment() {
+    private var _binding: FragmentCollaboratorListBinding? = null
     private val binding get() = _binding!!
     private var uuid: String? = null
     private lateinit var apiRequest: ApiRequest
     private lateinit var user: User
     private val gson = Gson()
     private lateinit var recyclerView: RecyclerView
-    private lateinit var activityList: MutableList<ActivityItem>
+    private lateinit var collaboratorList: MutableList<CollaboratorItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +44,10 @@ class ActivityListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentActivityListBinding.inflate(inflater, container, false)
+        _binding = FragmentCollaboratorListBinding.inflate(inflater, container, false)
         user = User.getInstance(requireContext())
         apiRequest = ApiRequest.getInstance(requireContext())
-        activityList = mutableListOf()
+        collaboratorList = mutableListOf()
         arguments?.let {
             uuid = it.getString("uuid")
         }
@@ -57,28 +57,32 @@ class ActivityListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.activityList_recycler)
+        recyclerView = view.findViewById(R.id.collaboratorList_recycler)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val adapter= ActivityListAdapter(activityList)
+        val adapter = CollaboratorListAdapter(collaboratorList, uuid!!, requireActivity())
         recyclerView.adapter = adapter
 
         // Se agrega un listener para agregar elementos a la lista al hacer scroll al final
         val progress = view.findViewById<ProgressBar>(R.id.progressBar)
         progress.visibility = View.VISIBLE
 
-
-
         GlobalScope.launch(Dispatchers.IO) {
-            val url = "https://asociatec.azurewebsites.net/api/actividades/?uuid=$uuid"
+            val url =
+                "https://asociatec.azurewebsites.net/api/colaboradores/?uuid=$uuid&correo=${user.getEmail()}"
 
             val (responseStatus, responseString) = apiRequest.getRequest(url)
 
             // Se quita el popup de "Cargando"
             if (responseStatus) {
-                activityList.addAll(gson.fromJson(responseString, Array<ActivityItem>::class.java).toList())
+                collaboratorList.addAll(
+                    gson.fromJson(
+                        responseString,
+                        Array<CollaboratorItem>::class.java
+                    ).toList()
+                )
 
                 requireActivity().runOnUiThread {
-                    if (activityList.isNullOrEmpty()) {
+                    if (collaboratorList.isNullOrEmpty()) {
                         val message = "No hay actividades en este evento"
                         requireActivity().runOnUiThread {
                             AlertDialog.Builder(requireContext())
@@ -90,7 +94,7 @@ class ActivityListFragment : Fragment() {
                                 .show()
                         }
                     } else {
-                        adapter.notifyItemRangeInserted(0, activityList.size)
+                        adapter.notifyItemRangeInserted(0, collaboratorList.size)
                         progress.visibility = View.GONE
                     }
                 }
@@ -123,12 +127,11 @@ class ActivityListFragment : Fragment() {
             }
         }
 
-        val agregarBtn = view.findViewById<Button>(R.id.btnAgregarActividad)
-        agregarBtn.setOnClickListener {
+        val solicitudesBtn = view.findViewById<Button>(R.id.btnVerSolicitudes)
+        solicitudesBtn.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("uuid", uuid)
 
-            findNavController().navigate(R.id.action_ActivityListFragment_to_NewActivityFragment,bundle)
         }
     }
 }

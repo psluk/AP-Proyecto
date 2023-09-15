@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.R
 import com.example.asociatec.api.ApiRequest
 import com.example.asociatec.data.ActivityItem
-import com.example.asociatec.data.DateItem
 import com.example.asociatec.databinding.FragmentEventDetailBinding
 import com.example.asociatec.misc.LocalDate
 import com.example.asociatec.user.User
@@ -75,6 +74,8 @@ class EventDetailFragment : Fragment() {
         val categoria = view.findViewById<TextView>(R.id.CategoriaEvento)
         val asocia = view.findViewById<TextView>(R.id.AsociaEvento)
         val btnInscribirse = view.findViewById<Button>(R.id.btnInscribirse)
+        val btnColaborador = view.findViewById<Button>(R.id.btnColaborador)
+
         if(user.userType() != "Estudiante"){
             btnInscribirse.visibility = View.GONE
         }
@@ -206,7 +207,6 @@ class EventDetailFragment : Fragment() {
                         "application/json".toMediaTypeOrNull()
                     )
 
-                println()
                 val (responseStatus, responseString) = apiRequest.postRequest(url,requestBody)
 
                 // Se quita el popup de "Cargando"
@@ -217,6 +217,58 @@ class EventDetailFragment : Fragment() {
                         AlertDialog.Builder(requireContext())
                             .setTitle("Éxito")
                             .setMessage("Se ha inscrito al evento")
+                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                            .show()
+                        findNavController().navigateUp()
+                    }
+                } else {
+                    if (user.isLoggedIn()) {
+                        // Ocurrió un error al hacer la consulta
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Error")
+                                .setMessage(responseString)
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
+                                    findNavController().navigateUp()
+                                }
+                                .show()
+                        }
+                    } else {
+                        // La sesión expiró
+                        requireActivity().runOnUiThread {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle(R.string.session_timeout_title)
+                                .setMessage(R.string.session_timeout)
+                                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                                .show()
+                            findNavController().navigate(R.id.LoginFragment)
+                        }
+                    }
+                }
+            }
+        }
+
+        btnColaborador.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                val url = "https://asociatec.azurewebsites.net/api/colaboradores/solicitudes/agregar"
+
+                val requestBody =
+                    ("{\"uuid\": \"${uuid}\"," +
+                            "\"carnet\":\"${user.getStudentNumber()}\"}").toRequestBody(
+                        "application/json".toMediaTypeOrNull()
+                    )
+
+                val (responseStatus, responseString) = apiRequest.postRequest(url,requestBody)
+
+                // Se quita el popup de "Cargando"
+                progressDialog.dismiss()
+
+                if (responseStatus) {
+                    requireActivity().runOnUiThread {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Éxito")
+                            .setMessage("Se ha enviado la solicitud")
                             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                             .show()
                         findNavController().navigateUp()

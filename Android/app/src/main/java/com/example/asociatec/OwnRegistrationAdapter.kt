@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.asociatec.api.ApiRequest
 import com.example.asociatec.data.RegistrationItem
@@ -66,9 +68,16 @@ class OwnRegistrationAdapter(private val elements: List<RegistrationItem>, priva
             }
 
             if (element.past && element.confirmed) {
-                item.findViewById<Button>(R.id.buttonSurvey).visibility = View.VISIBLE
+                if (element.surveyEnabled) {
+                    item.findViewById<Button>(R.id.buttonNewSurvey).visibility = View.VISIBLE
+                    item.findViewById<Button>(R.id.buttonSeeSurvey).visibility = View.GONE
+                } else {
+                    item.findViewById<Button>(R.id.buttonNewSurvey).visibility = View.GONE
+                    item.findViewById<Button>(R.id.buttonSeeSurvey).visibility = View.VISIBLE
+                }
             } else {
-                item.findViewById<Button>(R.id.buttonSurvey).visibility = View.GONE
+                item.findViewById<Button>(R.id.buttonNewSurvey).visibility = View.GONE
+                item.findViewById<Button>(R.id.buttonSeeSurvey).visibility = View.GONE
             }
 
             if (!element.past) {
@@ -94,6 +103,14 @@ class OwnRegistrationAdapter(private val elements: List<RegistrationItem>, priva
                     }
                     .create()
                 deleteDialog.show()
+            }
+
+            item.findViewById<Button>(R.id.buttonNewSurvey).setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("eventId", element.eventId)
+                bundle.putString("eventName", element.eventName)
+                itemView.findNavController()
+                    .navigate(R.id.action_OwnRegistrationFragment_to_RateEventFragment, bundle)
             }
         }
 

@@ -98,7 +98,7 @@ class AssociationSignUpFragment : Fragment() {
                     val url = "https://asociatec.azurewebsites.net/api/asociaciones/agregar"
 
                     val requestBody =
-                        ("{\"nombre\": \"$email\"," +
+                        ("{\"nombre\": \"$name\"," +
                                 "\"descripcion\": \"$password\"," +
                                 "\"telefono\": \"$phone\"," +
                                 "\"codigoCarrera\": \"$selectedCareer\"," +

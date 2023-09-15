@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:paddingHorizontal="30dp"
+    tools:context=".NewProposalFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/menuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Crear propuesta" />
+
+            <TextView
+                style="@style/menuHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_proposal_hint"
+                android:paddingHorizontal="5dp"/>
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Asociación" />
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/association_progressBar"/>
+
+            <Spinner
+                android:id="@+id/association_spinner"
+                android:layout_height="50dp"
+                android:layout_width="match_parent"
+                android:visibility="gone"/>
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Título" />
+
+            <EditText
+                android:id="@+id/title_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="text"
+                android:gravity="start|center"
+                android:padding="5dp" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Temática" />
+
+            <EditText
+                android:id="@+id/theme_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="text"
+                android:gravity="start|center"
+                android:padding="5dp" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Objetivos" />
+
+            <EditText
+                android:id="@+id/objectives_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="text"
+                android:gravity="start|center"
+                android:padding="5dp" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actividades" />
+
+            <EditText
+                android:id="@+id/activities_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="text"
+                android:gravity="start|center"
+                android:padding="5dp" />
+
+            <TextView
+                style="@style/FilterLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Otros (opcional)" />
+
+            <EditText
+                android:id="@+id/others_edit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="@string/edit_text_placeholder"
+                android:inputType="text"
+                android:gravity="start|center"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enviar propuesta"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

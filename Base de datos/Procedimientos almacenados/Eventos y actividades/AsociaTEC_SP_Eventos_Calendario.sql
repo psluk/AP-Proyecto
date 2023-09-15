@@ -46,6 +46,7 @@ BEGIN
                     FOR JSON PATH
                 ) as 'eventos'
                 FROM [dbo].[Eventos] E
+                WHERE E.[eliminado] = 0
                 GROUP BY CONVERT(DATE, E.fechaInicio)
                 FOR JSON PATH),
                 '[]'
