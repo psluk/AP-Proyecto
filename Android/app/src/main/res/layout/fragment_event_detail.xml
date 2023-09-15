@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventDetailFragment"
+    android:paddingTop="10dp">
+    
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="35dp">
+            <TextView
+                style="@style/menuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Evento" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Titulo:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/tituloEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Titulo"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/DescripcionEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Descripción"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugar:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/LugarEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Lugar"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de inicio:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/FechaInicioEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Fecha de inicio del evento"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de finalización:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/FechaFinEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Fecha de finalización del evento"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capacidad:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/CapacidadEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Capacidad"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Especiales:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/EspecialesEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Especiales"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoría:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/CategoriaEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Categoría"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Asociación:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/AsociaEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Asocia"
+                android:textColor="@color/black"
+                android:paddingStart="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actividades:"
+                style="@style/SectionTitle" />
+
+            <TextView
+                android:id="@+id/ActividadesEvento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No hay actividades"
+                android:textColor="@color/black"
+                android:paddingStart="30dp"
+                android:visibility="gone"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventDetail_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="30dp">
+
+                <ImageView
+                    android:id="@+id/EventItemImage"
+                    style="@style/MenuItemImage"
+                    android:src="@drawable/compartir_icon"
+                    android:layout_marginEnd="7dp"/>
+                <Button
+                    android:id="@+id/btnInscribirse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inscribirme"
+                     />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

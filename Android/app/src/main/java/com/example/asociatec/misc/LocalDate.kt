@@ -51,7 +51,7 @@ class LocalDate {
         }
 
         fun date(date: String, isIso: Boolean, fullDate: Boolean = false): String {
-            val dateObject = if (isIso) parseIso(date) else parseUtc(date)
+            val dateObject = if (isIso) parseIso(date+".000Z") else parseUtc(date)
             val dateFormat =
                 DateFormat.getDateInstance(if (fullDate) DateFormat.FULL else DateFormat.MEDIUM)
             dateFormat.timeZone = TimeZone.getDefault()

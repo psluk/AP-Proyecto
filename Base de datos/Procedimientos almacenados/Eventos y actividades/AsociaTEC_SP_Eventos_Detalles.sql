@@ -15,8 +15,15 @@ BEGIN
     DECLARE @transaccion_iniciada BIT = 0;
 
     -- DECLARACIÓN DE VARIABLES
+    DECLARE @IdEvento INT = NULL
+    DECLARE @PuedeIns BIT = 1
 
     BEGIN TRY
+
+        SELECT @IdEvento = E.id
+        FROM Eventos E
+        WHERE E.uuid = @IN_uuid
+        AND E.eliminado = 0
 
         IF NOT EXISTS
         ( 
@@ -30,6 +37,19 @@ BEGIN
             RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar)
         END
 
+        IF (SELECT  COUNT(I.[id])
+            FROM    [dbo].[Inscripciones] I
+            WHERE   I.[idEvento] = @idEvento
+                AND I.[eliminado] = 0 )
+            >=
+           (SELECT  E.[capacidad]
+            FROM    [dbo].[Eventos] E
+            WHERE   E.[id] = @idEvento
+                AND E.[eliminado] = 0 )
+        BEGIN
+            SELECT @PuedeIns = 0
+        END;
+
         SELECT COALESCE(
             (
                 SELECT 
@@ -41,7 +61,8 @@ BEGIN
                     E.[lugar],
                     E.[especiales],
                     C.[nombre] as 'categoria',
-                    A.[nombre] as 'asociacion.nombre'
+                    A.[nombre] as 'asociacion',
+                    @PuedeIns as 'puedeInscribirse'
                 FROM [dbo].[Eventos] E
                 INNER JOIN [dbo].[Categorias] C
                 ON C.[id] = E.[idCategoria]

@@ -30,16 +30,6 @@ BEGIN
             DECLARE @uuid_varchar VARCHAR(36)= (SELECT CONVERT(NVARCHAR(36), @IN_uuid))
             RAISERROR('No existe ningún evento con el uuid %s.', 16, 1, @uuid_varchar) 
         END
-
-        IF NOT EXISTS(
-            SELECT 1
-            FROM [dbo].[Actividades] A
-            WHERE A.[idEvento] = @ID_Evento
-            AND A.[eliminado] = 0
-        )
-        BEGIN
-            RAISERROR('No existen actividades asociadas al evento.',16,1)
-        END
         
         SELECT COALESCE(
             (SELECT 
