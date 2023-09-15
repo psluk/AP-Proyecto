@@ -123,6 +123,7 @@ class MenuFragment : Fragment() {
         if(user.userType() != "Estudiante"){
             inscripcionesEstudianteButton.visibility = View.GONE
             crearPropuestaButton.visibility = View.GONE
+            verEventosButton.visibility = View.GONE
         }
         if(user.userType() != "Administrador"){
             val categoriaEstudiantes = view.findViewById<LinearLayout>(R.id.EstudiantesMenuCategoria)

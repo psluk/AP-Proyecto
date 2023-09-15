@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import com.example.asociatec.databinding.FragmentModifyEventBinding
+import com.example.asociatec.databinding.FragmentModifyActivityBinding
 import com.example.asociatec.api.ApiRequest
 import com.example.asociatec.user.User
 import com.google.gson.Gson
@@ -29,14 +29,15 @@ import java.util.*
 import com.example.asociatec.misc.LocalDate
 import com.google.gson.JsonObject
 
-class ModifyEventFragment : Fragment() {
+class ModifyActivityFragment : Fragment() {
 
-    private var _binding: FragmentModifyEventBinding? = null
+    private var _binding: FragmentModifyActivityBinding? = null
     private lateinit var apiRequest: ApiRequest
     private val binding get() = _binding!!
     private val gson = Gson()
     private lateinit var user: User
     private var uuid: String? = ""
+    private var uuidE: String? =""
     private var selectedCategory: String? = null
     private var startCalendar = Calendar.getInstance()
     private var endCalendar = Calendar.getInstance()
@@ -46,10 +47,11 @@ class ModifyEventFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         apiRequest = ApiRequest.getInstance(requireContext())
-        _binding = FragmentModifyEventBinding.inflate(inflater, container, false)
+        _binding = FragmentModifyActivityBinding.inflate(inflater, container, false)
         user = User.getInstance(requireContext())
         arguments?.let {
             uuid = it.getString("uuid")
+            uuidE= it.getString("uuide")
         }
         return binding.root
 
@@ -60,13 +62,8 @@ class ModifyEventFragment : Fragment() {
 
         val startBox= view.findViewById<EditText>(R.id.fechaInicio_edit)
         val endBox= view.findViewById<EditText>(R.id.fechaFin_edit)
-        val titleBox = view.findViewById<EditText>(R.id.titulo_edit)
-        val descriptionBox = view.findViewById<EditText>(R.id.descripcion_edit)
-        val especialesBox = view.findViewById<EditText>(R.id.especiales_edit)
+        val nameBox = view.findViewById<EditText>(R.id.nombre_edit)
         val placeBox = view.findViewById<EditText>(R.id.lugar_edit)
-        val capacityBox = view.findViewById<EditText>(R.id.capacidad_edit)
-        val spinner = view.findViewById<Spinner>(R.id.categoria_spinner)
-
 
         startBox.setOnClickListener {
             onClickDatePicker(startBox, startCalendar)
@@ -78,7 +75,6 @@ class ModifyEventFragment : Fragment() {
 
         val modificarButton  = view.findViewById<Button>(R.id.btnModificarEvento)
         val eliminarButton  = view.findViewById<Button>(R.id.btnEliminarEvento)
-        val verActivButton  = view.findViewById<Button>(R.id.btnVerActividades)
 
         modificarButton.setOnClickListener {
             var fieldsOk = true
@@ -86,12 +82,8 @@ class ModifyEventFragment : Fragment() {
             var capacity = 1
 
 
-            if(titleBox.text.toString().isNullOrEmpty()){
+            if(nameBox.text.toString().isNullOrEmpty()){
                 message = "Debe insertar un titulo"
-                fieldsOk = false
-            }
-            else if(descriptionBox.text.toString().isNullOrEmpty()){
-                message = "Debe insertar una descripción"
                 fieldsOk = false
             }
             else if(placeBox.text.toString().isNullOrEmpty()){
@@ -111,17 +103,6 @@ class ModifyEventFragment : Fragment() {
                 fieldsOk = false
             }
             else{
-                try{
-                    capacity = capacityBox.text.toString().toInt()
-                    if(capacity < 1){
-                        message = "La capacidad no puede ser menor a 1"
-                        fieldsOk = false
-                    }
-                }
-                catch (e: Exception){
-                    fieldsOk = false
-                    message = "La capacidad debe ser un valor numérico"
-                }
             }
             if (!fieldsOk) {
                 AlertDialog.Builder(requireContext())
@@ -137,15 +118,11 @@ class ModifyEventFragment : Fragment() {
                 progressDialog.show()
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    val url = "https://asociatec.azurewebsites.net/api/eventos/modificar"
+                    val url = "https://asociatec.azurewebsites.net/api/actividades/modificar"
 
                     val requestBody =
-                        ("{\"titulo\": \"${titleBox.text}\"," +
-                                "\"descripcion\":\"${descriptionBox.text}\"," +
-                                "\"capacidad\":\"${capacity}\"," +
+                        ("{\"titulo\": \"${nameBox.text}\"," +
                                 "\"lugar\":\"${placeBox.text}\"," +
-                                "\"categoria\":\"${selectedCategory}\"," +
-                                "\"especiales\":\"${especialesBox.text}\","+
                                 "\"fechaInicio\":\"${LocalDate.toUtc(startCalendar)}\","+
                                 "\"fechaFin\":\"${LocalDate.toUtc(endCalendar)}\"," +
                                 "\"uuid\":\"${uuid}\"}").toRequestBody(
@@ -160,7 +137,7 @@ class ModifyEventFragment : Fragment() {
                         requireActivity().runOnUiThread {
                             AlertDialog.Builder(requireContext())
                                 .setTitle("Éxito")
-                                .setMessage("Evento modificado exitosamente")
+                                .setMessage("Actividad modificada exitosamente")
                                 .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                                 .show()
                             findNavController().navigateUp()
@@ -197,7 +174,7 @@ class ModifyEventFragment : Fragment() {
 
         eliminarButton.setOnClickListener {
             GlobalScope.launch(Dispatchers.IO) {
-                val url = "https://asociatec.azurewebsites.net/api/eventos/eliminar?uuid=$uuid"
+                val url = "https://asociatec.azurewebsites.net/api/actividades/eliminar?uuid=$uuid"
 
                 val (responseStatus, responseString) = apiRequest.deleteRequest(url)
 
@@ -205,7 +182,7 @@ class ModifyEventFragment : Fragment() {
                     requireActivity().runOnUiThread {
                         AlertDialog.Builder(requireContext())
                             .setTitle("Éxito")
-                            .setMessage("Evento eliminado exitosamente")
+                            .setMessage("Actividad eliminada exitosamente")
                             .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                             .show()
                         findNavController().navigateUp()
@@ -238,11 +215,7 @@ class ModifyEventFragment : Fragment() {
             }
         }
 
-        verActivButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString("uuid", uuid)
-            findNavController().navigate(R.id.action_ModifyEventFragment_to_ActivityListFragment,bundle)
-        }
+
         // Se abre un popup de "Cargando"
         val progressDialog = ProgressDialog(requireContext())
         progressDialog.setMessage("Cargando...")
@@ -250,7 +223,7 @@ class ModifyEventFragment : Fragment() {
         progressDialog.show()
 
         GlobalScope.launch(Dispatchers.IO) {
-            val url = "https://asociatec.azurewebsites.net/api/eventos/detalles?uuid=$uuid"
+            val url = "https://asociatec.azurewebsites.net/api/actividades/detalles?uuid=$uuid"
 
             println(url)
             val (responseStatus, responseString) = apiRequest.getRequest(url)
@@ -262,23 +235,16 @@ class ModifyEventFragment : Fragment() {
                 val json = gson.fromJson(responseString, JsonArray::class.java)
                 val valores = (json[0] as JsonObject)
 
-                val tituloIN = valores.get("titulo").asString
-                val descripcionIN = valores.get("descripcion").asString
+                val nombreIN = valores.get("Nombre").asString
                 val lugarIN = valores.get("lugar").asString
                 val fechaInicioIN = valores.get("fechaInicio").asString
                 val fechaFinIN = valores.get("fechaFin").asString
-                val capacidadIN = valores.get("capacidad").asString
-                val especialesIN = valores.get("especiales").asString
-                selectedCategory = valores.get("categoria").asString
 
                 requireActivity().runOnUiThread {
-                    titleBox.setText(tituloIN)
-                    descriptionBox.setText(descripcionIN)
+                    nameBox.setText(nombreIN)
                     placeBox.setText(lugarIN)
                     startBox.setText(LocalDate.date(fechaInicioIN,true,true))
                     endBox.setText(LocalDate.date(fechaFinIN,true,true))
-                    capacityBox.setText(capacidadIN)
-                    especialesBox.setText(especialesIN)
                     startCalendar.time= LocalDate.parseIso(fechaInicioIN)
                     endCalendar.time= LocalDate.parseIso(fechaFinIN)
                 }
@@ -294,83 +260,6 @@ class ModifyEventFragment : Fragment() {
                                 findNavController().navigateUp()
                             }
                             .show()
-                    }
-                } else {
-                    // La sesión expiró
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle(R.string.session_timeout_title)
-                            .setMessage(R.string.session_timeout)
-                            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                            .show()
-                        findNavController().navigate(R.id.LoginFragment)
-                    }
-                }
-            }
-        }
-
-        GlobalScope.launch(Dispatchers.IO) {
-            val url = "https://asociatec.azurewebsites.net/api/eventos/categorias"
-
-            val (responseStatus, responseString) = apiRequest.getRequest(url)
-
-            // Se quita el popup de "Cargando"
-            progressDialog.dismiss()
-
-
-            if (responseStatus) {
-                val json = gson.fromJson(responseString, JsonArray::class.java)
-                val categoriasString = json.map { it.asJsonObject.get("categoria").asString }
-
-                requireActivity().runOnUiThread {
-                    val adapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_item,
-                        categoriasString
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-
-                    spinner.adapter = adapter
-
-                    try{
-                        spinner.setSelection(categoriasString.indexOf(selectedCategory))
-                    } catch (e:Exception){
-                        spinner.setSelection(0)
-                    }
-
-                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                        ) {
-                            selectedCategory = categoriasString[position]
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            AlertDialog.Builder(requireContext())
-                                .setTitle("Datos inválidos")
-                                .setMessage("Debe seleccionar una categoría")
-                                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                                .show()
-                        }
-                    }
-                }
-            } else {
-                if (user.isLoggedIn()) {
-                    // Ocurrió un error al hacer la consulta
-                    requireActivity().runOnUiThread {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Error")
-                            .setMessage(responseString)
-                            .setPositiveButton("OK") { dialog, _ ->
-                                dialog.dismiss()
-                                findNavController().navigateUp()
-                            }
-                            .show()
-                        findNavController().navigateUp()
                     }
                 } else {
                     // La sesión expiró

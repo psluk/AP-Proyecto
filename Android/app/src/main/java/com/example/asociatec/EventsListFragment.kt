@@ -71,7 +71,9 @@ class  EventsListFragment : Fragment() {
                     val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                     val totalItemCount = layoutManager.itemCount
 
-                    if (eventItemList.isNotEmpty() && lastVisibleItemPosition == totalItemCount - 1 && completeEventItemList.size > eventItemList.size) {
+                    if (eventItemList.isNotEmpty() && lastVisibleItemPosition == totalItemCount - 1
+                        && completeEventItemList.size > eventItemList.size)
+                    {
                         // Se cargan más elementos
                         val endIndex =
                             (totalItemCount + elementsPerPage).coerceAtMost(completeEventItemList.size)
