@@ -2,6 +2,11 @@ const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const path = require("path");
+
+// CLIENT FILES
+const CLIENT_FILES = path.join(__dirname, "../client/build/");
 
 const app = express();
 
@@ -23,8 +28,19 @@ const sedesRouter = require("./routes/sedes.js");
 const carrerasRouter = require("./routes/carreras.js");
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+    cors({
+        origin: [
+            "https://asociatec.azurewebsites.net",
+            /https:\/\/asociatec.azurewebsites.net\/.+/,
+            "http://localhost:5173",
+            /http:\/\/localhost:5173\/.+/,
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
 app.use(
     session({
         key: "userId",
@@ -36,7 +52,8 @@ app.use(
         },
     })
 );
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(CLIENT_FILES));
+app.disable("x-powered-by");
 
 // Configuración de rutas
 app.use("/api/", loginRouter);
@@ -59,6 +76,10 @@ app.use("/api/carreras", carrerasRouter);
 app.get("/", (req, res) => {
     res.setHeader("Content-Type", "application/json");
     res.send({ mensaje: "AsociaTEC" });
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(CLIENT_FILES, "index.html"));
 });
 
 module.exports = app;
