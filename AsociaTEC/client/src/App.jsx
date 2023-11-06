@@ -1,6 +1,7 @@
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { SessionProvider } from "./context/SessionComponent";
 
 function App() {
     return (
@@ -13,4 +14,12 @@ function App() {
     );
 }
 
-export default App;
+function Main() {
+    return (
+        <SessionProvider>
+            <App />
+        </SessionProvider>
+    );
+}
+
+export default Main;

@@ -29,7 +29,11 @@ router.get("/login", (req, res) => {
  * Metodo GET
  * Cierra la sesión activa
  */
-router.get("/logout", (req, res) => {
+
+/**
+ * Metodo para cerrar la sesión activa
+ */
+function cerrarSesion(req, res) {
     const saved = req.session.user;
 
     if (saved) {
@@ -42,7 +46,12 @@ router.get("/logout", (req, res) => {
             mensaje: "No hay ninguna sesión activa",
         });
     }
-});
+}
+
+router.get("/logout", cerrarSesion);
+
+router.post("/logout", cerrarSesion);
+
 
 /**
  * Metodo POST
