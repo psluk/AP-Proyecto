@@ -1,4 +1,4 @@
-const FormItems = ({ fields, setFormItemsData }) => {
+const FormItems = ({ fields, formItemsData, setFormItemsData }) => {
     return (
         <>
             {fields.map((field, index) => (
@@ -11,6 +11,8 @@ const FormItems = ({ fields, setFormItemsData }) => {
                             name={field.name}
                             placeholder={field.placeholder}
                             onChange={(e) => {setFormItemsData((prev) => ({ ...prev, [field.name]: e.target.value }));}}
+                            required={field.required}
+                            value={formItemsData[field.name] || ""}
                         />
                     </div>
                 </>
