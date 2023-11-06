@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.2" width="16.31mm" height="15.71mm" viewBox="4459 12221 1631 1571" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:presentation="http://sun.com/xmlns/staroffice/presentation" xmlns:smil="http://www.w3.org/2001/SMIL20/" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xml:space="preserve">
+ <defs class="EmbeddedBulletChars">
+  <g id="bullet-char-template-57356" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 580,1141 L 1163,571 580,0 -4,571 580,1141 Z"/>
+  </g>
+  <g id="bullet-char-template-57354" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 8,1128 L 1137,1128 1137,0 8,0 8,1128 Z"/>
+  </g>
+  <g id="bullet-char-template-10146" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 174,0 L 602,739 174,1481 1456,739 174,0 Z M 1358,739 L 309,1346 659,739 1358,739 Z"/>
+  </g>
+  <g id="bullet-char-template-10132" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 2015,739 L 1276,0 717,0 1260,543 174,543 174,936 1260,936 717,1481 1274,1481 2015,739 Z"/>
+  </g>
+  <g id="bullet-char-template-10007" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 0,-2 C -7,14 -16,27 -25,37 L 356,567 C 262,823 215,952 215,954 215,979 228,992 255,992 264,992 276,990 289,987 310,991 331,999 354,1012 L 381,999 492,748 772,1049 836,1024 860,1049 C 881,1039 901,1025 922,1006 886,937 835,863 770,784 769,783 710,716 594,584 L 774,223 C 774,196 753,168 711,139 L 727,119 C 717,90 699,76 672,76 641,76 570,178 457,381 L 164,-76 C 142,-110 111,-127 72,-127 30,-127 9,-110 8,-76 1,-67 -2,-52 -2,-32 -2,-23 -1,-13 0,-2 Z"/>
+  </g>
+  <g id="bullet-char-template-10004" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 285,-33 C 182,-33 111,30 74,156 52,228 41,333 41,471 41,549 55,616 82,672 116,743 169,778 240,778 293,778 328,747 346,684 L 369,508 C 377,444 397,411 428,410 L 1163,1116 C 1174,1127 1196,1133 1229,1133 1271,1133 1292,1118 1292,1087 L 1292,965 C 1292,929 1282,901 1262,881 L 442,47 C 390,-6 338,-33 285,-33 Z"/>
+  </g>
+  <g id="bullet-char-template-9679" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 813,0 C 632,0 489,54 383,161 276,268 223,411 223,592 223,773 276,916 383,1023 489,1130 632,1184 813,1184 992,1184 1136,1130 1245,1023 1353,916 1407,772 1407,592 1407,412 1353,268 1245,161 1136,54 992,0 813,0 Z"/>
+  </g>
+  <g id="bullet-char-template-8226" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 346,457 C 273,457 209,483 155,535 101,586 74,649 74,723 74,796 101,859 155,911 209,963 273,989 346,989 419,989 480,963 531,910 582,859 608,796 608,723 608,648 583,586 532,535 482,483 420,457 346,457 Z"/>
+  </g>
+  <g id="bullet-char-template-8211" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M -4,459 L 1135,459 1135,606 -4,606 -4,459 Z"/>
+  </g>
+  <g id="bullet-char-template-61548" transform="scale(0.00048828125,-0.00048828125)">
+   <path d="M 173,740 C 173,903 231,1043 346,1159 462,1274 601,1332 765,1332 928,1332 1067,1274 1183,1159 1299,1043 1357,903 1357,740 1357,577 1299,437 1183,322 1067,206 928,148 765,148 601,148 462,206 346,322 231,437 173,577 173,740 Z"/>
+  </g>
+ </defs>
+ <g class="Page">
+  <g class="Group">
+   <g class="com.sun.star.drawing.ClosedBezierShape">
+    <g id="id3">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4645" y="12283" width="269" height="269"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="miter" d="M 4872,12418 C 4872,12434 4868,12449 4859,12463 4851,12478 4840,12489 4825,12497 4811,12506 4794,12510 4779,12510 4763,12510 4747,12506 4733,12497 4719,12489 4707,12478 4699,12463 4691,12449 4686,12434 4686,12418 4686,12401 4691,12385 4699,12371 4707,12357 4719,12345 4733,12337 4747,12329 4763,12324 4779,12324 4795,12324 4811,12329 4825,12337 4840,12345 4851,12357 4859,12371 4868,12385 4872,12401 4872,12418 Z"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id4">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4553" y="12592" width="454" height="270"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 4594,12820 C 4625,12765 4624,12686 4687,12656 4749,12625 4811,12625 4873,12656 4935,12686 4935,12765 4965,12820"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.ClosedBezierShape">
+    <g id="id5">
+     <rect class="BoundingBox" stroke="none" fill="none" x="5729" y="12572" width="269" height="268"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="miter" d="M 5956,12706 C 5956,12722 5952,12738 5943,12752 5935,12767 5924,12778 5909,12786 5895,12795 5880,12798 5864,12798 5848,12798 5831,12795 5817,12786 5803,12778 5791,12767 5783,12752 5775,12738 5770,12722 5770,12706 5770,12689 5775,12675 5783,12660 5791,12645 5803,12632 5817,12625 5831,12617 5848,12613 5864,12613 5880,12613 5895,12617 5909,12625 5924,12632 5935,12645 5943,12660 5952,12675 5956,12689 5956,12706 Z"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id6">
+     <rect class="BoundingBox" stroke="none" fill="none" x="5636" y="12879" width="454" height="272"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 5677,13109 C 5708,13053 5707,12974 5770,12943 5832,12912 5894,12912 5956,12943 6018,12974 6018,13053 6048,13109"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.ClosedBezierShape">
+    <g id="id7">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4924" y="13213" width="268" height="268"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="miter" d="M 5150,13347 C 5150,13363 5147,13379 5138,13393 5130,13408 5119,13419 5104,13427 5090,13436 5074,13439 5058,13439 5041,13439 5027,13436 5012,13427 4997,13419 4984,13408 4977,13393 4969,13379 4965,13363 4965,13347 4965,13330 4969,13314 4977,13300 4984,13286 4997,13274 5012,13266 5027,13258 5041,13254 5058,13254 5074,13254 5090,13258 5104,13266 5119,13274 5130,13286 5138,13300 5147,13314 5150,13330 5150,13347 Z"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id8">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4831" y="13520" width="454" height="272"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 4872,13750 C 4903,13694 4902,13615 4965,13584 5027,13553 5088,13553 5150,13584 5211,13615 5212,13694 5243,13750"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id9">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4928" y="12221" width="872" height="336"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 5758,12515 C 5626,12360 5432,12262 5214,12262 5127,12262 5045,12277 4969,12305"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id10">
+     <rect class="BoundingBox" stroke="none" fill="none" x="5310" y="13156" width="623" height="560"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 5351,13674 C 5605,13625 5812,13440 5891,13197"/>
+    </g>
+   </g>
+   <g class="com.sun.star.drawing.OpenBezierShape">
+    <g id="id11">
+     <rect class="BoundingBox" stroke="none" fill="none" x="4459" y="12871" width="401" height="738"/>
+     <path fill="none" stroke="rgb(255,255,255)" stroke-width="81" stroke-linejoin="round" stroke-linecap="round" d="M 4504,12912 C 4501,12933 4500,12954 4500,12975 4500,13221 4627,13439 4818,13567"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

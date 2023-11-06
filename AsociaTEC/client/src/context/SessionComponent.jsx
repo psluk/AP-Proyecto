@@ -17,24 +17,32 @@ export const SessionProvider = ({ children }) => {
         localStorage.setItem("session", JSON.stringify(session.currentUser));
     }, [session.currentUser]);
 
-    const getCorreo = () => {
+    const getEmail = () => {
         return session?.currentUser?.correo;
     };
 
-    const getCarnet = () => {
+    const getUniId = () => {
         return session?.currentUser?.carnet;
     };
 
-    const getTipoUsuario = () => {
+    const getUserType = () => {
         return session?.currentUser?.tipoUsuario;
     };
 
-    const getCodigoCarrera = () => {
+    const getCareerCode = () => {
         return session?.currentUser?.codigoCarrera;
     };
 
-    const getCodigoSede = () => {
+    const getLocationCode = () => {
         return session?.currentUser?.codigoSede;
+    };
+
+    const getName = () => {
+        return session?.currentUser?.nombre;
+    };
+
+    const isLoggedIn = () => {
+        return session?.currentUser !== null;
     };
 
     const updateSession = (newSession) => {
@@ -47,11 +55,13 @@ export const SessionProvider = ({ children }) => {
             value={{
                 session,
                 setSession,
-                getCorreo,
-                getCarnet,
-                getTipoUsuario,
-                getCodigoCarrera,
-                getCodigoSede,
+                getEmail,
+                getUniId,
+                getUserType,
+                getCareerCode,
+                getLocationCode,
+                getName,
+                isLoggedIn,
                 updateSession,
             }}
         >
