@@ -21,7 +21,12 @@ BEGIN
                 TU.[nombre] AS 'tipoUsuario',
                 C.[codigo] AS 'codigoCarrera',
                 S.[codigo] AS 'codigoSede',
-                E.[carnet]
+                E.[carnet],
+                NULLIF(
+                    LTRIM(RTRIM(
+                        CONCAT(E.[nombre], ' ', E.[apellido1], ' ', E.[apellido2])
+                        )
+                    ), '') AS 'nombre'
         FROM [dbo].[Usuarios] U
         INNER JOIN  [dbo].[TiposUsuario] TU
             ON U.[idTipoUsuario] = TU.[id]

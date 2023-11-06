@@ -45,11 +45,6 @@ export const SessionProvider = ({ children }) => {
         return session?.currentUser !== null;
     };
 
-    const updateSession = (newSession) => {
-        setSession(newSession);
-        localStorage.setItem("session", JSON.stringify(newSession));
-    };
-
     return (
         <SessionContext.Provider
             value={{
@@ -62,7 +57,6 @@ export const SessionProvider = ({ children }) => {
                 getLocationCode,
                 getName,
                 isLoggedIn,
-                updateSession,
             }}
         >
             {children}

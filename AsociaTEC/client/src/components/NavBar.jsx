@@ -86,7 +86,7 @@ const NavBar = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="w-full bg-venice-blue-800 py-2 lg:px-10 px-5 flex justify-center text-white">
+        <div className="w-full bg-venice-blue-800 py-2 lg:px-10 px-5 flex justify-center text-white sticky top-0">
             {/* Doing lg:w-[75rem] to keep the nav. bar in a reasonable size even in wider screens */}
             <div className="flex flex-row items-center w-full lg:w-[75rem] justify-between">
                 {/* Elements on the left */}
@@ -126,6 +126,7 @@ const NavBar = () => {
                                 <FontAwesomeIcon
                                     className="text-venice-blue-800 bg-white hover:bg-slate-300 p-2 rounded-lg cursor-pointer"
                                     onClick={() => {
+                                        setOpen(false);
                                         navigate("/profile");
                                     }}
                                     icon={faUser}
@@ -136,6 +137,7 @@ const NavBar = () => {
                                     className="font-normal py-1 px-2 text-venice-blue-800 bg-white hover:bg-slate-300 rounded-lg"
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        setOpen(false);
                                         navigate("/login");
                                     }}
                                 >

@@ -95,6 +95,7 @@ router.post("/login", async (req, res) => {
                                 codigoCarrera:
                                     result.recordset[0].codigoCarrera,
                                 codigoSede: result.recordset[0].codigoSede,
+                                nombre: result.recordset[0].nombre,
                             };
                             res.send(req.session.user);
                         } else {
