@@ -9,6 +9,7 @@ import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 import Profile from "./pages/Profile";
 import AssociationList from "./pages/Associations/Index";
 import Association from "./pages/Associations/Association";
+import CreateEvent from "./pages/Events/Create";
 
 function App() {
     return (
@@ -26,7 +27,8 @@ function App() {
                     <Route exact path="/sign-up/association" element={<AssociationSignUp />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/associations" element={<AssociationList />} />
-                    <Route exact path="/edit/association/:locationCode/:careerCode" element={<Association />} />
+                    <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
+                    <Route exact path="/event/create" element={<CreateEvent/>} />
                 </Routes>
             </div>
             <ToastContainer />
