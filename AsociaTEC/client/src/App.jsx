@@ -5,6 +5,7 @@ import { SessionProvider } from "./context/SessionComponent";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
+import CreateEvent from "./pages/Events/Create";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                         <p className="font-mono">Contenido (mono).</p>
                         </>} /> 
                     <Route path="/login" element={<Login />} />
+                    <Route path="create_event" element={<CreateEvent/>} />
                 </Routes>
             </div>
             <ToastContainer />
