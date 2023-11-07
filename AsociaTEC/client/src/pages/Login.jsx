@@ -1,4 +1,4 @@
-import FormItems from "../structures/FormItems";
+import FormItems from "../components/forms/FormItems";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSessionContext } from "../context/SessionComponent";
