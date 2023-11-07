@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
+import StudentSignUp  from "./pages/SignUp/StudentSignUp";
 import Profile from "./pages/Profile";
 import AssociationList from "./pages/Associations/Index";
 import Association from "./pages/Associations/Association";
@@ -25,6 +26,7 @@ function App() {
                         </>} /> 
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/sign-up/association" element={<AssociationSignUp />} />
+                    <Route exact path="/sign-up/student" element={<StudentSignUp />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/associations" element={<AssociationList />} />
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />

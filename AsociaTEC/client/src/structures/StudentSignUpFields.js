@@ -1,0 +1,68 @@
+export const StudentSignUpFields = [
+    {
+        label: "Nombre",
+        type: "text",
+        name: "nombre",
+        placeholder: "Nombre",
+        required: true,
+        maxLength: 64,
+    },
+    {
+        label: "Apellido 1",
+        type: "text",
+        name: "apellido1",
+        placeholder: "Apellido 1",
+        required: true,
+        maxLength: 256,
+        rows: 5,
+    },
+    {
+        label: "Apellido 2",
+        type: "text",
+        name: "apellido2",
+        placeholder: "Apellido 2",
+        required: true,
+        maxLength: 256,
+        rows: 5,
+    },
+    {
+        label: "Carnet",
+        type: "number",
+        name: "carnet",
+        placeholder: "Carnet",
+        required: true,
+    },
+    {
+        label: "Sede",
+        type: "select",
+        name: "codigoSede",
+        options: [
+            { value: "", label: "Cargando...", disabled: true },
+        ],
+        required: true,
+    },
+    {
+        label: "Carrera",
+        type: "select",
+        name: "codigoCarrera",
+        options: [
+            { value: "", label: "Cargando...", disabled: true },
+        ],
+        required: true,
+    },
+    {
+        label: "Correo electrónico",
+        type: "email",
+        name: "correo",
+        placeholder: "correo@estudiantec.cr",
+        required: true,
+        maxLength: 128,
+    },
+    {
+        label: "Contraseña",
+        type: "password",
+        name: "clave",
+        placeholder: "********",
+        required: true,
+    },
+];
