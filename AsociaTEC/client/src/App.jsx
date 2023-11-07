@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 import Profile from "./pages/Profile";
+import CreateEvent from "./pages/Events/Create";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/sign-up/association" element={<AssociationSignUp />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="create_event" element={<CreateEvent/>} />
                 </Routes>
             </div>
             <ToastContainer />
