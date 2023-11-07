@@ -9,7 +9,7 @@ import { messageSettings, defaultError } from "../../utils/messageSettings";
 
 const AssociationCard = ({ association, onDelete }) => {
     const navigate = useNavigate();
-    const target = `/edit/association/${association.sede.codigo}/${association.carrera.codigo}`;
+    const target = `/association/edit/${association.sede.codigo}/${association.carrera.codigo}`;
     const [modal, setModal] = useState(false);
 
     const toggleModal = () => {

@@ -227,7 +227,7 @@ const Association = () => {
                                 navigate(-1);
                             }}
                         >
-                            Volver
+                            Cancelar
                         </a>
                     </p>
                 </>
