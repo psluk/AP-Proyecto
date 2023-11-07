@@ -1,4 +1,5 @@
 import FormItems from "../components/forms/FormItems";
+import { LoginFields } from "../structures/LoginFields";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSessionContext } from "../context/SessionComponent";
@@ -33,22 +34,7 @@ const Login = () => {
             </h1>
             <form className="space-y-4 flex flex-col items-center" onSubmit={attemptLogin}>
                 <FormItems
-                    fields={[
-                        {
-                            label: "Correo electrónico",
-                            type: "email",
-                            name: "email",
-                            placeholder: "juan@estudiantec.cr",
-                            required: true
-                        },
-                        {
-                            label: "Contraseña",
-                            type: "password",
-                            name: "password",
-                            placeholder: "********",
-                            required: true,
-                        },
-                    ]}
+                    fields={LoginFields}
                     formItemsData={data}
                     setFormItemsData={setData}
                 />
