@@ -18,7 +18,7 @@ const AssociationSignUp = () => {
 
     useEffect(() => {
         // Redirect if logged in
-        if (session !== null) {
+        if (session.currentUser !== null) {
             navigate("/");
         }
     }, []);

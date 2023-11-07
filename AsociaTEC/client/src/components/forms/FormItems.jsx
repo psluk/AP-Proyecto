@@ -2,7 +2,7 @@ const FormItems = ({ fields, formItemsData, setFormItemsData }) => {
     return (
         <>
             {fields.map((field, index) => (
-                <div className="flex flex-col w-full" key={index}>
+                <div className="flex flex-col w-full h-fit" key={index}>
                     <label className="grow font-bold" htmlFor={field.name}>
                         {field.label}
                     </label>
@@ -27,7 +27,7 @@ const FormItems = ({ fields, formItemsData, setFormItemsData }) => {
                         </select>
                     ) : field.type === "textarea" ?
                     <textarea
-                        className="grow py-1 px-2 border border-venice-blue-700 rounded-lg bg-gray-50"
+                        className="grow py-1 px-2 border border-venice-blue-700 rounded-lg bg-gray-50 resize-none"
                         id={field.name}
                         name={field.name}
                         placeholder={field.placeholder}

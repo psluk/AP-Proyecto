@@ -7,13 +7,6 @@ export const EventStructure = [
         required: true
     },
     {
-        label: "Descripción",
-        type: "text",
-        name: "descripcion",
-        placeholder: "Descripción del evento",
-        required: true,
-    },
-    {
         label: "Capacidad",
         type: "number",
         name: "capacidad",
@@ -39,6 +32,31 @@ export const EventStructure = [
         type: "datetime-local",
         name: "fechaFin",
         placeholder: "Fecha de Finalización",
+        required: true,
+    },
+    {
+        label: "Categoria",
+        type: "select",
+        name: "categoria",
+        options: [
+            { value: "", label: "Cargando...", disabled: true },
+        ],
+        required: true,
+    },
+    {
+        label: "Descripción",
+        type: "textarea",
+        name: "descripcion",
+        placeholder: "Descripción del evento",
+        rows: 5,
+        required: true,
+    },
+    {
+        label: "Recursos especiales",
+        type: "textarea",
+        name: "especiales",
+        placeholder: "Recursos especiales",
+        rows: 5,
         required: true,
     },
 ]
