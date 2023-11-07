@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
+import Profile from "./pages/Profile";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         </>} /> 
                     <Route path="/login" element={<Login />} />
                     <Route path="/sign-up/association" element={<AssociationSignUp />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Routes>
             </div>
             <ToastContainer />

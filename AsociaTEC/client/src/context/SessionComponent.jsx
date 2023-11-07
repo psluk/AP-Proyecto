@@ -34,8 +34,16 @@ export const SessionProvider = ({ children }) => {
         return session?.currentUser?.codigoCarrera;
     };
 
+    const getCareerName = () => {
+        return session?.currentUser?.nombreCarrera;
+    };
+
     const getLocationCode = () => {
         return session?.currentUser?.codigoSede;
+    };
+
+    const getLocationName = () => {
+        return session?.currentUser?.nombreSede;
     };
 
     const getName = () => {
@@ -55,7 +63,9 @@ export const SessionProvider = ({ children }) => {
                 getUniId,
                 getUserType,
                 getCareerCode,
+                getCareerName,
                 getLocationCode,
+                getLocationName,
                 getName,
                 isLoggedIn,
             }}

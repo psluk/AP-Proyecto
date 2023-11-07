@@ -20,13 +20,16 @@ BEGIN
                 U.[correo],
                 TU.[nombre] AS 'tipoUsuario',
                 C.[codigo] AS 'codigoCarrera',
+                C.[nombre] AS 'nombreCarrera',
                 S.[codigo] AS 'codigoSede',
+                S.[nombre] AS 'nombreSede',
                 E.[carnet],
-                NULLIF(
-                    LTRIM(RTRIM(
-                        CONCAT(E.[nombre], ' ', E.[apellido1], ' ', E.[apellido2])
-                        )
-                    ), '') AS 'nombre'
+                CASE
+                    WHEN E.[idUsuario] IS NOT NULL THEN
+                        NULLIF(LTRIM(RTRIM(CONCAT(E.[nombre], ' ', E.[apellido1], ' ', E.[apellido2]))), '')
+                    WHEN A.[idUsuario] IS NOT NULL THEN
+                        A.[nombre]
+                END AS 'nombre'
         FROM [dbo].[Usuarios] U
         INNER JOIN  [dbo].[TiposUsuario] TU
             ON U.[idTipoUsuario] = TU.[id]

@@ -14,7 +14,7 @@ const Login = () => {
 
     useEffect(() => {
         // Redirect if logged in
-        if (session !== null) {
+        if (session.currentUser !== null) {
             navigate("/");
         }
     }, []);
@@ -30,7 +30,7 @@ const Login = () => {
             toast.success("Inicio de sesión exitoso", messageSettings);
             navigate("/");
         }).catch((err) => {
-            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
+                toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
         });
     };
 

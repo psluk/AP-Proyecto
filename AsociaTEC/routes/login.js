@@ -94,7 +94,9 @@ router.post("/login", async (req, res) => {
                                 tipoUsuario: result.recordset[0].tipoUsuario,
                                 codigoCarrera:
                                     result.recordset[0].codigoCarrera,
+                                nombreCarrera: result.recordset[0].nombreCarrera,
                                 codigoSede: result.recordset[0].codigoSede,
+                                nombreSede: result.recordset[0].nombreSede,
                                 nombre: result.recordset[0].nombre,
                             };
                             res.send(req.session.user);
