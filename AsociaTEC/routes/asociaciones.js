@@ -47,11 +47,15 @@ router.get("/", (req, res) => {
 //SP : AsociaTEC_SP_Asociaciones_Detalles
 router.get("/detalles", (req, res) => {
     const correo = req.query.correo;
+    const sede = req.query.sede;
+    const carrera = req.query.carrera;
     const request = pool.request();
 
     try {
         // Parámetros de entrada del procedimiento almacenado
         request.input("IN_correo", sqlcon.VarChar(128), correo);
+        request.input("IN_codigoSede", sqlcon.VarChar(4), sede);
+        request.input("IN_codigoCarrera", sqlcon.VarChar(4), carrera);
     } catch (error) {
         console.log(error);
         return res.status(400).send({ mensaje: "Datos inválidos" });
