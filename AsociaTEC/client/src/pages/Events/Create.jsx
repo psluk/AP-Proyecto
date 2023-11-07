@@ -97,7 +97,7 @@ export default function CreateEvent() {
     return (
         <div className='p-5 md:w-2/4 md:flex md:flex-col md:items-center'>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Crear Evento
+                Crear evento
             </h1>
             <form
                 onSubmit={handleSubmit}
@@ -112,11 +112,22 @@ export default function CreateEvent() {
                         className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
                         type="submit"
                     >
-                        Crear Evento
+                        Crear evento
                     </button>
                 </div>
-
             </form>
+            <p className="text-center mt-4">
+                <a
+                    className="text-venice-blue-700 hover:underline cursor-pointer"
+                    href="/events"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        navigate(-1);
+                    }}
+                >
+                    Cancelar
+                </a>
+            </p>
         </div>
     )
 }

@@ -1,27 +1,30 @@
 import FormItems from "../../components/forms/FormItems";
 import { AssociationSignUpFields } from "../../structures/AssociationSignUpFields";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
 
-const AssociationSignUp = () => {
+const Association = () => {
     const navigate = useNavigate();
     const [data, setData] = useState({
         location: "",
         career: "",
     });
-    const [fields, setFields] = useState(AssociationSignUpFields);
+    const [fields, setFields] = useState(() => {
+        const newFields = AssociationSignUpFields;
+        newFields[6].placeholder = "Dejar en blanco para no cambiar la contraseña";
+        newFields[6].required = false;
+        return newFields;
+    });
     const { session } = useSessionContext();
-
-    useEffect(() => {
-        // Redirect if logged in
-        if (session.currentUser !== null) {
-            navigate("/");
-        }
-    }, []);
+    const { locationCode, careerCode } = useParams();
+    const [locationsLoaded, setLocationsLoaded] = useState(false);
+    const [careersLoaded, setCareersLoaded] = useState(false);
+    const [email, setEmail] = useState("");
+    const [initialLoad, setInitialLoad] = useState(true);
 
     const saveLocations = (locations) => {
         if (locations.length === 0) {
@@ -43,10 +46,6 @@ const AssociationSignUp = () => {
             return;
         }
         setFields((prev) => {
-            setData((prev) => ({
-                ...prev,
-                location: locations[0].codigo,
-            }));
             const newFields = [...prev];
             newFields[2].options = locations.map((location) => ({
                 label: location.nombre,
@@ -76,10 +75,14 @@ const AssociationSignUp = () => {
             return;
         }
         setFields((prev) => {
-            setData((prev) => ({
-                ...prev,
-                career: careers[0].codigo,
-            }));
+            if (initialLoad) {
+                setInitialLoad(false);
+            } else {
+                setData((prev) => ({
+                    ...prev,
+                    career: careers[0].codigo,
+                }));
+            }
             const newFields = [...prev];
             newFields[3].options = careers.map((career) => ({
                 label: career.nombre,
@@ -89,7 +92,7 @@ const AssociationSignUp = () => {
         });
     };
 
-    // Load locations
+    // Load locations and association data
     useEffect(() => {
         document
             .getElementById("location")
@@ -100,10 +103,37 @@ const AssociationSignUp = () => {
 
         axios.get("/api/sedes", { withCredentials: true }).then((res) => {
             saveLocations(res.data);
+            setLocationsLoaded(true);
             document
                 .getElementById("location")
                 ?.classList.remove("italic", "text-gray-400");
         });
+
+        axios
+            .get(`/api/asociaciones/detalles?sede=${locationCode}&carrera=${careerCode}`, {
+                withCredentials: true,
+            })
+            .then((res) => {
+                const result = res.data[0];
+                setEmail(result?.asociacion?.correo);
+                setData((prev) => ({
+                    ...prev,
+                    name: result?.asociacion?.nombre,
+                    description: result?.asociacion?.descripcion,
+                    phoneNumber: result?.asociacion?.telefono,
+                    location: result?.sede?.codigo,
+                    career: result?.carrera?.codigo,
+                    email: result?.asociacion?.correo,
+                    password: "",
+                }));
+            })
+            .catch((err) => {
+                toast.error(
+                    err?.response?.data?.mensaje || defaultError,
+                    messageSettings
+                );
+            });
+
     }, []);
 
     useEffect(() => {
@@ -120,6 +150,7 @@ const AssociationSignUp = () => {
                 })
                 .then((res) => {
                     saveCareers(res.data);
+                    setCareersLoaded(true);
                     document
                         .getElementById("career")
                         ?.classList.remove("italic", "text-gray-400");
@@ -127,33 +158,32 @@ const AssociationSignUp = () => {
         }
     }, [data.location]);
 
-    const attemptLogin = (e) => {
+    const attemptModify = (e) => {
         e.preventDefault();
 
         axios
-            .post(
-                "/api/asociaciones/agregar",
+            .put(
+                "/api/asociaciones/modificar",
                 {
-                    nombre: data.name,
-                    descripcion: data.description,
-                    telefono: data.phoneNumber,
-                    codigoSede: data.location,
-                    codigoCarrera: data.career,
-                    correo: data.email,
-                    clave: data.password,
+                    nombreNueva: data.name,
+                    descripcionNueva: data.description,
+                    telefonoNueva: data.phoneNumber,
+                    codigoSedeNueva: data.location,
+                    codigoCarreraNueva: data.career,
+                    correoNueva: data.email,
+                    claveNueva: data.password,
+                    correoActual: email,
                 },
                 { withCredentials: true }
             )
             .then((res) => {
                 toast.success(
                     <p>
-                        Registro exitoso
-                        <br />
-                        Ahora puede iniciar sesión
+                        Asociación modificada exitosamente
                     </p>,
                     messageSettings
                 );
-                navigate("/login");
+                navigate(`/edit/association/${data.location}/${data.career}`);
             })
             .catch((err) => {
                 toast.error(
@@ -166,52 +196,45 @@ const AssociationSignUp = () => {
     return (
         <div className="p-5 w-full sm:w-[40rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Registrar asociación
+                Editar asociación
             </h1>
-            <form
-                className="space-y-4 flex flex-col items-center"
-                onSubmit={attemptLogin}
-            >
-                <FormItems
-                    fields={fields}
-                    formItemsData={data}
-                    setFormItemsData={setData}
-                />
-                <button
-                    className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
-                    type="submit"
-                    key={"submit"}
-                >
-                    Registrarse
-                </button>
-            </form>
-            <p className="mt-4 text-gray-600">
-                ¿Ya tiene cuenta?{" "}
-                <a
-                    className="text-venice-blue-700 hover:underline cursor-pointer"
-                    href="/login"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        navigate(e.target.getAttribute("href"));
-                    }}
-                >
-                    Inicie sesión
-                </a>{" "}
-                ahora mismo. O{" "}
-                <a
-                    className="text-venice-blue-700 hover:underline cursor-pointer"
-                    href="/sign-up/student"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        navigate(e.target.getAttribute("href"));
-                    }}
-                >
-                    regístrese como estudiante
-                </a>
-                .
-            </p>
+            {
+                email && locationsLoaded && careersLoaded
+                ? <>
+                    <form
+                        className="space-y-4 flex flex-col items-center"
+                        onSubmit={attemptModify}
+                    >
+                        <FormItems
+                            fields={fields}
+                            formItemsData={data}
+                            setFormItemsData={setData}
+                        />
+                        <button
+                            className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
+                            type="submit"
+                            key={"submit"}
+                        >
+                            Guardar cambios
+                        </button>
+                    </form>
+                    <p className="text-center mt-4">
+                        <a
+                            className="text-venice-blue-700 hover:underline cursor-pointer"
+                            href="/associations"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                navigate(-1);
+                            }}
+                        >
+                            Cancelar
+                        </a>
+                    </p>
+                </>
+                : <p className="text-gray-600 italic text-center">Cargando...</p>
+            }
         </div>
     );
 };
 
-export default AssociationSignUp;
+export default Association;

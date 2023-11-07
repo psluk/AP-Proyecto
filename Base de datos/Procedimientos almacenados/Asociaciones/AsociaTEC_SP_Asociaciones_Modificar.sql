@@ -55,7 +55,7 @@ BEGIN
 
 		IF ((@usarIDUsuario IS NULL) OR (@usarIDAsociacion IS NULL))
 		BEGIN
-			RAISERROR('El correo "%s" no corresponde a ninguna asociacion', 16, 1, @IN_correoActual);
+			RAISERROR('El correo "%s" no corresponde a ninguna asociación', 16, 1, @IN_correoActual);
 		END;
 
 		IF EXISTS ( SELECT  1
@@ -71,6 +71,7 @@ BEGIN
         BEGIN
             RAISERROR('El correo "%s" no pertenece al dominio @estudiantec.cr ni @itcr.ac.cr', 16, 1, @IN_correoNueva);
         END;
+
 
 
 		--obtenemos el ID de la Carrera y Sede actuales
@@ -94,7 +95,6 @@ BEGIN
 			SET @usarIDSede = @usarIDSedeActual;
 			SET @usarIDCarrera = @usarIDCarreraActual;
 		END;
-
 
 		-- solo existe como C
 		IF( (@IN_codigoCarreraNueva IS NULL 
@@ -144,10 +144,21 @@ BEGIN
 
 		IF (@usarIDSede IS NULL OR @usarIDCarrera IS NULL)
 		BEGIN
-			RAISERROR('el codigo sede y/o carrera no existe', 16, 1);
+			RAISERROR('No se encontró esa combinación de sede y carrera', 16, 1);
 		END;
 
-
+		IF EXISTS (
+			SELECT 1
+			FROM [dbo].[Asociaciones] A
+			INNER JOIN [dbo].[Carreras] C ON A.[idCarrera] = C.[id]
+			INNER JOIN [dbo].[Sedes] S ON C.[idSede] = S.[id]
+			WHERE A.[eliminado] = 0
+				AND S.[id] = @usarIDSede
+				AND C.[id] = @usarIDCarrera
+		)
+		BEGIN
+			RAISERROR('Ya existe una asociación en la misma carrera de la misma sede', 16, 1);
+		END;
 
 		-- INICIO DE LA TRANSACCI�N
 		IF @@TRANCOUNT = 0

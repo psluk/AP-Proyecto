@@ -37,7 +37,7 @@ const Profile = () => {
     }
 
     return (
-        <div className="p-5 md:w-[30rem] space-y-4 flex flex-col items-center">
+        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                 Perfil
             </h1>

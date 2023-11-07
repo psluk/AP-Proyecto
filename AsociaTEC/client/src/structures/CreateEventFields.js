@@ -21,21 +21,21 @@ export const EventStructure = [
         required: true,
     },
     {
-        label: "Fecha de Inicio",
+        label: "Fecha de inicio",
         type: "datetime-local",
         name: "fechaInicio",
         placeholder: "Fecha de Inicio",
         required: true,
     },
     {
-        label: "Fecha de Finalización",
+        label: "Fecha de finalización",
         type: "datetime-local",
         name: "fechaFin",
         placeholder: "Fecha de Finalización",
         required: true,
     },
     {
-        label: "Categoria",
+        label: "Categoría",
         type: "select",
         name: "categoria",
         options: [

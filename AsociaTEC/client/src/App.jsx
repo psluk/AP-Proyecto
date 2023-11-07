@@ -7,6 +7,8 @@ import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 import Profile from "./pages/Profile";
+import AssociationList from "./pages/Associations/Index";
+import Association from "./pages/Associations/Association";
 import CreateEvent from "./pages/Events/Create";
 
 function App() {
@@ -15,16 +17,18 @@ function App() {
             <NavBar />
             <div id="mainContent">
                 <Routes>
-                    <Route path="/" element={<>
+                    <Route exact path="/" element={<>
                         <h1>Home</h1>
                         <p className="font-sans">Contenido (sans).</p>
                         <p className="font-serif">Contenido (serif).</p>
                         <p className="font-mono">Contenido (mono).</p>
                         </>} /> 
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/sign-up/association" element={<AssociationSignUp />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="create_event" element={<CreateEvent/>} />
+                    <Route exact path="/login" element={<Login />} />
+                    <Route exact path="/sign-up/association" element={<AssociationSignUp />} />
+                    <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/associations" element={<AssociationList />} />
+                    <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
+                    <Route exact path="/event/create" element={<CreateEvent/>} />
                 </Routes>
             </div>
             <ToastContainer />
