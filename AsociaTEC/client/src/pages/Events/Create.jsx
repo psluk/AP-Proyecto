@@ -10,17 +10,43 @@ import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateEvent() {
-
-    const [data, setData] = useState({categoria:""})
+    const navigate = useNavigate();
+    const [data, setData] = useState({ categoria: "" })
     const [fields, setFields] = useState(EventStructure)
-    const { session } = useSessionContext();
+    const {getCareerCode, getLocationCode, session } = useSessionContext();
 
     useEffect(() => {
         // Redirect if logged in
         if (session.currentUser === null) {
             navigate("/");
         }
+        const careerCode = getCareerCode();
+        const locationCode = getLocationCode();
+        setData({...data, carrera: careerCode, sede: locationCode})
     }, []);
+
+    const handleSubmit = (e) => {
+        console.log(data);
+        e.preventDefault();
+        
+            axios.post('/api/eventos/agregar', data, { withCredentials: true }).then((res) => {
+                toast.success(
+                    <p>
+                        Evento creado exitosamente
+                    </p>,
+                    messageSettings
+                );
+                navigate("/");
+            })
+            .catch((err) => {
+                toast.error(
+                    err?.response?.data?.mensaje || defaultError,
+                    messageSettings
+                );
+            });
+            toast.success("Evento creado con éxito", messageSettings);
+            navigate("/eventos");
+    };
 
     const saveCategories = (categorias) => {
         if (categorias.length === 0) {
@@ -73,7 +99,9 @@ export default function CreateEvent() {
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Crear Evento
             </h1>
-            <form className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 md:p-6 space-y-4 md:space-y-0 shadow-lg border rounded-md">
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0 shadow-lg border rounded-md">
                 <FormItems
                     fields={EventStructure}
                     formItemsData={data}
