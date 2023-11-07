@@ -5,6 +5,7 @@ import { SessionProvider } from "./context/SessionComponent";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
+import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                         <p className="font-mono">Contenido (mono).</p>
                         </>} /> 
                     <Route path="/login" element={<Login />} />
+                    <Route path="/sign-up/association" element={<AssociationSignUp />} />
                 </Routes>
             </div>
             <ToastContainer />

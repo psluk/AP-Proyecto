@@ -1,0 +1,61 @@
+export const AssociationSignUpFields = [
+    {
+        label: "Nombre",
+        type: "text",
+        name: "name",
+        placeholder: "Nombre de la asociación",
+        required: true,
+        maxLength: 64,
+    },
+    {
+        label: "Descripción",
+        type: "textarea",
+        name: "description",
+        placeholder: "Descripción de la asociación",
+        required: true,
+        maxLength: 256,
+        rows: 5,
+    },
+    {
+        label: "Sede",
+        type: "select",
+        name: "location",
+        options: [
+            { value: "", label: "Cargando...", disabled: true },
+        ],
+        required: true,
+    },
+    {
+        label: "Carrera",
+        type: "select",
+        name: "career",
+        options: [
+            { value: "", label: "Cargando...", disabled: true },
+        ],
+        required: true,
+    },
+    {
+        label: "Teléfono",
+        type: "tel",
+        name: "phoneNumber",
+        pattern: "[0-9]{8}",
+        placeholder: "12345678",
+        required: true,
+        maxLength: 8,
+    },
+    {
+        label: "Correo electrónico",
+        type: "email",
+        name: "email",
+        placeholder: "asocia@itcr.ac.cr",
+        required: true,
+        maxLength: 128,
+    },
+    {
+        label: "Contraseña",
+        type: "password",
+        name: "password",
+        placeholder: "********",
+        required: true,
+    },
+];

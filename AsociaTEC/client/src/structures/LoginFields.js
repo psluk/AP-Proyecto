@@ -4,7 +4,8 @@ export const LoginFields = [
         type: "email",
         name: "email",
         placeholder: "juan@estudiantec.cr",
-        required: true
+        required: true,
+        maxLength: 128,
     },
     {
         label: "Contraseña",

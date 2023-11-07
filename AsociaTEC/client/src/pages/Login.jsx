@@ -5,12 +5,19 @@ import axios from "axios";
 import { useSessionContext } from "../context/SessionComponent";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../utils/messageSettings";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setSession } = useSessionContext();
+    const { session, setSession } = useSessionContext();
     const [data, setData] = useState({});
+
+    useEffect(() => {
+        // Redirect if logged in
+        if (session !== null) {
+            navigate("/");
+        }
+    }, []);
 
     const attemptLogin = (e) => {
         e.preventDefault();
@@ -41,6 +48,7 @@ const Login = () => {
                 <button
                     className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
                     type="submit"
+                    key="submit"
                 >
                     Iniciar sesión
                 </button>
@@ -49,10 +57,10 @@ const Login = () => {
                 ¿Aún no tiene cuenta?{" "}
                 <a
                     className="text-venice-blue-700 hover:underline cursor-pointer"
-                    href="/sign-up"
+                    href="/sign-up/student"
                     onClick={(e) => {
                         e.preventDefault();
-                        navigate("/sign-up");
+                        navigate(e.target.getAttribute("href"));
                     }}
                 >
                     Regístrese

@@ -138,7 +138,7 @@ const NavBar = () => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setOpen(false);
-                                        navigate("/login");
+                                        navigate(e.target.getAttribute("href"));
                                     }}
                                 >
                                     Iniciar sesión
