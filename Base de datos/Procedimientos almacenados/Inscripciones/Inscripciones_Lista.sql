@@ -81,11 +81,7 @@ BEGIN
                             AND En.[eliminado] = 0
                     ) OR (I.[id] IS NULL)
                     THEN 0
-                    ELSE 1 END AS BIT)  AS 'inscripcion.encuestaActiva',
-                    CAST (CASE
-                    WHEN Edi.[id] IS NULL
-                    THEN 0
-                    ELSE 1 END AS BIT)  AS 'eventoDeInteres'
+                    ELSE 1 END AS BIT)  AS 'inscripcion.encuestaActiva'
             FROM    [dbo].[Inscripciones] I
             FULL OUTER JOIN  [dbo].[EventosDeInteres] EdI
                 ON  I.[idEvento] = EdI.[idEvento]
@@ -98,10 +94,10 @@ BEGIN
                 OR  EdI.[idEvento] = Ev.[id]
             WHERE   (
                         @usarFiltroDeEvento = 0
-                    OR  I.[idEvento] = @idEvento
+                    OR  Ev.[id] = @idEvento
                 ) AND (
                         @usarFiltroDeEstudiante = 0
-                    OR  I.[idEstudiante] = @idEstudiante
+                    OR  Es.[id] = @idEstudiante
                 ) AND (
                     I.[eliminado] = 0
                     OR I.[eliminado] IS NULL
