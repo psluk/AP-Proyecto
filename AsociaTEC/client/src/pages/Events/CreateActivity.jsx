@@ -3,7 +3,7 @@ import { CreateEventActivityFields } from "../../structures/CreateEventActivityF
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { localHtmlAttribute, localDateTime } from "../../utils/dateFormatter";
+import { localHtmlAttribute, localDateTime, isoString } from "../../utils/dateFormatter";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 
@@ -30,8 +30,8 @@ const CreateActivity = () => {
                 uuid,
                 nombre: data.name,
                 lugar: data.place,
-                fechaInicio: data.startDate,
-                fechaFin: data.endDate,
+                fechaInicio: isoString(data.startDate),
+                fechaFin: isoString(data.endDate),
             }, { withCredentials: true }).then((res) => {
             toast.success(
                 <p>
