@@ -76,7 +76,7 @@ BEGIN
                     FOR JSON PATH
             ),
             '[]'
-        ) as resultados
+        ) as results
 
     END TRY
     BEGIN CATCH
