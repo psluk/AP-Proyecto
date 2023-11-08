@@ -8,6 +8,7 @@ import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { EventStructure } from '../../structures/CreateEventFields'
 import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from "react-router-dom";
+import { isoString } from '../../utils/dateFormatter'
 
 export default function CreateEvent() {
     const navigate = useNavigate();
@@ -29,7 +30,11 @@ export default function CreateEvent() {
         console.log(data);
         e.preventDefault();
         
-            axios.post('/api/eventos/agregar', data, { withCredentials: true }).then((res) => {
+            axios.post('/api/eventos/agregar', {
+                ...data,
+                fechaInicio: isoString(data.fechaInicio),
+                fechaFin: isoString(data.fechaFin)
+            }, { withCredentials: true }).then((res) => {
                 toast.success(
                     <p>
                         Evento creado exitosamente

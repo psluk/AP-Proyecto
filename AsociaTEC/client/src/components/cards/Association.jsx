@@ -35,15 +35,15 @@ const AssociationCard = ({ association, onDelete }) => {
     };
 
     return (
-        <div className="md:shadow-md border-b md:m-2 md:rounded-xl p-3 flex flex-col md:flex-row md:items-center">
+        <div className="md:shadow-md border-b md:border-none md:m-2 md:rounded-xl p-3 flex flex-col md:flex-row md:items-center">
             <div className="grow">
                 <a
                     href={target}
                     onClick={goToDetail}>
-                        <h1
+                        <p
                             className="font-bold font-serif text-venice-blue-800 text-lg">
                                 {association.asociacion.nombre}
-                        </h1>
+                        </p>
                 </a>
                 <div className="flex flex-row items-center">
                     <FontAwesomeIcon icon={faGraduationCap} className="mr-2 text-venice-blue-800" />
