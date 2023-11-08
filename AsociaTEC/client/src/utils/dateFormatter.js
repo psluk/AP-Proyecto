@@ -36,7 +36,7 @@ export const currentLocalHtmlAttribute = () => {
             currentDate.getDate(),
             currentDate.getHours(),
             currentDate.getMinutes(),
-            currentDate.getSeconds()
+            0
         )
     )
         .toISOString()
@@ -74,7 +74,7 @@ export const localTime = (apiDateString, timeType) => {
 };
 
 export const localDateTime = (apiDateString, dateType, timeType) => {
-    return `${localTime(apiDateString, timeType)} el ${localDate(
+    return `${localTime(apiDateString, timeType)}${dateType === "full" ? " el " : ", "}${localDate(
         apiDateString,
         dateType
     )}`.trim();
