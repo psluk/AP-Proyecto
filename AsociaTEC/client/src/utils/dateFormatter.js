@@ -1,6 +1,6 @@
 const dateLanguage = ["es-UY", "es-CR"]; // Returns "set" for September
 const dateOptions = {
-    short: { year: "numeric", month: "long", day: "numeric" },
+    short: { year: "numeric", month: "short", day: "numeric" },
     long: { year: "numeric", month: "long", day: "numeric" },
     full: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
 };
