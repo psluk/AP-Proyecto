@@ -11,6 +11,7 @@ import Profile from "./pages/Profile";
 import AssociationList from "./pages/Associations/Index";
 import Association from "./pages/Associations/Association";
 import CreateEvent from "./pages/Events/Create";
+import CreateActivity from "./pages/Events/CreateActivity";
 
 function App() {
     return (
@@ -31,6 +32,7 @@ function App() {
                     <Route exact path="/associations" element={<AssociationList />} />
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
                     <Route exact path="/event/create" element={<CreateEvent/>} />
+                    <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
                 </Routes>
             </div>
             <ToastContainer />

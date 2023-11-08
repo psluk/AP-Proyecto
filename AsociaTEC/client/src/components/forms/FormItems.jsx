@@ -61,6 +61,8 @@ const FormItems = ({ fields, formItemsData, setFormItemsData }) => {
                             value={formItemsData[field.name] || ""}
                             pattern={field.pattern}
                             maxLength={field.maxLength}
+                            min={field.min}
+                            max={field.max}
                         />
                     )
                     }
