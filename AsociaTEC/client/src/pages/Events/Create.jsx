@@ -8,12 +8,12 @@ import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { EventStructure } from '../../structures/CreateEventFields'
 import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from "react-router-dom";
-import { isoString } from '../../utils/dateFormatter'
+import { isoString, currentLocalHtmlAttribute } from '../../utils/dateFormatter'
 
 export default function CreateEvent() {
     const navigate = useNavigate();
-    const [data, setData] = useState({ categoria: "" })
-    const [fields, setFields] = useState(EventStructure)
+    const [data, setData] = useState({ categoria: "" });
+    const [fields, setFields] = useState(EventStructure);
     const {getCareerCode, getLocationCode, session } = useSessionContext();
 
     useEffect(() => {
@@ -24,11 +24,25 @@ export default function CreateEvent() {
         const careerCode = getCareerCode();
         const locationCode = getLocationCode();
         setData({...data, carrera: careerCode, sede: locationCode})
+        setFields((prev) => {
+            const newFields = [...prev];
+            newFields[3].min = currentLocalHtmlAttribute();
+            newFields[4].min = currentLocalHtmlAttribute();
+            return newFields;
+        });
     }, []);
 
     const handleSubmit = (e) => {
         console.log(data);
         e.preventDefault();
+
+        if (data.fechaInicio >= data.fechaFin) {
+            toast.error(
+                "La fecha de inicio debe ser anterior a la fecha de finalización",
+                messageSettings
+            );
+            return;
+        };
         
             axios.post('/api/eventos/agregar', {
                 ...data,

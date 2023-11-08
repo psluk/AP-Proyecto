@@ -27,6 +27,22 @@ export const localHtmlAttribute = (apiDateString) => {
         .split(".")[0];
 };
 
+export const currentLocalHtmlAttribute = () => {
+    const currentDate = new Date();
+    return new Date(
+        Date.UTC(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate(),
+            currentDate.getHours(),
+            currentDate.getMinutes(),
+            currentDate.getSeconds()
+        )
+    )
+        .toISOString()
+        .split(".")[0];
+}
+
 export const localDate = (apiDateString, dateType) => {
     try {
         const apiDate = new Date(apiDateString + "Z");
