@@ -58,8 +58,8 @@ BEGIN
         END;
 
         -- Se retorna la información
-        SELECT COALESCE(
-            (SELECT Ev.[uuid]           AS  'evento.id',
+        SELECT COALESCE((
+            SELECT  Ev.[uuid]           AS  'evento.id',
                     Ev.[titulo]         AS  'evento.nombre',
                     Ev.[fechaInicio]    AS  'evento.inicio',
                     Ev.[fechaFin]       AS  'evento.fin',
@@ -67,6 +67,10 @@ BEGIN
                     Es.[nombre]         AS  'estudiante.nombre',
                     Es.[apellido1]      AS  'estudiante.apellido1',
                     Es.[apellido2]      AS  'estudiante.apellido2',
+                    CAST (CASE
+                    WHEN I.[id] IS NULL
+                    THEN 0
+                    ELSE 1 END AS BIT)  AS  'inscripcion.inscrito',
                     I.[timestamp]       AS  'inscripcion.fecha',
                     I.[asistencia]      AS  'inscripcion.confirmada',
                     CAST (CASE
@@ -75,21 +79,36 @@ BEGIN
                         FROM [dbo].[Encuestas] En
                         WHERE En.[idInscripcion] = I.[id]
                             AND En.[eliminado] = 0
-                    )
+                    ) OR (I.[id] IS NULL)
                     THEN 0
-                    ELSE 1 END AS BIT) AS 'inscripcion.encuestaActiva'
+                    ELSE 1 END AS BIT)  AS 'inscripcion.encuestaActiva',
+                    CAST (CASE
+                    WHEN Edi.[id] IS NULL
+                    THEN 0
+                    ELSE 1 END AS BIT)  AS 'eventoDeInteres'
             FROM    [dbo].[Inscripciones] I
+            FULL OUTER JOIN  [dbo].[EventosDeInteres] EdI
+                ON  I.[idEvento] = EdI.[idEvento]
+                AND  I.[idEstudiante] = EdI.[idEstudiante]
             INNER JOIN  [dbo].[Estudiantes] Es
                 ON  I.[idEstudiante] = Es.[id]
+                OR  Edi.[idEstudiante] = Es.[id]
             INNER JOIN  [dbo].[Eventos] Ev
                 ON  I.[idEvento] = Ev.[id]
+                OR  EdI.[idEvento] = Ev.[id]
             WHERE   (
                         @usarFiltroDeEvento = 0
                     OR  I.[idEvento] = @idEvento
                 ) AND (
                         @usarFiltroDeEstudiante = 0
                     OR  I.[idEstudiante] = @idEstudiante
-                ) AND I.[eliminado] = 0
+                ) AND (
+                    I.[eliminado] = 0
+                    OR I.[eliminado] IS NULL
+                ) AND (
+                    EdI.[eliminado] = 0
+                    OR EdI.[eliminado] IS NULL
+                )
             FOR JSON PATH),
             '[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
                     -- que el JSON retornado sea un arreglo vacío
