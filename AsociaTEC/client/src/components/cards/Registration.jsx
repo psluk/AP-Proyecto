@@ -36,7 +36,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     }
 
     const handleCancel = (e) => {
-
+        setModal(false);
         axios.delete(`/api/inscripciones/eliminar?evento=${idEvento}&carnet=${carnet}`)
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
