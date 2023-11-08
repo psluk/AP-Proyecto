@@ -12,10 +12,11 @@ const QRModal = ({ handleClose, modal, image }) => {
                         onClick={handleClose}
                     />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white shadow-md rounded-md z-[102] w-full max-w-sm py-6 px-4 pt-8" onClick={(e) => { e.preventDefault() }}>
-                        <div className='content'>
+                        <div className='flex flex-col items-center'>
                             <h4 className="w-full text-center font-medium text-xl">
                                 Código QR
                             </h4>
+                            <img src={image}/>
                         </div>
                         <div className="flex mt-5 justify-center gap-3">
                             <button

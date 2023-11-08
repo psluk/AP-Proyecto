@@ -9,12 +9,19 @@ import { messageSettings, defaultError } from '../../utils/messageSettings';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Confirmation from '../modals/Confirmation';
+import QRModal from '../modals/QRModal';
 
 const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) => {
 
     const [state, setState] = useState(inscripcion.confirmada)
     const Navigate = useNavigate()
     const [modal, setModal] = useState(false);
+    const [modalQR, setModalQR] = useState(false);
+    const [image, setImage] = useState(`api/inscripciones/qr?evento=${idEvento}&carnet=${carnet}`);
+    
+    const toggleModalQR = () => {
+        setModalQR(!modalQR);
+    }
 
     const toggleModal = () => {
         setModal(!modal);
@@ -25,7 +32,6 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     }
 
     const handleConfirm = (e) => {
-        compareToActualDate(fin)
         axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet })
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
@@ -46,10 +52,6 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
             })
     }
 
-    const handleQR = (e) => {
-        console.log('QR')
-    }
-
 
     return (
         <div className='w-full border-2 rounded-md shadow-lg flex flex-col md:flex-row p-2 hover:bg-zinc-100 md:items-center'>
@@ -67,10 +69,10 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
             <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end'>
                 {(!state && !compareToCurrentDate(fin))
                     && <button onClick={handleConfirm} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarCheck} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
-                {!compareToCurrentDate(inicio)
+                {!compareToCurrentDate(fin)
                     && <button onClick={toggleModal} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarXmark} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
                 {(state && !compareToCurrentDate(fin))
-                    && <button onClick={handleQR}><FontAwesomeIcon icon={faQrcode} className='text-xl text-venice-blue-800' /></button>}
+                    && <button onClick={toggleModalQR}><FontAwesomeIcon icon={faQrcode} className='text-xl text-venice-blue-800' /></button>}
                 {((state && inscripcion.encuestaActiva)
                     && compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Encuesta" /></button>}
             </div>
@@ -82,6 +84,11 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
                 confirmationText="Eliminar"
                 confirmColor="bg-red-600"
                 modal={modal}
+            />
+            <QRModal
+                handleClose={toggleModalQR}
+                modal={modalQR}
+                image={image}
             />
         </div>
     )
