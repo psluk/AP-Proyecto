@@ -45,7 +45,7 @@ router.post("/agregar", (req, res) => {
 });
 
 /**
- * Método POST
+ * Método DELETE
  * Elimina un evento de interés
  */
 router.delete("/eliminar", (req, res) => {

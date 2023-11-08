@@ -10,11 +10,13 @@ import Registration from "../../components/cards/Registration";
 const StudentRegistrations = () => {
     const { getUniId } = useSessionContext();
     const navigate = useNavigate();
-
+    const [data, setData] = useState([]);
+    
     useEffect(() => {
         axios.get(`/api/inscripciones/?carnet=${getUniId()}`)
             .then((res) => {
-                console.log(res.data);
+                setData(res.data)
+                if(res.data.length == 0) document.getElementsByName('cargando')[0].innerHTML = 'No hay inscripciones...'
             })
             .catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
@@ -27,12 +29,18 @@ const StudentRegistrations = () => {
                 Inscripciones
             </h1>
             <div className='grid md:grid-cols-2 gap-2 items-center'>
-                <Registration nombre='Evento 1' inicio='2021-10-10T21:00:00' fin='2021-10-11' estado={false}/>
-                <Registration nombre='Evento 2' inicio='2021-10-10' fin='2021-10-11' estado={true}/>
-                <Registration nombre='Evento 3' inicio='2021-10-10' fin='2021-10-11' estado={false}/>
-                <Registration nombre='Evento 4' inicio='2021-10-10' fin='2021-10-11' estado={true}/>
-                <Registration nombre='Evento 5' inicio='2021-10-10' fin='2021-10-11' estado={false}/>
-                <Registration nombre='Evento 6' inicio='2021-10-10' fin='2021-10-11' estado={true}/>
+                {data.length != 0 ? data.map((item, index) => {
+                    return (
+                        <Registration
+                            key={index}
+                            idEvento={item.evento.id}
+                            carnet={getUniId()} nombre={item.evento.nombre}
+                            inicio={item.evento.inicio} fin={item.evento.fin}
+                            estado={item.evento.estado}
+                        />
+                    )
+
+                }) : <p name='cargando' className='text-center text-venice-blue-800 font-serif text-2xl'>Cargando...</p>}
 
             </div>
         </div>
