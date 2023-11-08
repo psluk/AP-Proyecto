@@ -36,7 +36,7 @@ const StudentRegistrations = () => {
                             idEvento={item.evento.id}
                             carnet={getUniId()} nombre={item.evento.nombre}
                             inicio={item.evento.inicio} fin={item.evento.fin}
-                            estado={item.evento.estado}
+                            inscripcion={item.inscripcion}
                         />
                     )
 

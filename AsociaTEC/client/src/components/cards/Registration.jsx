@@ -1,6 +1,8 @@
 import React from 'react'
-import { ConfirmEventIcon, EventIcon, CancelEventIcon, QRIcon, ClockIcon, ClockWithXIcon } from '../../components/Icons';
-import { localDateTime, currentLocalHtmlAttribute } from '../../utils/dateFormatter';
+import { EventIcon, QRIcon, ClockIcon, ClockWithXIcon } from '../../components/Icons';
+import { faSquarePollHorizontal, faCalendarXmark, faCalendarCheck, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { localDateTime, currentLocalHtmlAttribute, localHtmlAttribute } from '../../utils/dateFormatter';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { messageSettings, defaultError } from '../../utils/messageSettings';
@@ -8,9 +10,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Confirmation from '../modals/Confirmation';
 
-const Registration = ({ idEvento, carnet, nombre, inicio, fin, estado }) => {
+const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) => {
 
-    const [state, setState] = useState(estado)
+    const [state, setState] = useState(inscripcion.confirmada)
     const Navigate = useNavigate()
     const [modal, setModal] = useState(false);
 
@@ -18,9 +20,8 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, estado }) => {
         setModal(!modal);
     };
 
-    const compareToActualDate = (date) => {
-        const actualDate = currentLocalHtmlAttribute()
-        return actualDate > date
+    const compareToCurrentDate = (date) => {
+        return currentLocalHtmlAttribute() > localHtmlAttribute(date)
     }
 
     const handleConfirm = (e) => {
@@ -28,7 +29,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, estado }) => {
         axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet })
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
-                Navigate("/registrations")
+                setState(true)
             }).catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
             })
@@ -39,7 +40,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, estado }) => {
         axios.delete(`/api/inscripciones/eliminar?evento=${idEvento}&carnet=${carnet}`)
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
-                window.location.reload(false);
+                Navigate("/registrations")
             }).catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
             })
@@ -64,9 +65,14 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, estado }) => {
                 </p>
             </div>
             <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end'>
-                {!state && <button onClick={handleConfirm} disabled={compareToActualDate(fin)}><ConfirmEventIcon className={`w-6 h-6 ${compareToActualDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
-                <button onClick={toggleModal} disabled={compareToActualDate(fin)}><CancelEventIcon className={`w-6 h-6 ${compareToActualDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>
-                {state && <button onClick={handleQR}><QRIcon className='w-6 h-6 text-venice-blue-800' /></button>}
+                {(!state && !compareToCurrentDate(fin))
+                    && <button onClick={handleConfirm} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarCheck} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
+                {!compareToCurrentDate(inicio)
+                    && <button onClick={toggleModal} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarXmark} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
+                {(state && !compareToCurrentDate(fin))
+                    && <button onClick={handleQR}><FontAwesomeIcon icon={faQrcode} className='text-xl text-venice-blue-800' /></button>}
+                {((state && inscripcion.encuestaActiva)
+                    && compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Encuesta" /></button>}
             </div>
             <Confirmation
                 handleClose={toggleModal}
