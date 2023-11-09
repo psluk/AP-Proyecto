@@ -13,6 +13,7 @@ import Association from "./pages/Associations/Association";
 import CreateEvent from "./pages/Events/Create";
 import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
+import Proposal from "./pages/Students/Proposal";
 
 function App() {
     return (
@@ -35,6 +36,8 @@ function App() {
                     <Route exact path="/event/create" element={<CreateEvent/>} />
                     <Route exact path="/registrations" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
+
+                    <Route exact path="/proposal/create/" element={<Proposal/>} />
                 </Routes>
             </div>
             <ToastContainer />
