@@ -10,6 +10,7 @@ import StudentSignUp  from "./pages/SignUp/StudentSignUp";
 import Profile from "./pages/Profile";
 import AssociationList from "./pages/Associations/Index";
 import Association from "./pages/Associations/Association";
+import EventList from "./pages/Events/Index";
 import CreateEvent from "./pages/Events/Create";
 import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
@@ -35,6 +36,7 @@ function App() {
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/associations" element={<AssociationList />} />
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
+                    <Route exact path="/events" element={<EventList />} />
                     <Route exact path="/event/create" element={<CreateEvent/>} />
                     <Route exact path="/registrations" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />

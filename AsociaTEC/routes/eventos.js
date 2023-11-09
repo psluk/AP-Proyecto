@@ -43,6 +43,8 @@ router.get("/", (req, res) => {
 
     const codigoCarrera = req.query.codigoCarrera;
     const codigoSede = req.query.codigoSede;
+    const fechaInicio = req.query.fechaInicio;
+    const fechaFin = req.query.fechaFin;
 
     const request = pool.request();
 
@@ -53,6 +55,14 @@ router.get("/", (req, res) => {
 
         if (codigoSede) {
             request.input("IN_CodigoSede", sqlcon.VarChar, codigoSede);
+        }
+
+        if (fechaInicio) {
+            request.input("IN_FechaInicio", sqlcon.DateTime, fechaInicio);
+        }
+
+        if (fechaFin) {
+            request.input("IN_FechaFin", sqlcon.DateTime, fechaFin);
         }
     } catch (error) {
         console.log(error);
