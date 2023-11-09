@@ -32,12 +32,12 @@ const NavBar = () => {
                 <div className="flex flex-row items-center space-x-10 font-bold">
                     {/* Links */}
                         <div
-                            className={`transition-all bg-venice-blue-800 bg-opacity-90 backdrop-blur-sm py-5 space-y-5 w-screen fixed left-0 ${open ? "bottom-0" : "bottom-full"} flex flex-col md:flex-row items-center md:space-x-10 md:space-y-0 font-bold md:w-auto md:static md:py-0`}>
+                            className={`transition-all bg-venice-blue-800 bg-opacity-90 backdrop-blur-sm py-5 ${location.pathname !== "/" ? "space-y-5" : "space-y-0"} w-screen fixed left-0 ${open ? "bottom-0" : "bottom-full"} flex flex-col md:flex-row items-center md:space-x-10 md:space-y-0 font-bold md:w-auto md:static md:py-0`}>
                             {
                                 MenuOptions[getUserType() || "guest"].map((option, index) => (
                                     <a
                                         key={index}
-                                        className={`cursor-pointer hover:text-slate-300 transition-all duration-500 ease-in-out ${location.pathname !== "/" ? "opacity-100 transform" : "opacity-0 -translate-y-10"}`}
+                                        className={`cursor-pointer hover:text-slate-300 transition-all duration-500 ease-in-out ${location.pathname !== "/" ? "opacity-100 transform" : "opacity-0 -translate-y-10 max-md:hidden"}`}
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setOpen(false);

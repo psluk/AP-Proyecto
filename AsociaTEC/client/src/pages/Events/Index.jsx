@@ -181,7 +181,7 @@ const EventList = () => {
                         assoc
                         ?
                         <button 
-                            className="bg-emerald-500 py-2 px-4 rounded-lg w-fit text-white mt-3"
+                            className="bg-emerald-500 hover:bg-emerald-600 py-2 px-4 rounded-lg w-fit text-white mt-3"
                             onClick={() => navigate("/event/create")} >Crear evento</button>
                         :
                         <></>
