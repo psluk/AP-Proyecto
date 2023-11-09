@@ -39,7 +39,7 @@ const CreateActivity = () => {
                 </p>,
                 messageSettings
             );
-            navigate(`/event/${uuid}`);
+            navigate(`/event/edit/${uuid}`);
         }).catch((err) => {
             toast.error(
                 err?.response?.data?.mensaje || defaultError,
