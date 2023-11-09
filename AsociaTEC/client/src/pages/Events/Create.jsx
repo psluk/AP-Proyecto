@@ -113,13 +113,13 @@ export default function CreateEvent() {
     }, []);
 
     return (
-        <div className='p-5 md:w-2/4 md:flex md:flex-col md:items-center'>
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
+        <div className='p-3 lg:w-[64rem] md:flex md:flex-col md:items-center w-full'>
+            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-4">
                 Crear evento
             </h1>
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0 shadow-lg border rounded-md">
+                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0">
                 <FormItems
                     fields={EventStructure}
                     formItemsData={data}
@@ -134,7 +134,7 @@ export default function CreateEvent() {
                     </button>
                 </div>
             </form>
-            <p className="text-center mt-4">
+            <p className="text-center">
                 <a
                     className="text-venice-blue-700 hover:underline cursor-pointer"
                     href="/events"

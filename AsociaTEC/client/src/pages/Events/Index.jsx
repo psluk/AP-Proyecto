@@ -15,6 +15,7 @@ import { messageSettings } from "../../utils/messageSettings";
 import EventCard from "../../components/cards/Event";
 import ReactLoading from "react-loading";
 import colors from "tailwindcss/colors"
+import { useNavigate } from "react-router-dom";
 
 const EventList = () => {
     const requestAbortController = useRef(null);
@@ -32,6 +33,7 @@ const EventList = () => {
     const [daysWithEvents, setDaysWithEvents] = useState([]);
     const [events, setEvents] = useState([]);
     const [initialLoad, setInitialLoad] = useState(true);
+    const navigate = useNavigate();
 
     const deleteEvent = (uuid) => {
         let currentEvents = [...events];
@@ -218,15 +220,24 @@ const EventList = () => {
                         }
                         </div>
                         :
-                        <div className="flex flex-col md:w-[23rem] lg:w-[40rem]">
+                        <div className="flex flex-col md:w-[23rem] lg:w-[40rem] 2xl:w-[43.5rem]">
                             {
                                 isLoading
                                 ?
                                 <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
                                 :
-                                <p className="text-center text-gray-400 text-xl font-serif font-bold mt-2">No hay eventos</p>
+                                <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay eventos</p>
                             }
                         </div>
+                    }
+                    {
+                        !isLoading
+                        ?
+                        <button 
+                            className="bg-emerald-500 py-2 px-4 rounded-lg w-fit text-white mt-3"
+                            onClick={() => navigate("/event/create")} >Crear evento</button>
+                        :
+                        <></>
                     }
                 </div>
             </div>

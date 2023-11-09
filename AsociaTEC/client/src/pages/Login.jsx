@@ -35,7 +35,7 @@ const Login = () => {
     };
 
     return (
-        <div className="p-5 w-full sm:w-[40rem]">
+        <div className="p-5 w-full xs:w-[30rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Iniciar sesión
             </h1>
