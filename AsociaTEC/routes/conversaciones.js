@@ -50,6 +50,10 @@ router.get("/", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Conversaciones_Agregar
 router.post("/agregar", (req, res) => {
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
+
     const correo = req.body.correo;
     const titulo = req.body.titulo;
     const tags = req.body.tags;
@@ -88,13 +92,11 @@ router.post("/agregar", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Conversaciones_Eliminar
 router.delete("/eliminar", (req, res) => {
-    const carnet = req.body.carnet;
-    if (!estaAutenticado(req, true, true, carnet)) {
+    if (!estaAutenticado(req, false, false)) {
         return res.status(403).send({ mensaje: "Acceso denegado" });
     }
 
     const uuid = req.query.uuid;
-    const correo = req.query.correo;
     const request = pool.request();
 
     try {

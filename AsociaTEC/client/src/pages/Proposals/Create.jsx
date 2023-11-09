@@ -1,12 +1,11 @@
 import FormItems from "../../components/forms/FormItems";
-import { LoginFields } from "../../structures/LoginFields";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSessionContext } from "../../context/SessionComponent";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useEffect, useState } from "react";
-import { ProposalStructure } from "../../structures/CreateProposalFields";
+import { ProposalStructure } from "../../structures/Fields/CreateProposalFields";
 
 const Proposal = () => {
     const navigate = useNavigate();

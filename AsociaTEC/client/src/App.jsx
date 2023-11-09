@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { SessionProvider } from "./context/SessionComponent";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 import StudentSignUp  from "./pages/SignUp/StudentSignUp";
@@ -24,12 +25,7 @@ function App() {
             <NavBar />
             <div id="mainContent">
                 <Routes>
-                    <Route exact path="/" element={<>
-                        <h1>Home</h1>
-                        <p className="font-sans">Contenido (sans).</p>
-                        <p className="font-serif">Contenido (serif).</p>
-                        <p className="font-mono">Contenido (mono).</p>
-                        </>} /> 
+                    <Route exact path="/" element={<Menu />} /> 
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/sign-up/association" element={<AssociationSignUp />} />
                     <Route exact path="/sign-up/student" element={<StudentSignUp />} />
@@ -38,7 +34,7 @@ function App() {
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
                     <Route exact path="/events" element={<EventList />} />
                     <Route exact path="/event/create" element={<CreateEvent/>} />
-                    <Route exact path="/registrations" element={<StudentRegistrations/>} />
+                    <Route exact path="/my-events" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
                     <Route exact path="/collaborators/:uuid" element={<CollaboratorList/>} />
                     <Route exact path="/collaborators/request/:uuid" element={<Requests/>} />

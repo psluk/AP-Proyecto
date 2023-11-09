@@ -1,4 +1,4 @@
-import { faGraduationCap, faPencil, faPeopleGroup, faPlay, faTrash, faTreeCity } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faPeopleGroup, faPlay, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import Confirmation from "../modals/Confirmation";
@@ -6,9 +6,9 @@ import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
-import { localHtmlAttribute, localDateTime, isoString, localTime, localDate } from "../../utils/dateFormatter";
+import { localHtmlAttribute, localTime, localDate } from "../../utils/dateFormatter";
 
-const EventCard = ({ event, onDelete }) => {
+const EventCard = ({ event, onDelete, admin }) => {
     const navigate = useNavigate();
     const target = `/event/edit/${event.uuid}`;
     const [modal, setModal] = useState(false);
@@ -68,12 +68,19 @@ const EventCard = ({ event, onDelete }) => {
                 }
             </div>
             <div className="flex flex-row mt-2 sm:mt-0 sm:ml-2 sm:flex-col grow-0 justify-around sm:justify-center sm:space-y-2">
-                <a
-                    href={target}
-                    onClick={goToDetail}>
-                        <FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faPencil} title="Modificar" />
-                </a>
-                <FontAwesomeIcon className="text-xl text-red-700 cursor-pointer" icon={faTrash} onClick={toggleModal} title="Eliminar" />
+                {
+                    admin ?
+                    <>
+                        <a
+                            href={target}
+                            onClick={goToDetail}>
+                                <FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faPencil} title="Modificar" />
+                        </a>
+                        <FontAwesomeIcon className="text-xl text-red-700 cursor-pointer" icon={faTrash} onClick={toggleModal} title="Eliminar" />
+                    </>
+                    :
+                    <></>
+                }
             </div>
             <Confirmation
                 handleClose={toggleModal}

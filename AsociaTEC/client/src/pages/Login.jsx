@@ -1,5 +1,5 @@
 import FormItems from "../components/forms/FormItems";
-import { LoginFields } from "../structures/LoginFields";
+import { LoginFields } from "../structures/Fields/LoginFields";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSessionContext } from "../context/SessionComponent";

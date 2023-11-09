@@ -37,10 +37,6 @@ router.get("/categorias", (req, res) => {
  * Puede ser filtrada por codigo de carrera y/o codigo de sede
  */
 router.get("/", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
     const codigoCarrera = req.query.codigoCarrera;
     const codigoSede = req.query.codigoSede;
     const fechaInicio = req.query.fechaInicio;
@@ -86,11 +82,6 @@ router.get("/", (req, res) => {
  * Puede ser filtrada por codigo de carrera y/o codigo de sede
  */
 router.get("/calendario", (req, res) => {
-    
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
     const request = pool.request();
 
     request.execute("AsociaTEC_SP_Eventos_Calendario", (error, result) => {
@@ -109,10 +100,6 @@ router.get("/calendario", (req, res) => {
  * Retorna los detalles de un evento
  */
 router.get("/detalles", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
-
     const uuid = req.query.uuid;
 
     const request = pool.request();

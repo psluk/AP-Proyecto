@@ -1,6 +1,6 @@
 import React from 'react'
 import FormItems from "../../components/forms/FormItems";
-import { StudentSignUpFields } from "../../structures/StudentSignUpFields";
+import { StudentSignUpFields } from "../../structures/Fields/StudentSignUpFields";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";

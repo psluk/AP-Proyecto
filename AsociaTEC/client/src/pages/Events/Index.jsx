@@ -16,6 +16,7 @@ import EventCard from "../../components/cards/Event";
 import ReactLoading from "react-loading";
 import colors from "tailwindcss/colors"
 import { useNavigate } from "react-router-dom";
+import { useSessionContext } from "../../context/SessionComponent";
 
 const EventList = () => {
     const requestAbortController = useRef(null);
@@ -34,6 +35,9 @@ const EventList = () => {
     const [events, setEvents] = useState([]);
     const [initialLoad, setInitialLoad] = useState(true);
     const navigate = useNavigate();
+    const { getUserType } = useSessionContext();
+    const admin = getUserType() === "Administrador";
+    const assoc = getUserType() === "Asociación";
 
     const deleteEvent = (uuid) => {
         let currentEvents = [...events];
@@ -172,7 +176,16 @@ const EventList = () => {
         <div className="flex flex-col w-full sm:w-fit flex-auto">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4 mt-8">Eventos</h1>
             <div className="flex flex-col md:flex-row w-full px-6 h-full">
-                <div className="grow-0 mr-6 self-center">
+                <div className="grow-0 mr-6 self-center flex flex-col items-center">
+                    {
+                        assoc
+                        ?
+                        <button 
+                            className="bg-emerald-500 py-2 px-4 rounded-lg w-fit text-white mt-3"
+                            onClick={() => navigate("/event/create")} >Crear evento</button>
+                        :
+                        <></>
+                    }
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                         <DateCalendar
                             value={date}
@@ -209,7 +222,7 @@ const EventList = () => {
                                             {
                                                 date.events.map((event) => {
                                                     return (
-                                                        <EventCard key={event.uuid} event={event} onDelete={deleteEvent} />
+                                                        <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} />
                                                     );
                                                 })
                                             }
@@ -229,15 +242,6 @@ const EventList = () => {
                                 <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay eventos</p>
                             }
                         </div>
-                    }
-                    {
-                        !isLoading
-                        ?
-                        <button 
-                            className="bg-emerald-500 py-2 px-4 rounded-lg w-fit text-white mt-3"
-                            onClick={() => navigate("/event/create")} >Crear evento</button>
-                        :
-                        <></>
                     }
                 </div>
             </div>

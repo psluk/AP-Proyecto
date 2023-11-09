@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
-import { EventStructure } from '../../structures/CreateEventFields'
+import { EventStructure } from '../../structures/Fields/CreateEventFields'
 import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from "react-router-dom";
 import { isoString, currentLocalHtmlAttribute } from '../../utils/dateFormatter'
