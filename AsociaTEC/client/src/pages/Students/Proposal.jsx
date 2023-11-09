@@ -28,7 +28,7 @@ val url = "https://asociatec.azurewebsites.net/api/propuestas/agregar"
                     val (responseStatus, responseString) = apiRequest.postRequest(url, requestBody)
 */
 
-const Proposal = () => {
+const CreateProposal = () => {
     const navigate = useNavigate();
     const { getEmail, isLoggedIn, getUniId, getCareerCode, getLocationCode } = useSessionContext();
     const [associations, setAssociations] = useState([]);
@@ -47,13 +47,12 @@ const Proposal = () => {
 
         setFulldata((prev) => ({
             ...prev,
-            carnet: getUniId
+            carnet: getUniId()
         }));
         
 
         axios.get('/api/asociaciones', { withCredentials: true }).then((res) => {
 
-            console.log(res.data)
             setAssociations(res.data)
             if (res.data.length > 0) {
                 setFields((prev) => {
@@ -84,8 +83,6 @@ const Proposal = () => {
 
         if (data.asociacion) {
 
-            console.log("data.aso2", data)
-
             const stringArray = data.asociacion.split('/');
 
             setFulldata((data) => ({
@@ -101,14 +98,14 @@ const Proposal = () => {
     const handleSumit = (e) => {
         e.preventDefault()
 
-        if (typeof fulldata.carnet === "string") {
+        if (typeof fulldata.carnet === "number") {
             const theBody = {
                 ...fulldata, 
                 titulo: data.titulo,
                 tematica: data.tematica,
                 objetivos: data.objetivos,
                 actividades: data.actividades,
-                otros: data.otros
+                otros: data.otros !== undefined ? data.otros : ""
             }
             console.log(theBody)
             axios.post('/api/propuestas/agregar', theBody, { withCredentials: true }).then((res) => {
@@ -122,9 +119,12 @@ const Proposal = () => {
                         err?.response?.data?.mensaje || defaultError,
                         messageSettings
                     );
+                    console.log(err)
                 });
         } else {
             toast.error("Debe iniciar sessión", messageSettings);
+            //console.log(typeof fulldata.carnet)
+            //console.log(fulldata)
         }
         
     };
@@ -159,4 +159,4 @@ const Proposal = () => {
     );
 };
 
-export default Proposal;
+export default CreateProposal;
