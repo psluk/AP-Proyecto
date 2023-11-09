@@ -16,7 +16,7 @@ import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
 import CollaboratorList from "./pages/Collaborators/Index";
 import Requests from "./pages/Collaborators/Requests";
-import Proposal from "./pages/Students/Proposal";
+import Proposal from "./pages/Proposals/Create";
 
 function App() {
     return (
