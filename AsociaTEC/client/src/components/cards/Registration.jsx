@@ -66,7 +66,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
                     <ClockWithXIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2'>{localDateTime(fin)}</span>
                 </p>
             </div>
-            <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end'>
+            <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end pt-4 md:p-0'>
                 {(!state && !compareToCurrentDate(fin))
                     && <button onClick={handleConfirm} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarCheck} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
                 {!compareToCurrentDate(fin)

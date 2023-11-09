@@ -39,7 +39,6 @@ const StudentRegistrations = () => {
                             inscripcion={item.inscripcion}
                         />
                     )
-
                 }) : <p name='cargando' className='text-center text-venice-blue-800 font-serif text-2xl'>Cargando...</p>}
 
             </div>
