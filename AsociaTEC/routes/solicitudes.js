@@ -68,7 +68,7 @@ router.post("/decidir", (req, res) => {
             manejarError(res, error);
         } else {
             res.status(200).send({
-                mensaje: "Solicitud acceptada exitosamente",
+                mensaje: (aceptar == 0)?"Solicitud rechazada exitosamente":"Solicitud aceptada correctamente",
             });
         }
     });

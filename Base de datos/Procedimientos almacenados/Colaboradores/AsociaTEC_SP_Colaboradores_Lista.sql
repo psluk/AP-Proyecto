@@ -41,7 +41,8 @@ BEGIN
             (SELECT E.[carnet]      AS 'carnet',
                     E.[nombre]      AS 'nombre',
                     E.[apellido1]   AS 'apellido1',
-                    E.[apellido2]   AS 'apellido2'
+                    E.[apellido2]   AS 'apellido2',
+                    CdE.[descripcion] AS 'descripcion'
 			FROM [dbo].[ColaboradoresDeEvento] CdE
 			INNER JOIN [dbo].[Estudiantes] E
 				ON E.[id] = Cde.[idEstudiante]

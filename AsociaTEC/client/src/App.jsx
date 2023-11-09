@@ -13,6 +13,8 @@ import Association from "./pages/Associations/Association";
 import CreateEvent from "./pages/Events/Create";
 import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
+import CollaboratorList from "./pages/Collaborators/Index";
+import Requests from "./pages/Collaborators/Requests";
 import Proposal from "./pages/Students/Proposal";
 
 function App() {
@@ -36,7 +38,8 @@ function App() {
                     <Route exact path="/event/create" element={<CreateEvent/>} />
                     <Route exact path="/registrations" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
-
+                    <Route exact path="/collaborators/:uuid" element={<CollaboratorList/>} />
+                    <Route exact path="/collaborators/request/:uuid" element={<Requests/>} />
                     <Route exact path="/proposal/create/" element={<Proposal/>} />
                 </Routes>
             </div>
