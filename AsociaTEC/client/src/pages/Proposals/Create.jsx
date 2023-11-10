@@ -9,7 +9,7 @@ import { ProposalStructure } from "../../structures/Fields/CreateProposalFields"
 
 const CreateProposal = () => {
     const navigate = useNavigate();
-    const { getEmail, isLoggedIn, getUniId, getCareerCode, getLocationCode } =
+    const { getUserType, isLoggedIn, getUniId} =
         useSessionContext();
     const [associations, setAssociations] = useState([]);
     const [fields, setFields] = useState(ProposalStructure);

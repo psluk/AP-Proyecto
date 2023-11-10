@@ -8,11 +8,12 @@ import { useSessionContext } from "../../context/SessionComponent";
 
 
 const ProposalList = () => {
-    const { getEmail, isLoggedIn, getUniId, getCareerCode, getLocationCode } = useSessionContext();
+    const {isLoggedIn, getUserType, getCareerCode, getLocationCode } = useSessionContext();
     const [proposals, setProposals] = useState([]);
     const [filter, setFilter] = useState([]);
     const [associations, setAssociations] = useState([]);
 
+    
 
     const setNewValues = (uuid, text) =>{
         

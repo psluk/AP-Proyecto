@@ -8,233 +8,121 @@ import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
 
 const ProposalDetails = () => {
-    const navigate = useNavigate();
-    const [data, setData] = useState({
-        location: "",
-        career: "",
-    });
-    const [fields, setFields] = useState(() => {
-        const newFields = AssociationSignUpFields;
-        newFields[6].placeholder = "Dejar en blanco para no cambiar la contraseña";
-        newFields[6].required = false;
-        return newFields;
-    });
-    const { session } = useSessionContext();
-    const { locationCode, careerCode } = useParams();
-    const [locationsLoaded, setLocationsLoaded] = useState(false);
-    const [careersLoaded, setCareersLoaded] = useState(false);
-    const [email, setEmail] = useState("");
-    const [initialLoad, setInitialLoad] = useState(true);
+    const { uuid } = useParams();
+    const { getUserType, isLoggedIn } = useSessionContext();
+    const [proposal, setProposal] = useState([]);
 
-    const saveLocations = (locations) => {
-        if (locations.length === 0) {
-            setData((prev) => ({
-                ...prev,
-                location: "",
-            }));
-            setFields((prev) => {
-                const newFields = [...prev];
-                newFields[2].options = [
-                    {
-                        value: "",
-                        label: "Cargando...",
-                        disabled: true,
-                    },
-                ];
-                return newFields;
-            });
-            return;
-        }
-        setFields((prev) => {
-            const newFields = [...prev];
-            newFields[2].options = locations.map((location) => ({
-                label: location.nombre,
-                value: location.codigo,
-            }));
-            return newFields;
-        });
-    };
+    const setNewValues = (text) => {
 
-    const saveCareers = (careers) => {
-        if (careers.length === 0) {
-            setData((prev) => ({
-                ...prev,
-                career: "",
-            }));
-            setFields((prev) => {
-                const newFields = [...prev];
-                newFields[3].options = [
-                    {
-                        value: "",
-                        label: "Cargando...",
-                        disabled: true,
-                    },
-                ];
-                return newFields;
+        axios.post("/api/propuestas/modificar", { propuesta: uuid, estado: text }, { withCredentials: true })
+            .then((response) => {
+
+                toast.success("Propuesta modificada correctamente", messageSettings);
+                setFilter([...filter, { filter_uuid: uuid }])
+                const temp = [...filter, { filter_uuid: uuid }]
+                const exclusionSet = new Set(temp.map(item => item.filter_uuid));
+                const newvalues = proposals.filter(obj => !exclusionSet.has(obj.filter_uuid))
+                setProposals(newvalues);
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró modificar la propuesta", messageSettings);
             });
-            return;
-        }
-        setFields((prev) => {
-            if (initialLoad) {
-                setInitialLoad(false);
-            } else {
-                setData((prev) => ({
-                    ...prev,
-                    career: careers[0].codigo,
-                }));
-            }
-            const newFields = [...prev];
-            newFields[3].options = careers.map((career) => ({
-                label: career.nombre,
-                value: career.codigo,
-            }));
-            return newFields;
-        });
-    };
+    }
+
+    const accept = (e) => {
+        e.preventDefault();
+        setNewValues("Aceptada")
+
+    }
+    const decline = (e) => {
+        e.preventDefault();
+        setNewValues("Rechazada")
+
+    }
+
 
     // Load locations and association data
     useEffect(() => {
-        document
-            .getElementById("location")
-            ?.classList.add("italic", "text-gray-400");
-        document
-            .getElementById("career")
-            ?.classList.add("italic", "text-gray-400");
-
-        axios.get("/api/sedes", { withCredentials: true }).then((res) => {
-            saveLocations(res.data);
-            setLocationsLoaded(true);
-            document
-                .getElementById("location")
-                ?.classList.remove("italic", "text-gray-400");
-        });
-
-        axios
-            .get(`/api/asociaciones/detalles?sede=${locationCode}&carrera=${careerCode}`, {
-                withCredentials: true,
+        console.log(uuid)
+        axios.get(`/api/propuestas/detalles/?propuesta=${uuid}`)
+            .then((response) => {
+                const prop = response.data[0]
+                setProposal(prop)
             })
-            .then((res) => {
-                const result = res.data[0];
-                setEmail(result?.asociacion?.correo);
-                setData((prev) => ({
-                    ...prev,
-                    name: result?.asociacion?.nombre,
-                    description: result?.asociacion?.descripcion,
-                    phoneNumber: result?.asociacion?.telefono,
-                    location: result?.sede?.codigo,
-                    career: result?.carrera?.codigo,
-                    email: result?.asociacion?.correo,
-                    password: "",
-                }));
-            })
-            .catch((err) => {
-                toast.error(
-                    err?.response?.data?.mensaje || defaultError,
-                    messageSettings
-                );
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró cargar la propuesta", messageSettings);
             });
 
-    }, []);
+    }, [uuid]);
 
-    useEffect(() => {
-        // Load careers
-        document
-            .getElementById("career")
-            ?.classList.add("italic", "text-gray-400");
-        saveCareers([]);
 
-        if (data.location) {
-            axios
-                .get(`/api/carreras?codigoSede=${data.location}`, {
-                    withCredentials: true,
-                })
-                .then((res) => {
-                    saveCareers(res.data);
-                    setCareersLoaded(true);
-                    document
-                        .getElementById("career")
-                        ?.classList.remove("italic", "text-gray-400");
-                });
-        }
-    }, [data.location]);
-
-    const attemptModify = (e) => {
-        e.preventDefault();
-
-        axios
-            .put(
-                "/api/asociaciones/modificar",
-                {
-                    nombreNueva: data.name,
-                    descripcionNueva: data.description,
-                    telefonoNueva: data.phoneNumber,
-                    codigoSedeNueva: data.location,
-                    codigoCarreraNueva: data.career,
-                    correoNueva: data.email,
-                    claveNueva: data.password,
-                    correoActual: email,
-                },
-                { withCredentials: true }
-            )
-            .then((res) => {
-                toast.success(
-                    <p>
-                        Asociación modificada exitosamente
-                    </p>,
-                    messageSettings
-                );
-                navigate(`/edit/association/${data.location}/${data.career}`);
-            })
-            .catch((err) => {
-                toast.error(
-                    err?.response?.data?.mensaje || defaultError,
-                    messageSettings
-                );
-            });
-    };
 
     return (
-        <div className="p-5 w-full sm:w-[40rem]">
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Detalles De La Propuestas
+        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
+                Propuesta
             </h1>
-            {
-                email && locationsLoaded && careersLoaded
-                ? <>
-                    <form
-                        className="space-y-4 flex flex-col items-center"
-                        onSubmit={attemptModify}
-                    >
-                        <FormItems
-                            fields={fields}
-                            formItemsData={data}
-                            setFormItemsData={setData}
-                        />
-                        <button
-                            className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
-                            type="submit"
-                            key={"submit"}
-                        >
-                            Guardar cambios
-                        </button>
-                    </form>
-                    <p className="text-center mt-4">
-                        <a
-                            className="text-venice-blue-700 hover:underline cursor-pointer"
-                            href="/associations"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                navigate(-1);
-                            }}
-                        >
-                            Cancelar
-                        </a>
-                    </p>
-                </>
-                : <p className="text-gray-600 italic text-center">Cargando...</p>
-            }
+            <ul className="flex flex-col space-y-2">
+
+                {proposal.id ? <li><b>ID Propuesta: </b> {proposal.id}</li> : <></>}
+                {proposal.titulo ? <li><b>Título: </b> {proposal.titulo}</li> : <></>}
+                {proposal.tematica ? <li><b>Temática: </b> {proposal.tematica}</li> : <></>}
+                {proposal.objetivos ? <li><b>Objetivos: </b> {proposal.objetivos}</li> : <></>}
+                {proposal.actividades ? <li><b>Actividades: </b> {proposal.actividades}</li> : <></>}
+                {proposal.otros ? <li><b>Otros: </b> {proposal.otros}</li> : <></>}
+            </ul>
+            <div className="space-x-2">
+                <button
+                    className="bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded-lg w-fit"
+                    type="button"
+                    key="logout"
+                    onClick={accept}
+                >
+                    Aceptar
+                </button>
+                <button
+                    className="bg-red-600 hover:bg-red-800 text-white py-2 px-4 rounded-lg w-fit"
+                    type="button"
+                    key="logout"
+                    onClick={decline}
+                >
+                    Rechazar
+                </button></div>
+
         </div>
     );
 };
 
 export default ProposalDetails;
+
+
+/*
+<ul className="flex flex-col space-y-2">
+                { getName() ? <li><b>Nombre:</b> { getName() }</li> : <></> }
+                { getUniId() ? <li><b>Carné:</b> { getUniId() }</li> : <></> }
+                { getUserType() ? <li><b>Tipo de perfil:</b> { getUserType() }</li> : <></> }
+                { getLocationCode() ? <li><b>Sede:</b> { getLocationName() + " (" + getLocationCode() + ")"}</li> : <></> }
+                { getCareerCode() ? <li><b>Carrera:</b> { getCareerName() + " (" + getCareerCode() + ")" }</li> : <></> }
+                { getEmail() ? <li><b>Correo electrónico:</b>{" "}
+                    <a
+                        className="text-venice-blue-700 hover:underline cursor-pointer"
+                        href={`mailto:${getEmail()}`}>
+                            { getEmail() }
+                    </a></li> : <></> }
+            </ul>
+            <button
+                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg w-fit"
+                type="button"
+                key="logout"
+                onClick={attemptLogout}
+            >
+                Cerrar sesión
+            </button>
+            {
+                getUserType() !== "Administrador"
+                ? <p className="mt-4 text-gray-600 text-center">
+                    Para modificar su perfil, por favor, contacte a un administrador.
+                </p>
+                : <></>
+            }
+*/
