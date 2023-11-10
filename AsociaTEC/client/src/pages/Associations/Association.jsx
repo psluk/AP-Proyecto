@@ -6,6 +6,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const Association = () => {
     const navigate = useNavigate();
@@ -194,7 +196,7 @@ const Association = () => {
     };
 
     return (
-        <div className="p-5 w-full sm:w-[40rem]">
+        <div className="p-5 w-full sm:w-[40rem] flex flex-col">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Editar asociación
             </h1>
@@ -231,7 +233,7 @@ const Association = () => {
                         </a>
                     </p>
                 </>
-                : <p className="text-gray-600 italic text-center">Cargando...</p>
+                : <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
             }
         </div>
     );

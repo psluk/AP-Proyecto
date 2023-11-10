@@ -60,10 +60,10 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
                     <EventIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2 font-bold font-serif text-venice-blue-800 text-lg'>{nombre}</span>
                 </p>
                 <p className='flex '>
-                    <ClockIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2'>{localDateTime(inicio)}</span>
+                    <ClockIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2'>{localDateTime(inicio, 'long')}</span>
                 </p>
                 <p className='flex '>
-                    <ClockWithXIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2'>{localDateTime(fin)}</span>
+                    <ClockWithXIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2'>{localDateTime(fin, 'long')}</span>
                 </p>
             </div>
             <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end pt-4 md:p-0'>
