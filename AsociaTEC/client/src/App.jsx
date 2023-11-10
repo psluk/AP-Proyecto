@@ -20,8 +20,8 @@ import Requests from "./pages/Collaborators/Requests";
 import CreateProposal from "./pages/Proposals/Create";
 import EditActivity from "./pages/Events/EditActivity";
 import EditEvent from "./pages/Events/Edit";
-import ProposalList from "./pages/Associations/ProposalList";
-import DetailsProposal from "./pages/Associations/ProposalDetails";
+import ProposalList from "./pages/Proposals/ProposalList";
+import DetailsProposal from "./pages/Proposals/ProposalDetails";
 
 
 function App() {

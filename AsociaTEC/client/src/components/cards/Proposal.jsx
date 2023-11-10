@@ -2,10 +2,7 @@ import { faGraduationCap,faBookBookmark, faCircleCheck, faXmarkCircle} from "@fo
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import Confirmation from "../modals/Confirmation";
-import axios from "axios";
 import { useState } from "react";
-import { toast } from "react-toastify";
-import { messageSettings, defaultError } from "../../utils/messageSettings";
 
 const ProposalCard = ({proposal, onDecline, onAccept }) => {
     const navigate = useNavigate();

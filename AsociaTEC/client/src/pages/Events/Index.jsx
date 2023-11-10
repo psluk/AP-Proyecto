@@ -1,7 +1,7 @@
 import {
     DateCalendar,
     LocalizationProvider,
-    PickersDay,
+    PickersDay
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Badge from "@mui/material/Badge";
