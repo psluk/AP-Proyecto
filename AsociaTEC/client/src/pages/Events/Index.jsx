@@ -176,15 +176,12 @@ const EventList = () => {
         <div className="flex flex-col w-full sm:w-fit flex-auto">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4 mt-8">Eventos</h1>
             <div className="flex flex-col md:flex-row w-full px-6 h-full">
-                <div className="grow-0 mr-6 self-center flex flex-col items-center">
+                <div className="grow-0 md:mr-6 flex flex-col self-center md:self-start items-center">
                     {
-                        assoc
-                        ?
+                        assoc &&
                         <button 
                             className="bg-emerald-500 hover:bg-emerald-600 py-2 px-4 rounded-lg w-fit text-white mt-3"
                             onClick={() => navigate("/event/create")} >Crear evento</button>
-                        :
-                        <></>
                     }
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                         <DateCalendar

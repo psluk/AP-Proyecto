@@ -13,7 +13,7 @@ const NavBar = () => {
     const location = useLocation();
 
     return (
-        <div className="w-full bg-venice-blue-800 py-2 lg:px-10 px-5 flex justify-center text-white sticky top-0 h-14">
+        <div className="w-full bg-venice-blue-800 py-2 lg:px-10 px-5 flex justify-center text-white sticky top-0 h-14 z-[1000]">
             {/* Doing lg:w-[75rem] to keep the nav. bar in a reasonable size even in wider screens */}
             <div className="flex flex-row items-center w-full lg:w-[75rem] justify-between">
                 {/* Elements on the left */}
@@ -32,7 +32,7 @@ const NavBar = () => {
                 <div className="flex flex-row items-center space-x-10 font-bold">
                     {/* Links */}
                         <div
-                            className={`transition-all bg-venice-blue-800 bg-opacity-90 backdrop-blur-sm py-5 ${location.pathname !== "/" ? "space-y-5" : "space-y-0"} w-screen fixed left-0 ${open ? "bottom-0" : "bottom-full"} flex flex-col md:flex-row items-center md:space-x-10 md:space-y-0 font-bold md:w-auto md:static md:py-0`}>
+                            className={`transition-all bg-venice-blue-800 bg-opacity-90 backdrop-blur-sm py-5 ${location.pathname !== "/" ? "space-y-5" : "space-y-0"} w-screen fixed top-14 ${open ? "right-0" : "-right-full"} flex flex-col md:flex-row items-center md:space-x-10 md:space-y-0 font-bold md:w-auto md:static md:py-0`}>
                             {
                                 MenuOptions[getUserType() || "guest"].map((option, index) => (
                                     <a
