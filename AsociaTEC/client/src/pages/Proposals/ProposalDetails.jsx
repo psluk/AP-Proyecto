@@ -1,5 +1,3 @@
-import FormItems from "../../components/forms/FormItems";
-import { AssociationSignUpFields } from "../../structures/Fields/AssociationSignUpFields";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";

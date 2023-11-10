@@ -6,6 +6,8 @@ import axios from "axios";
 import { localHtmlAttribute, localDateTime, isoString } from "../../utils/dateFormatter";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const EditActivity = () => {
     const navigate = useNavigate();
@@ -39,7 +41,7 @@ const EditActivity = () => {
                 </p>,
                 messageSettings
             );
-            navigate(`/event/${uuid}`);
+            navigate(`/event/edit/${uuid}`);
         }).catch((err) => {
             toast.error(
                 err?.response?.data?.mensaje || defaultError,
@@ -110,7 +112,7 @@ const EditActivity = () => {
                     </a>
                 </p>
             </>
-            : <p className="text-gray-600 italic text-center">Cargando...</p>
+            : <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
             }
         </div>
     )

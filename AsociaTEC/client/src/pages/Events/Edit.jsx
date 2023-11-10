@@ -9,6 +9,18 @@ import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from "react-router-dom";
 import { isoString, currentLocalHtmlAttribute } from '../../utils/dateFormatter'
 
+/*
+const titulo = req.body.titulo;
+    const descripcion = req.body.descripcion;
+    const fechaInicio = req.body.fechaInicio;
+    const fechaFin = req.body.fechaFin;
+    const lugar = req.body.lugar;
+    const especiales = req.body.especiales;
+    const capacidad = req.body.capacidad;
+    const categoria = req.body.categoria;
+    const uuid = req.body.uuid;
+*/
+
 export default function EditEvent() {
     const navigate = useNavigate();
     const [data, setData] = useState({ categoria: "" });
@@ -113,15 +125,15 @@ export default function EditEvent() {
     }, []);
 
     return (
-        <div className='p-5 md:w-2/4 md:flex md:flex-col md:items-center'>
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Crear evento
+        <div className='p-3 lg:w-[64rem] md:flex md:flex-col md:items-center w-full'>
+            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-4">
+                Editar Evento
             </h1>
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0 shadow-lg border rounded-md">
+                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0">
                 <FormItems
-                    fields={EventStructure}
+                    fields={EditEventStructure}
                     formItemsData={data}
                     setFormItemsData={setData}
                 />
@@ -134,7 +146,7 @@ export default function EditEvent() {
                     </button>
                 </div>
             </form>
-            <p className="text-center mt-4">
+            <p className="text-center">
                 <a
                     className="text-venice-blue-700 hover:underline cursor-pointer"
                     href="/events"
