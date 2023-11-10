@@ -40,7 +40,7 @@ const CreateProposal = () => {
     useEffect(() => {
 
         // Redirect if not logged in
-        if (isLoggedIn == null) {
+        if (isLoggedIn() == null) {
             navigate("/login");
             toast.error("Session no iniciada", messageSettings);
         }

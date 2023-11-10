@@ -15,7 +15,12 @@ import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
 import CollaboratorList from "./pages/Collaborators/Index";
 import Requests from "./pages/Collaborators/Requests";
-import Proposal from "./pages/Students/Proposal";
+import CreateProposal from "./pages/Students/Proposal";
+import EditActivity from "./pages/Events/EditActivity";
+import EditEvent from "./pages/Events/Edit";
+import ProposalList from "./pages/Associations/ProposalList";
+import DetailsProposal from "./pages/Associations/ProposalDetails";
+
 
 function App() {
     return (
@@ -36,11 +41,15 @@ function App() {
                     <Route exact path="/associations" element={<AssociationList />} />
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
                     <Route exact path="/event/create" element={<CreateEvent/>} />
+                    <Route exact path="/event/edit/:uuid" element={<EditEvent/>} />
                     <Route exact path="/registrations" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
+                    <Route exact path="/event/:e_uuid/edit-activity/:a_uuid" element={<EditActivity/>} />
                     <Route exact path="/collaborators/:uuid" element={<CollaboratorList/>} />
                     <Route exact path="/collaborators/request/:uuid" element={<Requests/>} />
-                    <Route exact path="/proposal/create/" element={<Proposal/>} />
+                    <Route exact path="/proposal/create" element={<CreateProposal/>}/>
+                    <Route exact path="/proposal/details/:uuid" element={<DetailsProposal/>}/>
+                    <Route exact path="/proposals" element={<ProposalList/>} />
                 </Routes>
             </div>
             <ToastContainer />
