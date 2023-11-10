@@ -189,6 +189,7 @@ const EventList = () => {
                             onChange={(newDate) => setDate(newDate)}
                             loading={isLoading}
                             onMonthChange={(newMonth) => setMonth(newMonth)}
+                            onYearChange={(newMonth) => setMonth(newMonth)}
                             slots={{
                                 day: ServerDay,
                             }}
