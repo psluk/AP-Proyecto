@@ -26,7 +26,7 @@ const StudentRegistrations = () => {
     return (
         <div className='p-5 w-full md:w-[50rem] md:flex md:flex-col mb-6'>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Inscripciones
+                Mis eventos
             </h1>
             <div className='grid md:grid-cols-2 gap-2 items-center'>
                 {data.length != 0 ? data.map((item, index) => {

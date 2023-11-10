@@ -1,5 +1,6 @@
 const dateLanguage = ["es-UY", "es-CR"]; // Returns "set" for September
 const dateOptions = {
+    month : { year: "numeric", month: "long" },
     short: { year: "numeric", month: "short", day: "numeric" },
     long: { year: "numeric", month: "long", day: "numeric" },
     full: { weekday: "long", year: "numeric", month: "long", day: "numeric" },
@@ -12,7 +13,7 @@ const timeOptions = {
 };
 
 export const localHtmlAttribute = (apiDateString) => {
-    const apiDate = new Date(apiDateString + "Z");
+    const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
     return new Date(
         Date.UTC(
             apiDate.getFullYear(),
@@ -43,13 +44,25 @@ export const currentLocalHtmlAttribute = () => {
         .split(".")[0];
 }
 
-export const localDate = (apiDateString, dateType) => {
+export const localDate = (apiDateString, dateType, capitalizeFirstLetter = false) => {
     try {
-        const apiDate = new Date(apiDateString + "Z");
-        return apiDate.toLocaleDateString(
+        const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
+        const seletedOptions = { ...dateOptions[dateType] } || { ...dateOptions["short"] };
+
+        if (apiDate.getFullYear() === (new Date()).getFullYear()) {
+            delete seletedOptions.year;
+        }
+
+        const result = apiDate.toLocaleDateString(
             dateLanguage,
-            dateOptions[dateType] || dateOptions.short
+            seletedOptions
         );
+
+        if (capitalizeFirstLetter) {
+            return result.charAt(0).toUpperCase() + result.slice(1);
+        } else {
+            return result;
+        }
     } catch (error) {
         return "";
     }
@@ -57,7 +70,7 @@ export const localDate = (apiDateString, dateType) => {
 
 export const localTime = (apiDateString, timeType) => {
     try {
-        const apiDate = new Date(apiDateString + "Z");
+        const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
         const currentTimeOptions = timeOptions;
 
         if (timeType === "short") {

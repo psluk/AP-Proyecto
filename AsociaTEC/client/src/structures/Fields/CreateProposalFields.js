@@ -14,10 +14,10 @@ export const ProposalStructure = [
         required: true
     },
     {
-        label: "Tematica",
+        label: "Temática",
         type: "text",
         name: "tematica",
-        placeholder: "Temática",
+        placeholder: "Temática del evento",
         required: true,
     },
     {
@@ -35,10 +35,10 @@ export const ProposalStructure = [
         required: true,
     },
     {
-        label: "Otros(opcional)",
+        label: "Otros (opcional)",
         type: "textarea",
         name: "otros",
-        placeholder: "Opcional",
+        placeholder: "Detalles adicionales del evento",
         required: false,
     },
 ]

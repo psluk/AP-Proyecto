@@ -4,18 +4,20 @@ import "react-toastify/dist/ReactToastify.css";
 import { SessionProvider } from "./context/SessionComponent";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import Menu from "./pages/Menu";
 import Login from "./pages/Login";
 import AssociationSignUp from "./pages/SignUp/AssociationSignUp";
 import StudentSignUp  from "./pages/SignUp/StudentSignUp";
 import Profile from "./pages/Profile";
 import AssociationList from "./pages/Associations/Index";
 import Association from "./pages/Associations/Association";
+import EventList from "./pages/Events/Index";
 import CreateEvent from "./pages/Events/Create";
 import StudentRegistrations from "./pages/Registrations/StudentRegistrations";
 import CreateActivity from "./pages/Events/CreateActivity";
 import CollaboratorList from "./pages/Collaborators/Index";
 import Requests from "./pages/Collaborators/Requests";
-import CreateProposal from "./pages/Students/Proposal";
+import CreateProposal from "./pages/Proposals/Create";
 import EditActivity from "./pages/Events/EditActivity";
 import EditEvent from "./pages/Events/Edit";
 import ProposalList from "./pages/Associations/ProposalList";
@@ -28,21 +30,17 @@ function App() {
             <NavBar />
             <div id="mainContent">
                 <Routes>
-                    <Route exact path="/" element={<>
-                        <h1>Home</h1>
-                        <p className="font-sans">Contenido (sans).</p>
-                        <p className="font-serif">Contenido (serif).</p>
-                        <p className="font-mono">Contenido (mono).</p>
-                        </>} /> 
+                    <Route exact path="/" element={<Menu />} /> 
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/sign-up/association" element={<AssociationSignUp />} />
                     <Route exact path="/sign-up/student" element={<StudentSignUp />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/associations" element={<AssociationList />} />
                     <Route exact path="/association/edit/:locationCode/:careerCode" element={<Association />} />
+                    <Route exact path="/events" element={<EventList />} />
                     <Route exact path="/event/create" element={<CreateEvent/>} />
                     <Route exact path="/event/edit/:uuid" element={<EditEvent/>} />
-                    <Route exact path="/registrations" element={<StudentRegistrations/>} />
+                    <Route exact path="/my-events" element={<StudentRegistrations/>} />
                     <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
                     <Route exact path="/event/:e_uuid/edit-activity/:a_uuid" element={<EditActivity/>} />
                     <Route exact path="/collaborators/:uuid" element={<CollaboratorList/>} />

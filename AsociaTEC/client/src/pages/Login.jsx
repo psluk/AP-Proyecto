@@ -1,5 +1,5 @@
 import FormItems from "../components/forms/FormItems";
-import { LoginFields } from "../structures/LoginFields";
+import { LoginFields } from "../structures/Fields/LoginFields";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSessionContext } from "../context/SessionComponent";
@@ -35,7 +35,7 @@ const Login = () => {
     };
 
     return (
-        <div className="p-5 w-full sm:w-[40rem]">
+        <div className="p-5 w-full xs:w-[30rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Iniciar sesión
             </h1>

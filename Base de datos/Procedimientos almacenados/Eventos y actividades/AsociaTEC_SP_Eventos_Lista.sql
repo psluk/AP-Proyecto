@@ -6,7 +6,9 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Eventos_Lista]
     @IN_CodigoCarrera VARCHAR(4) = NULL,
-    @IN_CodigoSede VARCHAR(4) = NULL
+    @IN_CodigoSede VARCHAR(4) = NULL,
+    @IN_fechaInicio DATETIME = NULL,
+    @IN_fechaFin DATETIME = NULL
 AS
 BEGIN
     SET NOCOUNT ON;         -- No retorna metadatos
@@ -50,7 +52,10 @@ BEGIN
             E.[fechaInicio],
             E.[lugar],
             E.[especiales],
-            C.[nombre] as 'categoria'
+            C.[nombre] as 'categoria',
+            A.[nombre] AS 'asociacion.nombre',
+            K.[codigo] AS 'asociacion.codigoCarrera',
+            S.[codigo] AS 'asociacion.codigoSede'
             FROM [dbo].[Eventos] E
             INNER JOIN [dbo].[Categorias] C
             ON C.[id] = E.[idCategoria]
@@ -58,6 +63,8 @@ BEGIN
             ON A.[id] = E.[idAsociacion]
             INNER JOIN [dbo].[Carreras] K
             ON K.[id] = A.[idCarrera]
+            INNER JOIN [dbo].[Sedes] S
+            ON S.[id] = K.[idSede]
             WHERE (
                 @IN_CodigoCarrera IS NULL
                 OR
@@ -66,8 +73,20 @@ BEGIN
                 @IN_CodigoSede IS NULL
                 OR
                 K.[idSede] = @ID_Sede
-            )
-            AND E.[eliminado] = 0
+            ) AND (
+                @IN_fechaFin IS NULL
+                OR
+                E.[fechaFin] <= @IN_fechaFin
+                OR
+                E.[fechaInicio] <= @IN_fechaFin
+            ) AND (
+                @IN_fechaInicio IS NULL
+                OR
+                E.[fechaInicio] >= @IN_fechaInicio
+                OR
+                E.[fechaFin] >= @IN_fechaInicio
+            ) AND E.[eliminado] = 0
+            ORDER BY E.[fechaInicio] ASC, E.[fechaFin] ASC
             FOR JSON PATH
             ),
             '[]'

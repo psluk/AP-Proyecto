@@ -1,6 +1,6 @@
 import React from 'react'
 import FormItems from "../../components/forms/FormItems";
-import { StudentSignUpFields } from "../../structures/StudentSignUpFields";
+import { StudentSignUpFields } from "../../structures/Fields/StudentSignUpFields";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -144,7 +144,7 @@ export const StudentSignUp = () => {
         });
     }
     return (
-        <div className="p-5 w-full sm:w-[30rem]">
+        <div className="p-5 w-full xs:w-[30rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Registrar estudiante
             </h1>

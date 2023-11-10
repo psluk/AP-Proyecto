@@ -40,6 +40,9 @@ router.get("/", (req, res) => {
 //Retorna: NULL
 //SP :AsociaTEC_SP_Mensajes_Agregar
 router.post("/agregar", (req, res) => {
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
     const uuid = req.body.uuid;
     const contenido = req.body.contenido;
     const correo = req.body.correo;
@@ -72,6 +75,9 @@ router.post("/agregar", (req, res) => {
 //Retorna: NULL
 //SP : AsociaTEC_SP_Mensajes_Eliminar
 router.delete("/eliminar", (req, res) => {
+    if (!estaAutenticado(req, false, false)) {
+        return res.status(403).send({ mensaje: "Acceso denegado" });
+    }
     const carnet = req.query.carnet;
     const correo = req.query.correo;
 

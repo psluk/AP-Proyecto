@@ -1,5 +1,5 @@
 import FormItems from "../../components/forms/FormItems";
-import { AssociationSignUpFields } from "../../structures/AssociationSignUpFields";
+import { AssociationSignUpFields } from "../../structures/Fields/AssociationSignUpFields";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -164,7 +164,7 @@ const AssociationSignUp = () => {
     };
 
     return (
-        <div className="p-5 w-full sm:w-[40rem]">
+        <div className="p-5 w-full xs:w-[30rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Registrar asociación
             </h1>

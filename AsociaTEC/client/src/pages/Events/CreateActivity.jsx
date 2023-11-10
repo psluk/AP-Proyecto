@@ -1,5 +1,5 @@
 import FormItems from "../../components/forms/FormItems";
-import { CreateEventActivityFields } from "../../structures/CreateEventActivityFields";
+import { CreateEventActivityFields } from "../../structures/Fields/CreateEventActivityFields";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -39,7 +39,7 @@ const CreateActivity = () => {
                 </p>,
                 messageSettings
             );
-            navigate(`/event/${uuid}`);
+            navigate(`/event/edit/${uuid}`);
         }).catch((err) => {
             toast.error(
                 err?.response?.data?.mensaje || defaultError,
