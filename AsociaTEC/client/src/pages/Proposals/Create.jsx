@@ -7,7 +7,7 @@ import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useEffect, useState } from "react";
 import { ProposalStructure } from "../../structures/Fields/CreateProposalFields";
 
-const Proposal = () => {
+const CreateProposal = () => {
     const navigate = useNavigate();
     const { getEmail, isLoggedIn, getUniId, getCareerCode, getLocationCode } =
         useSessionContext();
@@ -142,4 +142,4 @@ const Proposal = () => {
     );
 };
 
-export default Proposal;
+export default CreateProposal;
