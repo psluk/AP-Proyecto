@@ -9,31 +9,6 @@ import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate, useParams } from "react-router-dom";
 import { isoString, currentLocalHtmlAttribute } from '../../utils/dateFormatter'
 
-/*
-const titulo = req.body.titulo;
-    const descripcion = req.body.descripcion;
-    const fechaInicio = req.body.fechaInicio;
-    const fechaFin = req.body.fechaFin;
-    const lugar = req.body.lugar;
-    const especiales = req.body.especiales;
-    const capacidad = req.body.capacidad;
-    const categoria = req.body.categoria;
-    const uuid = req.body.uuid;
-
-
-del form:
-    titulo
-    capacidad
-    lugar
-    fechaInicio
-    fechaFin
-    categoria
-    descripcion
-    especiales
-    actividades
-
-*/
-
 export default function EditEvent() {
     const navigate = useNavigate();
     const [data, setData] = useState({ categoria: "" });
@@ -149,7 +124,7 @@ export default function EditEvent() {
         */
 
     }, []);
-    
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -162,20 +137,32 @@ export default function EditEvent() {
             );
             return;
         };
-        
-        //falta configurar el axios
-        axios.post('/api/eventos/agregar', {
+
+        const x = {
             ...data,
             fechaInicio: isoString(data.fechaInicio),
-            fechaFin: isoString(data.fechaFin)
-        }, { withCredentials: true }).then((res) => {
-            toast.success(
-                <p>
-                    Evento creado exitosamente
-                </p>,
-                messageSettings
-            );
-            navigate("/");
+            fechaFin: isoString(data.fechaFin),
+            uuid: uuid
+        }
+
+        console.log("hhh",x)
+        /*
+        titulo = req.body.titulo;
+        descripcion = req.body.descripcion;
+        fechaInicio = req.body.fechaInicio;
+        fechaFin = req.body.fechaFin;
+        lugar = req.body.lugar;
+        especiales = req.body.especiales;
+        capacidad = req.body.capacidad;
+        categoria = req.body.categoria;
+        uuid = req.body.uuid;
+        */
+
+        //falta configurar el axios
+        axios.put('/api/eventos/modificar', x, { withCredentials: true }).then((res) => {
+
+            toast.success("Evento modificado con éxito", messageSettings);
+            navigate("/events");
         })
             .catch((err) => {
                 toast.error(
@@ -183,8 +170,6 @@ export default function EditEvent() {
                     messageSettings
                 );
             });
-        toast.success("Evento creado con éxito", messageSettings);
-        navigate("/eventos");
     };
 
     return (
@@ -192,6 +177,7 @@ export default function EditEvent() {
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-4">
                 Editar Evento
             </h1>
+
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0">
@@ -208,14 +194,13 @@ export default function EditEvent() {
                         ver actividades
                     </button>
                 </div>
+                <button
+                    className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit bg-center"
+                    type="submit"
+                >
+                    Editar evento
+                </button>
             </form>
-            <button
-                className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
-                type="submit"
-            >
-                Editar evento
-            </button>
-
             <p className="text-center">
                 <a
                     className="text-venice-blue-700 hover:underline cursor-pointer"
