@@ -22,7 +22,8 @@ import EditActivity from "./pages/Events/EditActivity";
 import EditEvent from "./pages/Events/Edit";
 import ProposalList from "./pages/Proposals/ProposalList";
 import DetailsProposal from "./pages/Proposals/ProposalDetails";
-
+import EventDetails from "./pages/Events/Details";
+import Activities from "./pages/Events/Activities";
 
 function App() {
     return (
@@ -48,6 +49,8 @@ function App() {
                     <Route exact path="/proposal/create" element={<CreateProposal/>}/>
                     <Route exact path="/proposal/details/:uuid" element={<DetailsProposal/>}/>
                     <Route exact path="/proposals" element={<ProposalList/>} />
+                    <Route exact path="/event/:uuid" element={<EventDetails/>} />
+                    <Route exact path="/event/activities/:uuid" element={<Activities/>} />
                 </Routes>
             </div>
             <ToastContainer />

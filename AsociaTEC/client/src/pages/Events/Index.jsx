@@ -38,6 +38,7 @@ const EventList = () => {
     const { getUserType } = useSessionContext();
     const admin = getUserType() === "Administrador";
     const assoc = getUserType() === "Asociación";
+    
 
     const deleteEvent = (uuid) => {
         let currentEvents = [...events];
@@ -220,7 +221,7 @@ const EventList = () => {
                                             {
                                                 date.events.map((event) => {
                                                     return (
-                                                        <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} />
+                                                        <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} userType={getUserType()} />
                                                     );
                                                 })
                                             }
