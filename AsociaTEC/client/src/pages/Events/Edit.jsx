@@ -40,23 +40,14 @@ export default function EditEvent() {
     const { uuid } = useParams();
     const [fields, setFields] = useState(EditEventStructure);
     const [event, setEvent] = useState([]);
+    const [cambio, setCambio] = useState([]);
     const [activities, setActivities] = useState([]);
     const { getCareerCode, getLocationCode, session } = useSessionContext();
 
 
-    const handleEditActivity = (e) => {
+    const handleActivity = (e) => {
         e.preventDefault()
-        // falta
-        // verificar existencia de uuid
-        // navegar a editar actividad
-
-    };
-    const handleCreateActivity = (e) => {
-        e.preventDefault()
-        // falta
-        // navegar a crear actividad
-
-
+        navigate(`/event/activities/${uuid}`)
     };
 
     useEffect(() => {
@@ -64,30 +55,6 @@ export default function EditEvent() {
         if (session.currentUser === null) {
             navigate("/");
         }
-
-        axios.get(`/api/actividades/?uuid=${uuid}`, { withCredentials: true }).then((res) => {
-            //registro de datos de las actividades del evento
-            console.log("actividades", res.data)
-            setActivities(res.data) // guardamos las actividades
-            if (res.data.length > 0) {
-                setFields((prev) => {
-                    setData((prev) => ({
-                        ...prev,
-                        actividades: res.data[0].uuid
-                    }));
-                    const newactivities = [...prev];
-                    newactivities[8].options = res.data.map((item) => ({
-                        label: item.nombre,
-                        value: `${item.uuid}`,
-                    }));
-                    return newactivities;
-                });
-            }
-
-        }).catch((err) => {
-            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
-            console.log("act")
-        });
 
         axios.get(`/api/eventos/detalles/?uuid=${uuid}`, { withCredentials: true }).then((res) => {
             //registro de datos del evento
@@ -236,15 +203,9 @@ export default function EditEvent() {
                 <div className=' flex space-x-4'>
                     <button
                         className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
-                        onClick={handleEditActivity}
+                        onClick={handleActivity}
                     >
-                        Editar la actividad
-                    </button>
-                    <button
-                        className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
-                        onClick={handleCreateActivity}
-                    >
-                        Agregar actividad
+                        ver actividades
                     </button>
                 </div>
             </form>

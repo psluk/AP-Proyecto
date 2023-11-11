@@ -58,14 +58,5 @@ export const EditEventStructure = [
         placeholder: "Recursos especiales",
         rows: 5,
         required: false,
-    },
-    {
-        label: "actividades",
-        type: "select",
-        name: "actividades",
-        options: [
-            { value: "", label: "Cargando...", disabled: true },
-        ],
-        required: false,
     }
 ]
