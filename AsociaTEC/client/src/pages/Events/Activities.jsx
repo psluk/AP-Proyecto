@@ -18,7 +18,7 @@ const Activities = () => {
     const goToEdit = (e) => {
         e.preventDefault()
         if(student) return
-        navigate(`/event/activity/${uuid}`)
+        navigate(`/event/edit-activity/${uuid}`)
     }
 
     const goToCreate = (e) => {
