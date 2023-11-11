@@ -57,6 +57,7 @@ const Activities = () => {
             {!student && <div className='flex justify-center mt-4'>
                 <button
                     className='bg-venice-blue-800 text-white font-semibold rounded-md px-4 py-2'
+                    onClick={goToCreate}
                 >
                     Agregar actividad
                 </button>
