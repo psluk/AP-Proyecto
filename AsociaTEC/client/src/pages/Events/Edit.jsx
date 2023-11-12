@@ -15,9 +15,9 @@ export default function EditEvent() {
     const { uuid } = useParams();
     const [fields, setFields] = useState(EditEventStructure);
     const [event, setEvent] = useState([]);
-    const [cambio, setCambio] = useState([]);
+    const [cambio, setCambio] = useState(false);
     const [activities, setActivities] = useState([]);
-    const { getCareerCode, getLocationCode, session } = useSessionContext();
+    const {session } = useSessionContext();
 
 
     const handleActivity = (e) => {
@@ -28,6 +28,7 @@ export default function EditEvent() {
     useEffect(() => {
         // Redirect if logged in
         if (session.currentUser === null) {
+            console.log("raro")
             navigate("/");
         }
 
@@ -64,11 +65,74 @@ export default function EditEvent() {
                     return newFields;
                 });
             }
+            setCambio(true)
 
         }).catch((err) => {
             toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
             console.log("even")
         });
+
+        axios.get("/api/eventos/categorias", { withCredentials: true }).then((res) => {
+            //registro de datos del evento
+            setTimeout(() => {
+                if (res.data.length > 0) {
+                    setFields((prev) => {
+    
+                        const newFields = [...prev];
+                        const aux = res.data.map((item) => ({
+                            label: item.categoria,
+                            value: item.categoria,
+                        }));
+                        const sett = new Set([...newFields[5].options.map((opt) => opt.value), ...aux.map((opt) => opt.value)])
+                        var temp = []
+    
+                        sett.forEach((item) => {
+    
+                            temp = [...temp, aux.find((val) => val.value === item)]
+                        });
+    
+                        newFields[5].options = temp
+    
+                        console.log("options", newFields[5].options)
+    
+                        return newFields;
+                    });
+                }
+                setCambio(true)
+              }, 500);
+
+        }).catch((err) => {
+            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
+            console.log("cate")
+        });
+        setCambio(true)
+
+        /*
+        verificacion de loggin [ya]
+
+        solicitud a la api  (el evento) [ya]
+
+        mapeamos todos los valores a evento y data [ya]
+        llamamos a actualizar fields [ya]
+
+        on sumit, hacemos push a la api los valores
+        en logro:
+            actualizamos los valores en new evento y evento
+            llamamos a actualizar fields
+            mostramos mensaje
+        en fallo:
+            mostramos mensaje
+        */
+
+        /*
+        actualizacion de actividad: al ser en otra pagina, al regresar a esta lo de arriba se repite
+
+        */
+
+    }, []);
+
+
+    useEffect(() => {
 
         axios.get("/api/eventos/categorias", { withCredentials: true }).then((res) => {
             //registro de datos del evento
@@ -101,29 +165,8 @@ export default function EditEvent() {
             console.log("cate")
         });
 
-        /*
-        verificacion de loggin [ya]
 
-        solicitud a la api  (el evento) [ya]
-
-        mapeamos todos los valores a evento y data [ya]
-        llamamos a actualizar fields [ya]
-
-        on sumit, hacemos push a la api los valores
-        en logro:
-            actualizamos los valores en new evento y evento
-            llamamos a actualizar fields
-            mostramos mensaje
-        en fallo:
-            mostramos mensaje
-        */
-
-        /*
-        actualizacion de actividad: al ser en otra pagina, al regresar a esta lo de arriba se repite
-
-        */
-
-    }, []);
+    }, [cambio]);
 
 
     const handleSubmit = (e) => {
