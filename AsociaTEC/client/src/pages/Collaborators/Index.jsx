@@ -22,7 +22,7 @@ const CollaboratorList = () => {
     const navigate = useNavigate()
 
     const requestData = () =>{
-        axios.get(`/api/colaboradores/?correo=${getEmail()}&uuid=${uuid}`)
+        axios.get(`/api/colaboradores/?correo=${getEmail()}&uuid=${uuid}`, { withCredentials: true })
             .then(res => {
                 setCollaborators(res.data)
             })
@@ -36,7 +36,7 @@ const CollaboratorList = () => {
 
     const handleDelete = () => {
         toggleModalDelete()
-        axios.delete(`/api/colaboradores/eliminar?uuid=${uuid}&carnet=${carnet}`)
+        axios.delete(`/api/colaboradores/eliminar?uuid=${uuid}&carnet=${carnet}`, { withCredentials: true })
             .then(res => {
                 toast.success(res.data.mensaje, messageSettings);
                 setCollaborators(collaborators.filter(item => item.carnet !== carnet))
@@ -48,7 +48,7 @@ const CollaboratorList = () => {
 
     const handleAdd = () => {
         toggleModalAdd()
-        axios.post(`/api/colaboradores/agregar`, { uuid, carnet, descripcion })
+        axios.post(`/api/colaboradores/agregar`, { uuid, carnet, descripcion }, { withCredentials: true })
             .then(res => {
                 toast.success(res.data.mensaje, messageSettings);
                 requestData()

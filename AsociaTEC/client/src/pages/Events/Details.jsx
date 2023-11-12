@@ -24,7 +24,7 @@ const EventDetails = () => {
 
     const requestCollaboration = (e) => {
         e.preventDefault()
-        axios.post(`/api/colaboradores/solicitudes/agregar`, { carnet: getUniId(), uuid: uuid })
+        axios.post(`/api/colaboradores/solicitudes/agregar`, { carnet: getUniId(), uuid: uuid }, { withCredentials: true })
             .then((res) => {
                 toast.success("Solicitud enviada con éxito", messageSettings)
             })

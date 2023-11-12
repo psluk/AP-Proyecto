@@ -33,7 +33,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     }
 
     const handleConfirm = (e) => {
-        axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet })
+        axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet }, { withCredentials: true })
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
                 setConfirm(true)
@@ -44,7 +44,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
 
     const handleCancel = (e) => {
         setModal(false);
-        axios.delete(`/api/inscripciones/eliminar?evento=${idEvento}&carnet=${carnet}`)
+        axios.delete(`/api/inscripciones/eliminar?evento=${idEvento}&carnet=${carnet}`, { withCredentials: true })
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
                 window.location.reload()
@@ -54,7 +54,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     }
 
     const handleRegister = () => {
-        axios.post(`/api/inscripciones/agregar`, { evento: idEvento, carnet: carnet })
+        axios.post(`/api/inscripciones/agregar`, { evento: idEvento, carnet: carnet }, { withCredentials: true })
             .then((res) => {
                 handleUnregister()
                 toast.success(res.data.mensaje, messageSettings);
@@ -65,7 +65,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     }
 
     const handleUnregister = () => {
-        axios.delete(`/api/interes/eliminar?evento${idEvento}&carnet=${carnet}`)
+        axios.delete(`/api/interes/eliminar?evento${idEvento}&carnet=${carnet}`, { withCredentials: true })
         .then((response) => { 
             toast.success(response.data.mensaje, messageSettings);
         })

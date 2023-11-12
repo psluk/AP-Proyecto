@@ -36,7 +36,7 @@ const Activities = () => {
         }
 
 
-        axios.get(`/api/actividades/?uuid=${uuid}`)
+        axios.get(`/api/actividades/?uuid=${uuid}`, { withCredentials: true })
             .then((res) => {
                 setActivities(res.data)
             })
