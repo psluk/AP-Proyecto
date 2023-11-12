@@ -5,36 +5,31 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
-import Forum from "../../components/cards/Forum";
+import { CreateConversationStructure } from "../../structures/Fields/CreateConversationStructure";
 
 const CreateConversation = () => {
     const navigate = useNavigate();
-    const { getUserType, isLoggedIn, getUniId } = useSessionContext();
-    const [proposal, setProposal] = useState([]);
-    const [forum, setForum] = useState([]);
+    const { isLoggedIn, getEmail } = useSessionContext();
+    const [fields, setFields] = useState(CreateConversationStructure);
     const [data, setData] = useState({});
-
-    const onClick = (e, uuid) => {
-        e.preventDefault();
-        navigate(`/forum/conversation/${uuid}`)
-    }
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        console.log(data.titulo)
-        axios.get(`/api/conversaciones?titulo=${data.titulo}`)
-            .then((response) => {
-                const prop = response.data
-                setForum(prop)
-            })
-            .catch((error) => {
-                toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
-            });
-    }
 
     const handleCreate = (e) => {
         e.preventDefault();
-        navigate(`/forum/new_conversation`);
+        const tags = [data.tag1 ? data.tag1 : "", data.tag2 ? data.tag2 : "", data.tag3 ? data.tag3 : ""]
+
+        axios.post(`/api/conversaciones/agregar`, {
+            titulo: data.titulo,
+            tags: tags,
+            correo: getEmail()
+        }, { withCredentials: true })
+            .then((response) => {
+
+                toast.success("Conversación creada correctamente", messageSettings);
+                navigate(`/forum`);
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró cargar los mensajes", messageSettings);
+            });
     }
 
 
@@ -45,75 +40,27 @@ const CreateConversation = () => {
             navigate("/login");
             toast.error("Sesión no iniciada", messageSettings);
         }
-
-        axios.get(`/api/conversaciones/`)
-            .then((response) => {
-                const prop = response.data
-                console.log(prop)
-                setForum(prop)
-            })
-            .catch((error) => {
-                toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
-            });
-
     }, []);
-
-
-
-
-
-    //barra buscadora -> form input
-    // seccion medio donde se lista
-
-    // hacer card para mostrar info
-
-    //button (tarjetas de foro)
-    // [ tarjetas de chat]
-
-    //seccion medio de la lista de chats
-
-    console.log(data)
 
     return (
         <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                 Foro
             </h1>
-            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleSearch}>
+            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
                 <FormItems
-                    fields={[{
-                        label: "Título",
-                        type: "text",
-                        name: "titulo",
-                        placeholder: "Título de la conversación",
-                        required: false,
-                        maxLength: 64,
-                    }]}
+                    fields={fields}
                     formItemsData={data}
                     setFormItemsData={setData}
                 />
                 <button
-                    className=" bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
+                    className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
                     type="submit"
-                    key={"submit"}
+                    key="submit"
                 >
-                    Buscar
-                </button>
-                <button
-                    className=" bg-venice-blue-500 text-white py-2 px-4 rounded-lg w-fit"
-                    onClick={handleCreate}>
-                    Crear nueva Conversacion
+                    Crear nueva Conversación
                 </button>
             </form>
-            {
-                forum.length > 0
-                    ? <div className="">{
-                        forum.map((item, index) => (
-                            <Forum forum={item} key={index} click={onClick} />
-                        ))
-                    }</div>
-                    : <p className="text-gray-600 italic text-center">Cargando...</p>
-            }
 
         </div>
     );
