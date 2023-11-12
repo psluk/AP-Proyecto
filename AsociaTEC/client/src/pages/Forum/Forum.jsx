@@ -34,7 +34,7 @@ const ForumList = () => {
 
     const handleCreate = (e) => {
         e.preventDefault();
-        
+        navigate(`/forum/new_conversation`);
     }
 
 
