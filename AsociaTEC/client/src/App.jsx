@@ -24,6 +24,7 @@ import ProposalList from "./pages/Proposals/ProposalList";
 import DetailsProposal from "./pages/Proposals/ProposalDetails";
 import EventDetails from "./pages/Events/Details";
 import Activities from "./pages/Events/Activities";
+import Forum from "./pages/Forum/Forum";
 
 function App() {
     return (
@@ -51,6 +52,8 @@ function App() {
                     <Route exact path="/proposals" element={<ProposalList/>} />
                     <Route exact path="/event/:uuid" element={<EventDetails/>} />
                     <Route exact path="/event/activities/:uuid" element={<Activities/>} />
+                    <Route exact path="/forum" element={<Forum/>} /> 
+                    <Route exact path="/forum/conversation/:uuid" element={<ForumMessage/>} />
                 </Routes>
             </div>
             <ToastContainer />
