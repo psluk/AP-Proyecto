@@ -42,8 +42,8 @@ function App() {
                     <Route exact path="/event/create" element={<CreateEvent/>} />
                     <Route exact path="/event/edit/:uuid" element={<EditEvent/>} />
                     <Route exact path="/my-events" element={<StudentRegistrations/>} />
-                    <Route exact path="/event/:uuid/create-activity" element={<CreateActivity/>} />
-                    <Route exact path="/event/:e_uuid/edit-activity/:a_uuid" element={<EditActivity/>} />
+                    <Route exact path="/event/create-activity/:uuid" element={<CreateActivity/>} />
+                    <Route exact path="/event/edit-activity/:e_uuid/:a_uuid" element={<EditActivity/>} />
                     <Route exact path="/collaborators/:uuid" element={<CollaboratorList/>} />
                     <Route exact path="/collaborators/request/:uuid" element={<Requests/>} />
                     <Route exact path="/proposal/create" element={<CreateProposal/>}/>

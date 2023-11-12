@@ -11,12 +11,12 @@ import colors from "tailwindcss/colors";
 
 const EditActivity = () => {
     const navigate = useNavigate();
-    const { uuid } = useParams();
+    const { e_uuid, a_uuid } = useParams();
     const [data, setData] = useState({});
     const [event, setEvent] = useState(null);
     const [fields, setFields] = useState(CreateEventActivityFields);
 
-    const attemptCreate = (e) => {
+    const attemptModify = (e) => {
         e.preventDefault();
 
         if (data.startDate >= data.endDate) {
@@ -27,9 +27,9 @@ const EditActivity = () => {
             return;
         };
 
-        axios.post('/api/actividades/agregar',
+        axios.put('/api/actividades/modificar',
             {
-                uuid,
+                uuid: a_uuid,
                 nombre: data.name,
                 lugar: data.place,
                 fechaInicio: isoString(data.startDate),
@@ -37,11 +37,11 @@ const EditActivity = () => {
             }, { withCredentials: true }).then((res) => {
             toast.success(
                 <p>
-                    Actividad creada exitosamente
+                    Actividad modificada exitosamente
                 </p>,
                 messageSettings
             );
-            navigate(`/event/edit/${uuid}`);
+            navigate(`/event/activities/${e_uuid}`);
         }).catch((err) => {
             toast.error(
                 err?.response?.data?.mensaje || defaultError,
@@ -52,9 +52,18 @@ const EditActivity = () => {
 
     // Loads event data
     useEffect(() => {
-        axios.get(`/api/eventos/detalles?uuid=${uuid}`).then((res) => {
+        axios.get(`/api/actividades/detalles?uuid=${a_uuid}`).then((res) => {
             const loadedEvent = res.data[0];
+            console.log(loadedEvent)
             setEvent(loadedEvent);
+            setData((prev) => ({
+                ...prev,
+                uuid: a_uuid,
+                nombre: loadedEvent.Nombre,
+                lugar: loadedEvent.lugar,
+                fechaInicio: isoString(loadedEvent.fechaInicio),
+                fechaFin: isoString(loadedEvent.fechaFin),
+            }));
             setFields((prev) => {
                 const newFields = [...prev];
                 newFields[2].min = localHtmlAttribute(loadedEvent?.fechaInicio);
@@ -63,29 +72,30 @@ const EditActivity = () => {
                 newFields[3].max = localHtmlAttribute(loadedEvent?.fechaFin);
                 return newFields;
             });
+
         }).catch((err) => {
-            navigate('-1');
+            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
         });
     }, []);
-
+    console.log("data",data)
     return (
         <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Crear actividad
+                Editar actividad
             </h1>
             {
                 event
                 ? <>
                 <div className="w-full border p-3 shadow-md rounded-xl">
-                    <h2 className="text-xl font-serif font-bold text-venice-blue-700">Información del evento</h2>
+                    <h2 className="text-xl font-serif font-bold text-venice-blue-700">Información de la actividad</h2>
                     <ul className="px-4">
-                        <li className="flex flex-col mb-2"><p className="font-bold">Título</p><p className="pl-4">{event?.titulo}</p></li>
-                        <li className="flex flex-col mb-2"><p className="font-bold">Descripción</p><p className="pl-4">{event?.descripcion}</p></li>
+                        <li className="flex flex-col mb-2"><p className="font-bold">Nombre</p><p className="pl-4">{event?.Nombre}</p></li>
+                        <li className="flex flex-col mb-2"><p className="font-bold">Lugar</p><p className="pl-4">{event?.lugar}</p></li>
                         <li className="flex flex-col mb-2"><p className="font-bold">Fecha de inicio</p><p className="pl-4">{localDateTime(event?.fechaInicio, 'full', 'short')}</p></li>
                         <li className="flex flex-col"><p className="font-bold">Fecha de finalización</p><p className="pl-4">{localDateTime(event?.fechaFin, 'full', 'short')}</p></li>
                     </ul>
                 </div>
-                <form className="space-y-4 flex flex-col items-center w-full" onSubmit={attemptCreate}>
+                <form className="space-y-4 flex flex-col items-center w-full" onSubmit={attemptModify}>
                     <FormItems
                         fields={fields}
                         formItemsData={data}
@@ -96,13 +106,13 @@ const EditActivity = () => {
                         type="submit"
                         key="submit"
                     >
-                        Crear actividad
+                        modificar actividad
                     </button>
                 </form>
                 <p className="text-center mt-4">
                     <a
                         className="text-venice-blue-700 hover:underline cursor-pointer"
-                        href={`/event/${uuid}`}
+                        href={`/event/${e_uuid}`}
                         onClick={(e) => {
                             e.preventDefault();
                             navigate(-1);

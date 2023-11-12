@@ -14,11 +14,12 @@ const Activities = () => {
     const navigate = useNavigate()
     const { getUserType } = useSessionContext()
     const student = getUserType() === "Estudiante"
+    const {session } = useSessionContext();
 
-    const goToEdit = (e) => {
+    const goToEdit = (e, a_uuid) => {
         e.preventDefault()
         if(student) return
-        navigate(`/event/activity/${uuid}`)
+        navigate(`/event/edit-activity/${uuid}/${a_uuid}`)
     }
 
     const goToCreate = (e) => {
@@ -28,6 +29,13 @@ const Activities = () => {
     }
 
     useEffect(() => {
+
+        if (session.currentUser === null) {
+            console.log("raro")
+            navigate("/");
+        }
+
+
         axios.get(`/api/actividades/?uuid=${uuid}`)
             .then((res) => {
                 setActivities(res.data)
@@ -36,7 +44,7 @@ const Activities = () => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings)
             })
     }, [])
-
+    console.log("ff",activities)
     return (
         <div>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-6">Actividades del evento</h1>
@@ -49,7 +57,9 @@ const Activities = () => {
                             lugar={activity.lugar}
                             fechaInicio={activity.fechaInicio}
                             fechaFin={activity.fechaFin}
-                            onClick={goToEdit}
+                            uuid={activity.uuid}
+                            auxclick={goToEdit}
+
                         />
                     )
                 }): <p className='text-center text-venice-blue-800 font-semibold'>No hay actividades registradas...</p>}
