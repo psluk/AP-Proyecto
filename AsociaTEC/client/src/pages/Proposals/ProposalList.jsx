@@ -45,7 +45,7 @@ const ProposalList = () => {
     
     // Loading the data
     useEffect(() => {
-        axios.get(`/api/propuestas/?codigoCarrera=${getCareerCode()}&codigoSede=${getLocationCode()}&?estado=Sin revisar`)
+        axios.get(`/api/propuestas/?codigoCarrera=${getCareerCode()}&codigoSede=${getLocationCode()}&?estado=Sin revisar`, { withCredentials: true })
             .then((response) => {
                 
                 const prop = response.data

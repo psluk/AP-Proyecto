@@ -42,7 +42,7 @@ const ProposalDetails = () => {
     // Load locations and association data
     useEffect(() => {
         console.log(uuid)
-        axios.get(`/api/propuestas/detalles/?propuesta=${uuid}`)
+        axios.get(`/api/propuestas/detalles/?propuesta=${uuid}`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data[0]
                 setProposal(prop)

@@ -47,7 +47,7 @@ const ForumMessages = () => {
             toast.error("Sesión no iniciada", messageSettings);
         }
 
-        axios.get(`/api/conversaciones/mensajes?uuid=${uuid}`)
+        axios.get(`/api/conversaciones/mensajes?uuid=${uuid}`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data
                 console.log(prop)
@@ -61,7 +61,7 @@ const ForumMessages = () => {
 
     useEffect(() => {
 
-        axios.get(`/api/conversaciones/mensajes?uuid=${uuid}`)
+        axios.get(`/api/conversaciones/mensajes?uuid=${uuid}`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data
                 console.log(prop)

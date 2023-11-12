@@ -24,7 +24,7 @@ const EventDetails = () => {
 
     const requestCollaboration = (e) => {
         e.preventDefault()
-        axios.post(`/api/colaboradores/solicitudes/agregar`, { carnet: getUniId(), uuid: uuid })
+        axios.post(`/api/colaboradores/solicitudes/agregar`, { carnet: getUniId(), uuid: uuid }, { withCredentials: true })
             .then((res) => {
                 toast.success("Solicitud enviada con éxito", messageSettings)
             })
@@ -35,7 +35,7 @@ const EventDetails = () => {
 
     const register = (e) => {
         e.preventDefault()
-        axios.post(`/api/inscripciones/agregar`, { carnet: getUniId(), evento: uuid })
+        axios.post(`/api/inscripciones/agregar`, { carnet: getUniId(), evento: uuid }, { withCredentials: true })
             .then((res) => {
                 toast.success("Inscripción realizada con éxito", messageSettings)
             })
@@ -46,7 +46,7 @@ const EventDetails = () => {
 
     const interest = (e) => {
         e.preventDefault()
-        axios.post(`/api/interes/agregar`, { carnet: getUniId(), evento: uuid })
+        axios.post(`/api/interes/agregar`, { carnet: getUniId(), evento: uuid }, { withCredentials: true })
             .then((res) => {
                 toast.success("Evento marcado como interés", messageSettings)
             })
@@ -56,7 +56,7 @@ const EventDetails = () => {
 
     }
     useEffect(() => {
-        axios.get(`/api/eventos/detalles?uuid=${uuid}`)
+        axios.get(`/api/eventos/detalles?uuid=${uuid}`, { withCredentials: true })
             .then((res) => {
                 setEvent(res.data[0])
             })

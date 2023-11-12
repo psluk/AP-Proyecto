@@ -16,7 +16,7 @@ const StudentRegistrations = () => {
     const [isLoading, setIsLoading] = useState(true);
     
     useEffect(() => {
-        axios.get(`/api/inscripciones/?carnet=${getUniId()}`)
+        axios.get(`/api/inscripciones/?carnet=${getUniId()}`, { withCredentials: true })
             .then((res) => {
                 setData(res.data);
                 setIsLoading(false);

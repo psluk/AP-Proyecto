@@ -52,7 +52,7 @@ const EditActivity = () => {
 
     // Loads event data
     useEffect(() => {
-        axios.get(`/api/actividades/detalles?uuid=${a_uuid}`).then((res) => {
+        axios.get(`/api/actividades/detalles?uuid=${a_uuid}`, { withCredentials: true }).then((res) => {
             const loadedEvent = res.data[0];
             console.log(loadedEvent)
             setEvent(loadedEvent);

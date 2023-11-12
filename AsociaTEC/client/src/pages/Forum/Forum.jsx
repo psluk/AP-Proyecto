@@ -22,7 +22,7 @@ const ForumList = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         console.log(data.titulo)
-        axios.get(`/api/conversaciones?titulo=${data.titulo}`)
+        axios.get(`/api/conversaciones?titulo=${data.titulo}`,{ withCredentials: true })
             .then((response) => {
                 const prop = response.data
                 setForum(prop)
@@ -46,7 +46,7 @@ const ForumList = () => {
             toast.error("Sesión no iniciada", messageSettings);
         }
 
-        axios.get(`/api/conversaciones/`)
+        axios.get(`/api/conversaciones/`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data
                 console.log(prop)
