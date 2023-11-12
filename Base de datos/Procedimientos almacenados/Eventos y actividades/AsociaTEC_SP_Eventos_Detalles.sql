@@ -42,10 +42,11 @@ BEGIN
             WHERE   I.[idEvento] = @idEvento
                 AND I.[eliminado] = 0 )
             >=
-           (SELECT  E.[capacidad]
+            ISNULL((SELECT  E.[capacidad]
             FROM    [dbo].[Eventos] E
             WHERE   E.[id] = @idEvento
-                AND E.[eliminado] = 0 )
+                AND E.[eliminado] = 0
+                AND GETUTCDATE() < E.[fechaFin] ), 0)
         BEGIN
             SELECT @PuedeIns = 0
         END;

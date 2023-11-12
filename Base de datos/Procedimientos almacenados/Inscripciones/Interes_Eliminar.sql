@@ -26,7 +26,7 @@ BEGIN
         -- VALIDACIONES
         SELECT  @idEvento = E.[id]
         FROM    [dbo].[Eventos] E
-        WHERE   E.[uuid] = @uuidEvento
+        WHERE   E.[uuid] = @IN_evento
             AND E.[eliminado] = 0;
 
         IF @idEvento IS NULL

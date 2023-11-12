@@ -1,6 +1,6 @@
 import React from 'react'
 import { EventIcon, QRIcon, ClockIcon, ClockWithXIcon } from '../../components/Icons';
-import { faSquarePollHorizontal, faCalendarXmark, faCalendarCheck, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePollHorizontal, faCalendarXmark, faCalendarCheck, faQrcode, faCalendarPlus, faCalendarMinus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { localDateTime, currentLocalHtmlAttribute, localHtmlAttribute } from '../../utils/dateFormatter';
 import axios from 'axios';
@@ -13,12 +13,13 @@ import QRModal from '../modals/QRModal';
 
 const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) => {
 
-    const [state, setState] = useState(inscripcion.confirmada)
+    const [confirm, setConfirm] = useState(inscripcion.confirmada)
+    const [interest, setInterest] = useState(inscripcion.inscrito)
     const Navigate = useNavigate()
     const [modal, setModal] = useState(false);
     const [modalQR, setModalQR] = useState(false);
     const [image, setImage] = useState(`api/inscripciones/qr?evento=${idEvento}&carnet=${carnet}`);
-    
+
     const toggleModalQR = () => {
         setModalQR(!modalQR);
     }
@@ -35,7 +36,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
         axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet })
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
-                setState(true)
+                setConfirm(true)
             }).catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
             })
@@ -46,12 +47,32 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
         axios.delete(`/api/inscripciones/eliminar?evento=${idEvento}&carnet=${carnet}`)
             .then((res) => {
                 toast.success(res.data.mensaje, messageSettings);
-                Navigate("/registrations")
+                window.location.reload()
             }).catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
             })
     }
 
+    const handleRegister = () => {
+        axios.post(`/api/inscripciones/agregar`, { evento: idEvento, carnet: carnet })
+            .then((res) => {
+                handleUnregister()
+                toast.success(res.data.mensaje, messageSettings);
+                setInterest(true)
+            }).catch((err) => {
+                toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
+            })
+    }
+
+    const handleUnregister = () => {
+        axios.delete(`/api/interes/eliminar?evento${idEvento}&carnet=${carnet}`)
+        .then((response) => { 
+            toast.success(response.data.mensaje, messageSettings);
+        })
+        .catch((err) => {
+            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
+         })
+    }
 
     return (
         <div className='w-full border-2 rounded-md shadow-lg flex flex-col md:flex-row p-2 hover:bg-zinc-100 md:items-center'>
@@ -67,14 +88,17 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
                 </p>
             </div>
             <div className='flex md:flex-col grow-0 justify-around md:justify-between items-end pt-4 md:p-0'>
-                {(!state && !compareToCurrentDate(fin))
+                {(!confirm && !compareToCurrentDate(fin) && interest)
                     && <button onClick={handleConfirm} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarCheck} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
-                {!compareToCurrentDate(fin)
+                {!compareToCurrentDate(fin) && interest
                     && <button onClick={toggleModal} disabled={compareToCurrentDate(fin)}><FontAwesomeIcon icon={faCalendarXmark} className={`text-xl ${compareToCurrentDate(fin) ? 'text-gray-800' : 'text-venice-blue-800'}`} /></button>}
-                {(state && !compareToCurrentDate(fin))
+                {(confirm && !compareToCurrentDate(fin))
                     && <button onClick={toggleModalQR}><FontAwesomeIcon icon={faQrcode} className='text-xl text-venice-blue-800' /></button>}
-                {((state && inscripcion.encuestaActiva)
-                    && compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Encuesta" /></button>}
+                {((confirm && inscripcion.encuestaActiva)
+                    && compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Realizar encuesta" /></button>}
+                {(!interest && !compareToCurrentDate(fin)) && <button onClick={(e)=>{handleRegister}}><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faCalendarPlus} title="Inscribirse" /></button>}
+                {(!interest && !compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faCalendarMinus} title="Cancelar" /></button>}
+
             </div>
             <Confirmation
                 handleClose={toggleModal}
