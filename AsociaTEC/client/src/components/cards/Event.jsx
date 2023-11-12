@@ -25,7 +25,7 @@ const EventCard = ({ event, onDelete, admin, userType }) => {
 
     const deleteEvent = () => {
         setModal(false);
-        axios.delete(`/api/eventos/eliminar?uuid=${event.uuid}`)
+        axios.delete(`/api/eventos/eliminar?uuid=${event.uuid}`, { withCredentials: true })
             .then((res) => {
                 toast.success("Evento eliminado con éxito", messageSettings);
                 navigate("/events");

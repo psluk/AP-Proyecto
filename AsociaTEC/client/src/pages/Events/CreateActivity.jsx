@@ -52,7 +52,7 @@ const CreateActivity = () => {
 
     // Loads event data
     useEffect(() => {
-        axios.get(`/api/eventos/detalles?uuid=${uuid}`).then((res) => {
+        axios.get(`/api/eventos/detalles?uuid=${uuid}`, { withCredentials: true }).then((res) => {
             const loadedEvent = res.data[0];
             setEvent(loadedEvent);
             setFields((prev) => {

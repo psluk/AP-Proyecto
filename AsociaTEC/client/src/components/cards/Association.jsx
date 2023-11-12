@@ -23,7 +23,7 @@ const AssociationCard = ({ association, onDelete }) => {
 
     const deleteAssociation = () => {
         setModal(false);
-        axios.delete(`/api/asociaciones/eliminar?correo=${association.asociacion.correo}`)
+        axios.delete(`/api/asociaciones/eliminar?correo=${association.asociacion.correo}`, { withCredentials: true })
             .then((res) => {
                 toast.success("Asociación eliminada con éxito", messageSettings);
                 navigate("/associations");

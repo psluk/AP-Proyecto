@@ -25,6 +25,9 @@ import DetailsProposal from "./pages/Proposals/ProposalDetails";
 import EventDetails from "./pages/Events/Details";
 import Activities from "./pages/Events/Activities";
 import Stats from "./pages/Events/Stats";
+import Forum from "./pages/Forum/Forum";
+import ForumMessages from "./pages/Forum/ForumMessages";
+import CreateConversation from "./pages/Forum/CreateConversation";
 
 function App() {
     return (
@@ -53,7 +56,9 @@ function App() {
                     <Route exact path="/event/:uuid" element={<EventDetails/>} />
                     <Route exact path="/event/activities/:uuid" element={<Activities/>} />
                     <Route exact path="/event/stats/:uuid" element={<Stats/>} />
-                    <Route path="*" element={<h1>404</h1>} />
+                    <Route exact path="/forum" element={<Forum/>} /> 
+                    <Route exact path="/forum/conversation/:uuid" element={<ForumMessages/>} />
+                    <Route exact path="/forum/new_conversation" element={<CreateConversation/>} />
                 </Routes>
             </div>
             <ToastContainer />

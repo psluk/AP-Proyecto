@@ -42,7 +42,7 @@ const Requests = () => {
 
     const handleDelete = () => {
         toggleModalDelete()
-        axios.post(`/api/colaboradores/solicitudes/decidir`,{carnet,uuid,descripcion:'Rechazado',aceptar:0}, { withCredentials: true } )
+        axios.post(`/api/colaboradores/solicitudes/decidir`,{carnet,uuid,descripcion:'Rechazado',aceptar:0}, { withCredentials: true })
             .then(res => {
                 toast.success(res.data.mensaje, messageSettings);
                 setRequests(requests.filter(item => item.carnet !== carnet))
@@ -63,7 +63,7 @@ const Requests = () => {
 
     const handleAccept = () => {
         toggleModalAccept()
-        axios.post(`/api/colaboradores/solicitudes/decidir`,{carnet,uuid,descripcion,aceptar:1}, { withCredentials: true } )
+        axios.post(`/api/colaboradores/solicitudes/decidir`,{carnet,uuid,descripcion,aceptar:1}, { withCredentials: true })
             .then(res => {
                 toast.success(res.data.mensaje, messageSettings);
                 setRequests(requests.filter(item => item.carnet !== carnet))

@@ -42,7 +42,7 @@ const ProposalDetails = () => {
     // Load locations and association data
     useEffect(() => {
         console.log(uuid)
-        axios.get(`/api/propuestas/detalles/?propuesta=${uuid}`)
+        axios.get(`/api/propuestas/detalles/?propuesta=${uuid}`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data[0]
                 setProposal(prop)
@@ -92,35 +92,3 @@ const ProposalDetails = () => {
 };
 
 export default ProposalDetails;
-
-
-/*
-<ul className="flex flex-col space-y-2">
-                { getName() ? <li><b>Nombre:</b> { getName() }</li> : <></> }
-                { getUniId() ? <li><b>Carné:</b> { getUniId() }</li> : <></> }
-                { getUserType() ? <li><b>Tipo de perfil:</b> { getUserType() }</li> : <></> }
-                { getLocationCode() ? <li><b>Sede:</b> { getLocationName() + " (" + getLocationCode() + ")"}</li> : <></> }
-                { getCareerCode() ? <li><b>Carrera:</b> { getCareerName() + " (" + getCareerCode() + ")" }</li> : <></> }
-                { getEmail() ? <li><b>Correo electrónico:</b>{" "}
-                    <a
-                        className="text-venice-blue-700 hover:underline cursor-pointer"
-                        href={`mailto:${getEmail()}`}>
-                            { getEmail() }
-                    </a></li> : <></> }
-            </ul>
-            <button
-                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg w-fit"
-                type="button"
-                key="logout"
-                onClick={attemptLogout}
-            >
-                Cerrar sesión
-            </button>
-            {
-                getUserType() !== "Administrador"
-                ? <p className="mt-4 text-gray-600 text-center">
-                    Para modificar su perfil, por favor, contacte a un administrador.
-                </p>
-                : <></>
-            }
-*/

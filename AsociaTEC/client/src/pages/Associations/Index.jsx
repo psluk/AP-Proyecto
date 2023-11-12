@@ -16,7 +16,7 @@ const AssociationList = () => {
     
     // Loading the data
     useEffect(() => {
-        axios.get("/api/asociaciones")
+        axios.get("/api/asociaciones", { withCredentials: true })
             .then((response) => {
                 setAssociations(response.data);
                 setIsLoading(false);

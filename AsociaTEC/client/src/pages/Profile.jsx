@@ -19,12 +19,12 @@ const Profile = () => {
     } = useSessionContext();
 
     const attemptLogout = () => {
-        axios.post("/api/logout").then(() => {
+        axios.post("/api/logout", { withCredentials: true }).then(() => {
             toast.success("Cierre de sesión exitoso", messageSettings);
             setSession({ currentUser: null });
             navigate("/");
         }).catch((err) => {
-            axios.get("/api/login").then((res) => {
+            axios.get("/api/login", { withCredentials: true }).then((res) => {
                 if (res.data?.loggedIn === false) {
                     toast.success("Cierre de sesión exitoso", messageSettings);
                     setSession({ currentUser: null });
