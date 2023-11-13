@@ -9,7 +9,7 @@ import { CreateConversationStructure } from "../../structures/Fields/CreateConve
 
 const CreateConversation = () => {
     const navigate = useNavigate();
-    const { isLoggedIn, getEmail } = useSessionContext();
+    const { isLoggedIn, getEmail, getUserType } = useSessionContext();
     const [fields, setFields] = useState(CreateConversationStructure);
     const [data, setData] = useState({});
 

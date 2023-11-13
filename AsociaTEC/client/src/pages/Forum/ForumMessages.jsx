@@ -38,6 +38,18 @@ const ForumMessages = () => {
         });
     }
 
+    const handleErrase = (e, uuid) => {
+        
+        axios.delete(`/api/conversaciones/mensajes/eliminar?uuid=${uuid}`, { withCredentials: true }).then((response) => {
+
+            toast.success("Mensaje eliminado correctamente", messageSettings);
+            toggleModal()
+        })
+        .catch((error) => {
+            toast.error(error?.response?.data?.mensaje || "No se logró eliminar el mensaje", messageSettings);
+        });
+
+    };
 
     // Load locations and association data
     useEffect(() => {
@@ -76,12 +88,6 @@ const ForumMessages = () => {
 
     }, [modal]);
 
-    //button (tarjetas de foro)
-    // [ tarjetas de chat]
-
-    //seccion medio de la lista de chats
-    console.log("forum",forum)
-    console.log("data",data)
 
     return (
         <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
@@ -92,14 +98,15 @@ const ForumMessages = () => {
                 messages.length > 0
                     ? <div className="">{
                         messages.map((item, index) => (
-                            <ForumMessage message={item} key={index}/>
+                            <ForumMessage message={item} userType={getUserType()} errase={handleErrase} key={index}/>
                         ))
                     }</div>
                     : <p className="text-gray-600 italic text-center">Aun no hay mensajes</p>
             }
             {
-                isLoggedIn() ? 
+                isLoggedIn() ? getUserType() === "Administrador" ? <div></div> : 
                 <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
+                
                 <FormItems
                     fields={[{
                         label: "Contenido",
