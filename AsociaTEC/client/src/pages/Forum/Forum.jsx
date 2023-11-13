@@ -11,8 +11,13 @@ const ForumList = () => {
     const navigate = useNavigate();
     const { getUserType, isLoggedIn, getUniId } = useSessionContext();
     const [proposal, setProposal] = useState([]);
+    const [cambio, setCambio] = useState(true);
     const [forum, setForum] = useState([]);
     const [data, setData] = useState({});
+
+    const toggleCambio = () => {
+        setCambio(!cambio)
+    }
 
     const onClick = (e, uuid) => {
         e.preventDefault();
@@ -44,6 +49,22 @@ const ForumList = () => {
     }
 
 
+    const handleErrase = (e, uuid) => {
+        e.preventDefault()
+
+        axios.delete(`/api/conversaciones/eliminar?uuid=${uuid}`,{ withCredentials: true })
+            .then((response) => {
+                const prop = response.data
+                toast.success("Conversación eliminada", messageSettings);
+                toggleCambio()
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró eliminar la conversación", messageSettings);
+            });
+
+
+    }
+
     // Load locations and association data
     useEffect(() => {
 
@@ -54,7 +75,6 @@ const ForumList = () => {
         axios.get(`/api/conversaciones/`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data
-                console.log(prop)
                 setForum(prop)
             })
             .catch((error) => {
@@ -63,21 +83,21 @@ const ForumList = () => {
 
     }, []);
 
+       // actualization post errased
+       useEffect(() => {
 
+        axios.get(`/api/conversaciones/`, { withCredentials: true })
+            .then((response) => {
+                const prop = response.data
+                console.log("actualizacion",prop)
+                setForum(prop)
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
+            });
 
+    }, [cambio]);
 
-
-    //barra buscadora -> form input
-    // seccion medio donde se lista
-
-    // hacer card para mostrar info
-
-    //button (tarjetas de foro)
-    // [ tarjetas de chat]
-
-    //seccion medio de la lista de chats
-
-    console.log(data)
 
     return (
         <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
@@ -114,7 +134,7 @@ const ForumList = () => {
                 forum.length > 0
                     ? <div className="">{
                         forum.map((item, index) => (
-                            <Forum forum={item} key={index} click={onClick} />
+                            <Forum forum={item} userType={getUserType()} key={index} click={onClick} errase={handleErrase} />
                         ))
                     }</div>
                     : <p className="text-gray-600 italic text-center">Cargando...</p>
