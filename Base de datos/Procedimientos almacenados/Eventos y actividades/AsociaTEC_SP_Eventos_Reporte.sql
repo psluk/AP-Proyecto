@@ -59,17 +59,16 @@ BEGIN
 		ON I.[id] = E.[idInscripcion]
 		WHERE I.[idEvento] = @ID_Evento
 
-		SELECT @Num_Calificaciones = SUM(E.[calificacion])
-		FROM [dbo].[Encuestas] E
-		INNER JOIN [dbo].[Inscripciones] I
-		ON I.[id] = E.[idInscripcion]
-		WHERE I.[idEvento] = @ID_Evento
+        SELECT @Num_Estrellas = ISNULL(SUM(E.[calificacion]), 0)
+        FROM [dbo].[Encuestas] E
+        INNER JOIN [dbo].[Inscripciones] I ON I.[id] = E.[idInscripcion]
+        WHERE I.[idEvento] = @ID_Evento;
 
         SELECT COALESCE
         (
             (SELECT @Num_Inscripciones AS 'inscripciones',
 			        @Num_Confirmados AS 'confirmados',
-			        @Num_Calificaciones AS 'cancelados',
+			        @Num_Cancelados AS 'cancelados',
 			        @Num_Compartidos AS 'compartidos',
 			        @Num_Calificaciones AS 'calificaciones',
                     @Num_Estrellas AS 'estrellas'
