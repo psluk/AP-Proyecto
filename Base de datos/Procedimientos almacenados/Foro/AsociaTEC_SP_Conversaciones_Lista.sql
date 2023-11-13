@@ -89,6 +89,7 @@ BEGIN
 				  OR C.[titulo] LIKE '%' +  LTRIM(RTRIM(@IN_titulo)) + '%') 
             AND (@usartags = 0 
 				OR TIC.id = C.id)
+            AND C.[eliminado] = 0
             ORDER BY C.[titulo], C.[timestamp] ASC
             FOR JSON PATH),
 		'[]'    -- Por defecto, si no hay resultados, no retorna nada, entonces esto hace
