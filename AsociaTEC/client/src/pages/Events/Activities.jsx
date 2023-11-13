@@ -58,6 +58,7 @@ const Activities = () => {
                             fechaInicio={activity.fechaInicio}
                             fechaFin={activity.fechaFin}
                             uuid={activity.uuid}
+                            useType={getUserType()}
                             auxclick={goToEdit}
 
                         />
