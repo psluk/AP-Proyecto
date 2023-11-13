@@ -34,17 +34,22 @@ const ForumList = () => {
 
     const handleCreate = (e) => {
         e.preventDefault();
-        navigate(`/forum/new_conversation`);
+
+        if (!isLoggedIn()) {
+            navigate("/login");
+            toast.error("Sesión no iniciada", messageSettings);
+        } else {
+            navigate(`/forum/new_conversation`);
+        }
     }
 
 
     // Load locations and association data
     useEffect(() => {
 
-        if (!isLoggedIn) {
-            navigate("/login");
-            toast.error("Sesión no iniciada", messageSettings);
-        }
+        //acceso libre
+
+        setData({titulo: ""}) // en caso de busqueda vacia
 
         axios.get(`/api/conversaciones/`, { withCredentials: true })
             .then((response) => {

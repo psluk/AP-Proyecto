@@ -12,7 +12,7 @@ const ForumMessages = () => {
     const { uuid } = useParams();
     const [modal, setModal] = useState(false);
     const { getUserType, isLoggedIn, getEmail } = useSessionContext();
-    const [proposal, setProposal] = useState([]);
+    const [forum, setForum] = useState([]);
     const [messages, setMessages] = useState([]);
     const [data, setData] = useState({});
 
@@ -42,19 +42,22 @@ const ForumMessages = () => {
     // Load locations and association data
     useEffect(() => {
 
-        if (!isLoggedIn) {
-            navigate("/login");
-            toast.error("Sesión no iniciada", messageSettings);
-        }
-
         axios.get(`/api/conversaciones/mensajes?uuid=${uuid}`, { withCredentials: true })
             .then((response) => {
                 const prop = response.data
-                console.log(prop)
                 setMessages(prop)
             })
             .catch((error) => {
                 toast.error(error?.response?.data?.mensaje || "No se logró cargar los mensajes", messageSettings);
+            });
+
+            axios.get(`/api/conversaciones/`, { withCredentials: true })
+            .then((response) => {
+                const prop = response.data.filter(item => item.identificador === uuid)
+                setForum(prop)
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
             });
 
     }, []);
@@ -77,13 +80,13 @@ const ForumMessages = () => {
     // [ tarjetas de chat]
 
     //seccion medio de la lista de chats
-
-    console.log(data)
+    console.log("forum",forum)
+    console.log("data",data)
 
     return (
         <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Foro
+                {forum.length >0 ? forum[0].titulo : ""}
             </h1>
             {
                 messages.length > 0
@@ -94,7 +97,9 @@ const ForumMessages = () => {
                     }</div>
                     : <p className="text-gray-600 italic text-center">Aun no hay mensajes</p>
             }
-            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
+            {
+                isLoggedIn() ? 
+                <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
                 <FormItems
                     fields={[{
                         label: "Contenido",
@@ -114,7 +119,8 @@ const ForumMessages = () => {
                 >
                     Enviar mensaje
                 </button>
-            </form>
+            </form> : <div></div>
+            }
         </div>
     );
 };
