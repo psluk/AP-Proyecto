@@ -2,7 +2,7 @@ export const CreateEventActivityFields = [
     {
         label: "Nombre",
         type: "text",
-        name: "name",
+        name: "nombre",
         placeholder: "Nombre de la actividad",
         required: true,
         maxLength: 64,
@@ -10,7 +10,7 @@ export const CreateEventActivityFields = [
     {
         label: "Lugar",
         type: "textarea",
-        name: "place",
+        name: "lugar",
         placeholder: "Lugar de la actividad",
         required: true,
         maxLength: 128,
