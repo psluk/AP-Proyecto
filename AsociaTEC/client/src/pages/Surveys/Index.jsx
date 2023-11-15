@@ -35,7 +35,7 @@ const FeedBackList = () => {
             setEvent(false)
         });
 
-        axios.get(`/api/encuestas?uuid=${uuid}`, { withCredentials: true }).then((res) => {
+        axios.get(`/api/encuestas?evento=${uuid}`, { withCredentials: true }).then((res) => {
 
             setSurvey(res.data)
 
