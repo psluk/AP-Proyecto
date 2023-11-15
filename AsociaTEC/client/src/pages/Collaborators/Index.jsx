@@ -22,7 +22,7 @@ const CollaboratorList = () => {
     const navigate = useNavigate()
 
     const requestData = () =>{
-        axios.get(`/api/colaboradores/?correo=${getEmail()}&uuid=${uuid}`, { withCredentials: true })
+        axios.get(`/api/colaboradores/?uuid=${uuid}`, { withCredentials: true })
             .then(res => {
                 setCollaborators(res.data)
             })

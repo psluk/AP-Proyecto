@@ -7,7 +7,6 @@
 
 CREATE OR ALTER PROCEDURE [dbo].[AsociaTEC_SP_Colaboradores_Lista]
     -- Par�metros
-    @IN_Correo VARCHAR(128),
     @IN_identificadorEvento UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -23,12 +22,6 @@ BEGIN
     BEGIN TRY
 
         -- VALIDACIONES
-
-		IF (LTRIM(RTRIM(@IN_Correo)) = '')
-        BEGIN
-            -- correo vacio
-            RAISERROR('Parametro [correo] es vacio.', 16, 1)
-        END;
     
 		IF (LTRIM(RTRIM(@IN_identificadorEvento)) = '')
         BEGIN
@@ -60,7 +53,6 @@ BEGIN
 			AND Eve.[eliminado] = 0 --no eliminados (eventos)
 			AND A.[eliminado] = 0 --no eliminados (asociaciones)
 			AND Tpu.[nombre] LIKE @tipoasociacion --que sea tipo asociacion
-			AND U.[correo] = LTRIM(RTRIM(@IN_Correo)) -- identificador de asociacion
 			AND U.[eliminado] = 0 --no eliminados (usuario)
             AND Eve.[uuid] = @IN_identificadorEvento
             ORDER BY E.[apellido1], E.[apellido2], E.[nombre] ASC

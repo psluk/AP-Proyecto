@@ -14,11 +14,9 @@ router.get("/", (req, res) => {
     }
 
     const request = pool.request();
-    const correo = req.query.correo;
     const uuid = req.query.uuid;
 
     try {
-        request.input("IN_Correo", sqlcon.VarChar(128), correo);
         request.input("IN_identificadorEvento", sqlcon.UniqueIdentifier, uuid);
     } catch (error) {
         console.log(error);
