@@ -31,6 +31,12 @@ export default function EditEvent() {
         navigate(`/collaborators/${uuid}`)
     };
 
+    const handleFeedback = (e) => {
+        e.preventDefault()
+        navigate(`/feedbacks/${uuid}`)
+    };
+    
+
 
     useEffect(() => {
         // Redirect if logged in
@@ -169,20 +175,24 @@ export default function EditEvent() {
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-4">
                 Editar Evento
             </h1>
-            <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-10 p-6 ">
+            <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-4 gap-10 p-6 ">
                 <button
                     className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
                     onClick={handleActivity}
                 >
                     Ver actividades
                 </button>
-
-
                 <button
                     className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
                     onClick={handleCollaborator}
                 >
                     Ver colaboradores
+                </button>
+                <button
+                    className="bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit"
+                    onClick={handleFeedback}
+                >
+                    Retroalimentación
                 </button>
             </div>
             <form
