@@ -15,12 +15,10 @@ router.get("/", (req, res) => {
     }
     
     const request = pool.request();
-    const correo = req.query.correo;
     const uuid = req.query.uuid;
     const filtro = req.query.filtro;
 
     try {
-        request.input("IN_Correo", sqlcon.VarChar(128), correo);
         request.input("IN_identificadorEvento", sqlcon.UniqueIdentifier, uuid);
         request.input("IN_filtro", sqlcon.VarChar(16), filtro);
     } catch (error) {

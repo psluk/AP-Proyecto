@@ -21,7 +21,7 @@ const Requests = () => {
     const [modalAccept, setModalAccept] = useState(false)
 
     useEffect(() => {
-        axios.get(`/api/colaboradores/solicitudes/?correo=${getEmail()}&uuid=${uuid}`, { withCredentials: true })
+        axios.get(`/api/colaboradores/solicitudes/?uuid=${uuid}`, { withCredentials: true })
             .then(res => {
                 const dataFiltered = res.data.filter(item => item.aceptado == null)
                 setRequests(dataFiltered)
@@ -75,7 +75,7 @@ const Requests = () => {
 
     return (
         <div className='w-full flex flex-col items-center'>
-            <h1 className='text-center text-4xl font-serif text-venice-blue-800 font-bold mb-8'>Lista de colaboradores</h1>
+            <h1 className='text-center text-4xl font-serif text-venice-blue-800 font-bold mb-8'>Lista de solicitudes</h1>
             <div className=' flex flex-col items-center'>
                 <table className='text-center table-auto md:table-fixed shadow-lg '>
                     <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
