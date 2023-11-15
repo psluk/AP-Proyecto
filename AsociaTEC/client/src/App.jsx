@@ -28,6 +28,7 @@ import Stats from "./pages/Events/Stats";
 import Forum from "./pages/Forum/Forum";
 import ForumMessages from "./pages/Forum/ForumMessages";
 import CreateConversation from "./pages/Forum/CreateConversation";
+import Feedback from "./pages/Forum/survey";
 
 function App() {
     return (
@@ -59,6 +60,7 @@ function App() {
                     <Route exact path="/forum" element={<Forum/>} /> 
                     <Route exact path="/forum/conversation/:uuid" element={<ForumMessages/>} />
                     <Route exact path="/forum/new_conversation" element={<CreateConversation/>} />
+                    <Route exact path="/feedback/:uuid" element={<Feedback/>} />
                 </Routes>
             </div>
             <ToastContainer />
