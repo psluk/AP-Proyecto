@@ -28,7 +28,8 @@ import Stats from "./pages/Events/Stats";
 import Forum from "./pages/Forum/Forum";
 import ForumMessages from "./pages/Forum/ForumMessages";
 import CreateConversation from "./pages/Forum/CreateConversation";
-import Feedback from "./pages/Forum/survey";
+import CreateFeedBack from "./pages/Surveys/CreateFeedBack";
+import FeedBackList from "./pages/Surveys/Index";
 
 function App() {
     return (
@@ -60,7 +61,8 @@ function App() {
                     <Route exact path="/forum" element={<Forum/>} /> 
                     <Route exact path="/forum/conversation/:uuid" element={<ForumMessages/>} />
                     <Route exact path="/forum/new_conversation" element={<CreateConversation/>} />
-                    <Route exact path="/feedback/:uuid" element={<Feedback/>} />
+                    <Route exact path="/feedback/:uuid" element={<CreateFeedBack/>} />
+                    <Route exact path="/feedbacks/:uuid" element={<FeedBackList/>} />
                 </Routes>
             </div>
             <ToastContainer />

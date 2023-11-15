@@ -9,7 +9,7 @@ import Forum from "../../components/cards/Forum";
 import { CreateSurvey } from "../../structures/Fields/CresteSurvey";
 import { Stars } from "../../structures/Fields/Stars";
 
-const Feedback = () => {
+const CreateFeedBack = () => {
     const navigate = useNavigate();
     const { getUserType, isLoggedIn, getUniId } = useSessionContext();
     const [constFields, setConstFields] = useState(CreateSurvey);
@@ -116,4 +116,4 @@ const Feedback = () => {
     );
 };
 
-export default Feedback;
+export default CreateFeedBack;
