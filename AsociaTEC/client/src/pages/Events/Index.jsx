@@ -36,10 +36,10 @@ const EventList = () => {
     const [events, setEvents] = useState([]);
     const [initialLoad, setInitialLoad] = useState(true);
     const navigate = useNavigate();
-    const { getUserType } = useSessionContext();
+    const { getUserType, getLocationCode, getCareerCode } = useSessionContext();
     const admin = getUserType() === "Administrador";
     const assoc = getUserType() === "Asociación";
-    
+    const [ownEvents, setOwnEvents] = useState(false);
 
     const deleteEvent = (uuid) => {
         let currentEvents = [...events];
@@ -51,7 +51,7 @@ const EventList = () => {
             };
         });
 
-        setEvents(currentEvents.filter((date) => 
+        setEvents(currentEvents.filter((date) =>
             date.events.length > 0
         ));
     };
@@ -67,7 +67,7 @@ const EventList = () => {
             const targetPosition = targetElement.offsetTop - 65;
             window.scrollTo({ top: targetPosition, behavior: "smooth" });
         }
-    }, [date]);    
+    }, [date]);
 
     const ServerDay = (props) => {
         const {
@@ -102,11 +102,16 @@ const EventList = () => {
         const controller = new AbortController();
         setEvents([]);
 
+        const ruta = ownEvents ? `/api/eventos?fechaInicio=${month.toISOString()}&fechaFin=${month
+            .add(1, "month")
+            .toISOString()}&codigoSede=${getLocationCode()}&codigoCarrera=${getCareerCode()}` 
+            : `/api/eventos?fechaInicio=${month.toISOString()}&fechaFin=${month
+                .add(1, "month")
+                .toISOString()}`
+
         axios
             .get(
-                `/api/eventos?fechaInicio=${month.toISOString()}&fechaFin=${month
-                    .add(1, "month")
-                    .toISOString()}`,
+                ruta,
                 {
                     withCredentials: true,
                     signal: controller.signal,
@@ -143,7 +148,7 @@ const EventList = () => {
                 setIsLoading(false);
                 toast.error(
                     error?.response?.data?.mensaje ||
-                        "No se pudieron cargar los eventos",
+                    "No se pudieron cargar los eventos",
                     messageSettings
                 );
             });
@@ -172,7 +177,14 @@ const EventList = () => {
         setIsLoading(true);
         setDaysWithEvents([]);
         fetchEvents();
-    }, [month]);
+    }, [month, ownEvents]);
+
+
+
+    const fetchOwnEvents = () => {
+        setOwnEvents(!ownEvents);
+    };
+
 
     return (
         <div className="flex flex-col w-full sm:w-fit flex-auto">
@@ -181,9 +193,15 @@ const EventList = () => {
                 <div className="grow-0 md:mr-6 flex flex-col self-center md:self-start items-center">
                     {
                         assoc &&
-                        <button 
-                            className="bg-emerald-500 hover:bg-emerald-600 py-2 px-4 rounded-lg w-fit text-white mt-3"
-                            onClick={() => navigate("/event/create")} >Crear evento</button>
+                        <div className="flex gap-2">
+                            <button
+                                className="bg-emerald-500 hover:bg-emerald-600 py-2 px-4 rounded-lg w-fit text-white mt-3"
+                                onClick={() => navigate("/event/create")} >Crear evento</button>
+                            <button
+                                className="bg-red-500 hover:bg-red-600 py-2 px-4 rounded-lg w-fit text-white mt-3"
+                                onClick={() => fetchOwnEvents()} >{ownEvents ? 'Ver todos' : 'Ver mis eventos'}</button>
+                        </div>
+
                     }
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                         <DateCalendar
@@ -207,41 +225,41 @@ const EventList = () => {
                     <h2 className="text-center text-venice-blue-700 font-serif text-3xl font-bold mt-3 md:mt-0">{localDate(month?.toISOString(), 'month', true)}</h2>
                     {
                         events.length
-                        ?
-                        <div className="flex flex-col w-full">
-                        {
-                            events.map((date) => {
-                                return (
-                                    <div className="flex flex-col w-full lg:flex-auto" key={date.date}>
-                                        <h3
-                                            id={date.date}
-                                            className="text-center text-xl font-serif text-venice-blue-600 font-bold my-4">
-                                            {localDate(date.events[0].fechaInicio, 'long')}
-                                        </h3>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl-grid-cols-3 w-full">
-                                            {
-                                                date.events.map((event) => {
-                                                    return (
-                                                        <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} userType={getUserType()} />
-                                                    );
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        }
-                        </div>
-                        :
-                        <div className="flex flex-col md:w-[23rem] lg:w-[40rem] 2xl:w-[43.5rem]">
-                            {
-                                isLoading
-                                ?
-                                <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
-                                :
-                                <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay eventos</p>
-                            }
-                        </div>
+                            ?
+                            <div className="flex flex-col w-full">
+                                {
+                                    events.map((date) => {
+                                        return (
+                                            <div className="flex flex-col w-full lg:flex-auto" key={date.date}>
+                                                <h3
+                                                    id={date.date}
+                                                    className="text-center text-xl font-serif text-venice-blue-600 font-bold my-4">
+                                                    {localDate(date.events[0].fechaInicio, 'long')}
+                                                </h3>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl-grid-cols-3 w-full">
+                                                    {
+                                                        date.events.map((event) => {
+                                                            return (
+                                                                <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} userType={getUserType()} />
+                                                            );
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                }
+                            </div>
+                            :
+                            <div className="flex flex-col md:w-[23rem] lg:w-[40rem] 2xl:w-[43.5rem]">
+                                {
+                                    isLoading
+                                        ?
+                                        <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                                        :
+                                        <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay eventos</p>
+                                }
+                            </div>
                     }
                 </div>
             </div>
