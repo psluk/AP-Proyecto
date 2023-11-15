@@ -14,13 +14,12 @@ const EventDetails = () => {
     const { uuid } = useParams()
     const [event, setEvent] = useState(null)
     const navigate = useNavigate()
-    const target = `/event/activities/${uuid}`
     const { getUserType, getUniId } = useSessionContext()
     const student = getUserType() === "Estudiante"
     const [isLoading, setIsLoading] = useState(true);
     const goToActivities = (e) => {
         e.preventDefault()
-        navigate(target)
+        navigate(`/event/activities/${event.asociacion}/${uuid}`)
 
     }
 

@@ -31,6 +31,7 @@ const EventList = () => {
                 .replace(/\d{2}$/, "01")
         )
     );
+
     const [daysWithEvents, setDaysWithEvents] = useState([]);
     const [events, setEvents] = useState([]);
     const [initialLoad, setInitialLoad] = useState(true);

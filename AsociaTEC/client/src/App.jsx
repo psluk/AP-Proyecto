@@ -56,7 +56,7 @@ function App() {
                     <Route exact path="/proposal/details/:uuid" element={<DetailsProposal/>}/>
                     <Route exact path="/proposals" element={<ProposalList/>} />
                     <Route exact path="/event/:uuid" element={<EventDetails/>} />
-                    <Route exact path="/event/activities/:uuid" element={<Activities/>} />
+                    <Route exact path="/event/activities/:association/:uuid" element={<Activities/>} />
                     <Route exact path="/event/stats/:uuid" element={<Stats/>} />
                     <Route exact path="/forum" element={<Forum/>} /> 
                     <Route exact path="/forum/conversation/:uuid" element={<ForumMessages/>} />

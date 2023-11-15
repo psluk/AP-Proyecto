@@ -7,20 +7,22 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { localHtmlAttribute, localTime, localDate } from "../../utils/dateFormatter";
-
+import { useSessionContext } from "../../context/SessionComponent";
+    
 const EventCard = ({ event, onDelete, admin, userType }) => {
     const navigate = useNavigate();
     const target = `/event/edit/${event.uuid}`;
     const targetStudent = `/event/${event.uuid}`;
     const [modal, setModal] = useState(false);
-
+    const { getName } = useSessionContext();
+    const name = getName();
     const toggleModal = () => {
         setModal(!modal);
     };
     
     const goToDetail = (e) => {
         e.preventDefault();
-        navigate((userType=="Estudiante"?targetStudent:target));
+        navigate(((userType=="Asociación"&&name==event.asociacion.nombre)?target:targetStudent));
     };
 
     const deleteEvent = () => {

@@ -9,22 +9,24 @@ import { useSessionContext } from "../../context/SessionComponent";
 import Activity from '../../components/cards/Activity'
 const Activities = () => {
 
-    const { uuid } = useParams()
+    const { uuid, association } = useParams()
     const [activities, setActivities] = useState([])
     const navigate = useNavigate()
     const { getUserType } = useSessionContext()
     const student = getUserType() === "Estudiante"
-    const {session } = useSessionContext();
+    const asocia = getUserType() === "Asociación"
+    const admin = getUserType() === "Administrador"
+    const {session, getName } = useSessionContext();
 
     const goToEdit = (e, a_uuid) => {
         e.preventDefault()
-        if(student) return
+        if(!(admin || (asocia && getName()==association))) return
         navigate(`/event/edit-activity/${uuid}/${a_uuid}`)
     }
 
     const goToCreate = (e) => {
         e.preventDefault()
-        if(student) return
+        if(!(admin || (asocia && getName()==association))) return
         navigate(`/event/create-activity/${uuid}`)
     }
 
@@ -44,7 +46,7 @@ const Activities = () => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings)
             })
     }, [])
-    console.log("ff",activities)
+    
     return (
         <div>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-6">Actividades del evento</h1>
@@ -65,7 +67,7 @@ const Activities = () => {
                     )
                 }): <p className='text-center text-venice-blue-800 font-semibold'>No hay actividades registradas...</p>}
             </div>
-            {!student && <div className='flex justify-center mt-4'>
+            {(admin || (asocia && getName()==association))&& <div className='flex justify-center mt-4'>
                 <button
                     className='bg-venice-blue-800 text-white font-semibold rounded-md px-4 py-2'
                     onClick={goToCreate}

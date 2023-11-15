@@ -23,7 +23,7 @@ export default function EditEvent() {
 
     const handleActivity = (e) => {
         e.preventDefault()
-        navigate(`/event/activities/${uuid}`)
+        navigate(`/event/activities/${event.asociacion}/${uuid}`)
     };
 
     const handleCollaborator = (e) => {
@@ -47,7 +47,7 @@ export default function EditEvent() {
         axios.get(`/api/eventos/detalles/?uuid=${uuid}`, { withCredentials: true }).then((res) => {
             //registro de datos del evento
 
-            setEvent(res.data)
+            setEvent(res.data[0])
 
             if (res.data.length > 0) {
                 setFields(() => {
@@ -119,7 +119,6 @@ export default function EditEvent() {
                 newFields[5].options = temp
 
                 console.log("options", newFields[5].options)
-
                 return newFields;
             });
             setCount(0)
