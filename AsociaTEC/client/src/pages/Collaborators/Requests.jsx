@@ -21,7 +21,7 @@ const Requests = () => {
     const [modalAccept, setModalAccept] = useState(false)
 
     useEffect(() => {
-        axios.get(`/api/colaboradores/solicitudes/?correo=${getEmail()}&uuid=${uuid}`, { withCredentials: true })
+        axios.get(`/api/colaboradores/solicitudes/?uuid=${uuid}`, { withCredentials: true })
             .then(res => {
                 const dataFiltered = res.data.filter(item => item.aceptado == null)
                 setRequests(dataFiltered)
