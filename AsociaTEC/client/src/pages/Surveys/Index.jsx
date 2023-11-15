@@ -12,42 +12,9 @@ import { Stars } from "../../structures/Fields/Stars";
 const FeedBackList = () => {
     const navigate = useNavigate();
     const { getUserType, isLoggedIn, getUniId } = useSessionContext();
-    const [constFields, setConstFields] = useState(CreateSurvey);
-    const [constStars, setConstStars] = useState(Stars);
-    const [fields, setFields] = useState([]);
+    const [survey, setSurvey] = useState([]);
     const [event, setEvent] = useState(false);
     const { uuid } = useParams();
-    const [data, setData] = useState({});
-
-
-    const handleCreate = (e) => {
-        e.preventDefault();
-
-        if (!isLoggedIn()) {
-            navigate("/login");
-            toast.error("Sesión no iniciada", messageSettings);
-        } else {
-
-            axios.post('/api/encuestas/agregar',
-                {
-                    evento: uuid,
-                    carnet: getUniId(),
-                    calificacion: data.calificacion,
-                    comentario: data.calificacion
-                },
-                { withCredentials: true }).then((res) => {
-
-                    toast.success("Retroalimentación enviada exitosamente", messageSettings);
-                    navigate(`/new_conversation`);//falta de donde viene
-                })
-                .catch((err) => {
-                    toast.error(
-                        err?.response?.data?.mensaje || defaultError,
-                        messageSettings
-                    );
-                });
-        }
-    }
 
     // Load locations and association data
     useEffect(() => {
@@ -57,62 +24,63 @@ const FeedBackList = () => {
             toast.error("Sesión no iniciada", messageSettings);
         }
 
-        setFields(() => {
-            setData((prev) => ({
-                ...prev,
-                calificacion: 5
-            }));
-            const newFields = [...constFields];
-            newFields[0].options = constStars.map((item) => ({
-                label: item.label,
-                value: item.value,
-            }));
-            return newFields;
+        if (getUserType() === 'Estudiante') {
+            navigate("/");
+            toast.error("No tiene los permisos necesarios", messageSettings);
+        }
+
+        axios.get(`/api/eventos/detalles?uuid=${uuid}`, { withCredentials: true }).then((res) => {
+            setEvent(true)
+        }).catch((err) => {
+            setEvent(false)
         });
 
-        axios.get(`/api/eventos/detalles?uuid=${uuid}`,{ withCredentials: true }).then((res) => {
+        axios.get(`/api/encuestas?uuid=${uuid}`, { withCredentials: true }).then((res) => {
 
-            setEvent(true)
+            setSurvey(res.data)
 
-            })
+        })
             .catch((err) => {
                 toast.error(
                     err?.response?.data?.mensaje || defaultError,
                     messageSettings
                 );
-                setEvent(false)
             });
     }, []);
 
-    console.log("data", data)
+    console.log("survey", survey)
     return (
-        event? 
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Retroalimentación
-            </h1>
-            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
-                <FormItems
-                    fields={fields}
-                    formItemsData={data}
-                    setFormItemsData={setData}
-                />
-                <button
-                    className=" bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
-                    type="submit"
-                    key={"submit"}
-                >
-                    Enviar
-                </button>
-            </form>
-        </div>
-        :
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Evento no existente
-            </h1>
-        </div>
-        
+        event ?
+            <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+                <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
+                    Retroalimentaciones
+                </h1>
+                <table className='text-center table-auto md:table-fixed shadow-lg '>
+                    <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
+                        <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
+                            <th>Calificación</th>
+                            <th>Comentario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {survey.map((item, index) => {
+                            return (
+                                <tr key={index} className='bg-white border-b-2 border-venice-blue-200 [&>td]:px-2 [&>td]:py-2'>
+                                    <td>{`${item.encuesta.calificacion}`}</td>
+                                    <td >{item.encuesta.comentario}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </div>
+            :
+            <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+                <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
+                    Evento no existente
+                </h1>
+            </div>
+
     );
 };
 

@@ -32,6 +32,17 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
         return currentLocalHtmlAttribute() > localHtmlAttribute(date)
     }
 
+    const handleCreateFeedback = () => {
+        
+        if ((confirm && inscripcion.encuestaActiva) && compareToCurrentDate(fin)) {
+            navigate(`/feedback/${uuid}`)
+            return
+        }
+        toast.error("Encuesta no disponible", messageSettings);
+
+        
+    }
+
     const handleConfirm = (e) => {
         axios.put(`/api/inscripciones/confirmar`, { evento: idEvento, carnet: carnet }, { withCredentials: true })
             .then((res) => {
@@ -66,18 +77,18 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
 
     const handleUnregister = () => {
         axios.delete(`/api/interes/eliminar?evento${idEvento}&carnet=${carnet}`, { withCredentials: true })
-        .then((response) => { 
-            toast.success(response.data.mensaje, messageSettings);
-        })
-        .catch((err) => {
-            toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
-         })
+            .then((response) => {
+                toast.success(response.data.mensaje, messageSettings);
+            })
+            .catch((err) => {
+                toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
+            })
     }
 
     return (
         <div className='w-full border-2 rounded-md shadow-lg flex flex-col md:flex-row p-2 hover:bg-zinc-100 md:items-center'>
             <div className='flex flex-col grow'>
-                <p className='text-center text-venice-blue-700 font-semibold'>{interest?'Evento inscrito':'Evento de interes'}</p>
+                <p className='text-center text-venice-blue-700 font-semibold'>{interest ? 'Evento inscrito' : 'Evento de interes'}</p>
                 <p className='flex '>
                     <EventIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2 font-bold font-serif text-venice-blue-800 text-lg'>{nombre}</span>
                 </p>
@@ -96,8 +107,8 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
                 {(confirm && !compareToCurrentDate(fin))
                     && <button onClick={toggleModalQR}><FontAwesomeIcon icon={faQrcode} className='text-xl text-venice-blue-800' /></button>}
                 {((confirm && inscripcion.encuestaActiva)
-                    && compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Realizar encuesta" /></button>}
-                {(!interest && !compareToCurrentDate(fin)) && <button onClick={(e)=>{handleRegister}}><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faCalendarPlus} title="Inscribirse" /></button>}
+                    && compareToCurrentDate(fin)) && <button onClick={handleCreateFeedback} ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faSquarePollHorizontal} title="Realizar encuesta" /></button>}
+                {(!interest && !compareToCurrentDate(fin)) && <button onClick={(e) => { handleRegister }}><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faCalendarPlus} title="Inscribirse" /></button>}
                 {(!interest && !compareToCurrentDate(fin)) && <button ><FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faCalendarMinus} title="Cancelar" /></button>}
 
             </div>

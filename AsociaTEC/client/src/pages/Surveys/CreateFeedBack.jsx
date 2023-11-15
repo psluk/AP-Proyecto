@@ -26,27 +26,31 @@ const CreateFeedBack = () => {
         if (!isLoggedIn()) {
             navigate("/login");
             toast.error("Sesión no iniciada", messageSettings);
-        } else {
+            return
+        } 
 
-            axios.post('/api/encuestas/agregar',
-                {
-                    evento: uuid,
-                    carnet: getUniId(),
-                    calificacion: data.calificacion,
-                    comentario: data.calificacion
-                },
-                { withCredentials: true }).then((res) => {
-
-                    toast.success("Retroalimentación enviada exitosamente", messageSettings);
-                    navigate(`/new_conversation`);//falta de donde viene
-                })
-                .catch((err) => {
-                    toast.error(
-                        err?.response?.data?.mensaje || defaultError,
-                        messageSettings
-                    );
-                });
+        if (data.comentario === undefined || data.comentario.trim() === "" ) {
+            toast.error("Comentario vacio",messageSettings);
+            return;
         }
+
+        axios.post('/api/encuestas/agregar',
+            {
+                evento: uuid,
+                carnet: getUniId(),
+                calificacion: data.calificacion,
+                comentario: data.comentario
+            },
+            { withCredentials: true }).then((res) => {
+                toast.success("Retroalimentación enviada exitosamente", messageSettings);
+                navigate(`/my-events`);//falta de donde viene
+            })
+            .catch((err) => {
+                toast.error(
+                    err?.response?.data?.mensaje || defaultError,
+                    messageSettings
+                );
+            });
     }
 
     // Load locations and association data
