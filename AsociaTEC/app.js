@@ -1,6 +1,5 @@
 const express = require("express");
 const session = require("express-session");
-const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
@@ -15,7 +14,7 @@ async function iniciar() {
 iniciar();
 
 // CLIENT FILES
-const CLIENT_FILES = path.join(__dirname, "../client/build/");
+const CLIENT_FILES = path.join(__dirname, "./client/dist/");
 
 const app = express();
 
@@ -81,11 +80,6 @@ app.use("/api/interes", interesRouter);
 app.use("/api/propuestas", propuestasRouter);
 app.use("/api/sedes", sedesRouter);
 app.use("/api/carreras", carrerasRouter);
-
-app.get("/", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send({ mensaje: "AsociaTEC" });
-});
 
 app.get("*", (req, res) => {
     res.sendFile(path.join(CLIENT_FILES, "index.html"));

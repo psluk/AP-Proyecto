@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "set NODE_ENV=development && node ./bin/www",
+    "build": "cd client && npm install && npm run build && cd ..",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

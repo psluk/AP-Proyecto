@@ -1,7 +1,7 @@
 const { pool, sqlcon } = require("./database.js");
 const { enviarCorreo } = require("./correos.js");
 const { formatearHoraRelativa } = require("./formatos.js");
-const activo = process.env.NODE_ENV.trim() != "development"; // Si está en desarrollo, no se envían correos
+const activo = process.env.NODE_ENV?.trim() != "development"; // Si está en desarrollo, no se envían correos
 
 const MINUTOS_ANTES = 30; // Minutos antes de la hora del evento para notificar
 const INTENTOS_MAXIMOS = 3; // Intentos máximos para notificar un evento

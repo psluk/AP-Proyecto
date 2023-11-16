@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const activo = process.env.NODE_ENV.trim() != "development"; // Si está en desarrollo, no se envían correos
+const activo = process.env.NODE_ENV?.trim() != "development"; // Si está en desarrollo, no se envían correos
 
 const mail = "asociatec.notificaciones@gmail.com";
 const firma = `<hr style="border: 1px solid #ccc; margin: 20px 0;" />
