@@ -10,21 +10,24 @@ import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from 'react-router-dom'
 import Confirmation from '../../components/modals/Confirmation'
 import RequestConfirmation from '../../components/modals/RequestConfirmation'
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const Requests = () => {
-    const { uuid } = useParams()
-    const { getEmail } = useSessionContext();
+    const { uuid } = useParams();
     const [requests, setRequests] = useState([])
     const [carnet, setCarnet] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const [modalDelete, setModalDelete] = useState(false)
     const [modalAccept, setModalAccept] = useState(false)
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         axios.get(`/api/colaboradores/solicitudes/?uuid=${uuid}`, { withCredentials: true })
             .then(res => {
-                const dataFiltered = res.data.filter(item => item.aceptado == null)
-                setRequests(dataFiltered)
+                const dataFiltered = res.data.filter(item => item.aceptado == null);
+                setRequests(dataFiltered);
+                setIsLoading(false);
             })
             .catch(err => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
@@ -77,29 +80,43 @@ const Requests = () => {
         <div className='w-full flex flex-col items-center'>
             <h1 className='text-center text-4xl font-serif text-venice-blue-800 font-bold mb-8'>Lista de solicitudes</h1>
             <div className=' flex flex-col items-center'>
-                <table className='text-center table-auto md:table-fixed shadow-lg '>
-                    <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
-                        <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
-                            <th>Nombre</th>
-                            <th>Carnet</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {requests.map((item, index) => {
-                            return (
-                                <tr key={index} className='bg-white border-b-2 border-venice-blue-200 [&>td]:px-2 [&>td]:py-2'>
-                                    <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
-                                    <td >{item.carnet}</td>
-                                    <td className='border-l-2'>
-                                    <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickAccept(item.carnet) }} icon={faCheck} className='text-xl text-venice-blue-800 cursor-pointer mr-4' />
-                                    <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrashCan} className='text-xl text-red-600 cursor-pointer' />
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                {
+                    requests.length > 0
+                    ?
+                    <table className='text-center table-auto md:table-fixed shadow-lg '>
+                        <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
+                            <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
+                                <th>Nombre</th>
+                                <th>Carnet</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {requests.map((item, index) => {
+                                return (
+                                    <tr key={index} className='bg-white border-b-2 border-venice-blue-200 [&>td]:px-2 [&>td]:py-2'>
+                                        <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
+                                        <td >{item.carnet}</td>
+                                        <td className='border-l-2'>
+                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickAccept(item.carnet) }} icon={faCheck} className='text-xl text-venice-blue-800 cursor-pointer mr-4' />
+                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrashCan} className='text-xl text-red-600 cursor-pointer' />
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                    :
+                    <>
+                        {
+                            isLoading
+                            ?
+                            <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
+                            :
+                            <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay solicitudes</p>
+                        }
+                    </>
+                    }
             </div>
             <Confirmation
                 modal={modalDelete}

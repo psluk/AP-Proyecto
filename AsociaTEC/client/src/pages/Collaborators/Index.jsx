@@ -10,21 +10,24 @@ import AddCollaboratorModal from '../../components/modals/AddCollaborator'
 import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from 'react-router-dom'
 import Confirmation from '../../components/modals/Confirmation'
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const CollaboratorList = () => {
-    const [modalDelete, setModalDelete] = useState(false)
-    const [modalAdd, setModalAdd] = useState(false)
-    const [collaborators, setCollaborators] = useState([])
-    const { uuid } = useParams()
-    const { getEmail } = useSessionContext();
+    const [modalDelete, setModalDelete] = useState(false);
+    const [modalAdd, setModalAdd] = useState(false);
+    const [collaborators, setCollaborators] = useState([]);
+    const { uuid } = useParams();
     const [carnet, setCarnet] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true);
 
     const requestData = () =>{
         axios.get(`/api/colaboradores/?uuid=${uuid}`, { withCredentials: true })
             .then(res => {
-                setCollaborators(res.data)
+                setCollaborators(res.data);
+                setIsLoading(false);
             })
             .catch(err => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings);
@@ -47,6 +50,10 @@ const CollaboratorList = () => {
     }
 
     const handleAdd = () => {
+        if (!carnet || !descripcion) {
+            toast.error('Debe llenar todos los campos', messageSettings);
+            return
+        }
         toggleModalAdd()
         axios.post(`/api/colaboradores/agregar`, { uuid, carnet, descripcion }, { withCredentials: true })
             .then(res => {
@@ -75,12 +82,11 @@ const CollaboratorList = () => {
         <div className='w-full flex flex-col items-center'>
             <h1 className='text-center text-4xl font-serif text-venice-blue-800 font-bold mb-8'>Lista de colaboradores</h1>
             <div className=' flex flex-col items-center'>
-                <div className='w-full flex gap-2 text-xs justify-around'>
-                    <button onClick={toggleModalAdd} className='bg-venice-blue-700 text-white p-2 rounded-lg mb-4'>Añadir colaborador</button>
-                    <button onClick={()=>{navigate(`/collaborators/request/${uuid}`)}}className='bg-venice-blue-700 text-white p-2 rounded-lg mb-4'>Ver solicitudes</button>
-                </div>
-
-                <table className='text-center table-auto md:table-fixed shadow-lg '>
+                <div className='w-full flex gap-2 justify-around mb-4'>
+                    <button onClick={toggleModalAdd} className='bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit'>Añadir colaborador</button>
+                    <button onClick={()=>{navigate(`/collaborators/request/${uuid}`)}}className='bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit'>Ver solicitudes</button>
+                </div>                
+                <table className={`text-center table-auto md:table-fixed shadow-lg ${collaborators.length ? '' : 'collapse'}`}>
                     <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
                         <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
                             <th>Nombre</th>
@@ -102,6 +108,21 @@ const CollaboratorList = () => {
                         })}
                     </tbody>
                 </table>
+                {
+                collaborators.length
+                ?
+                null
+                :
+                <>
+                    {
+                        isLoading
+                        ?
+                        <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
+                        :
+                        <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay colaboradores</p>
+                    }
+                </>
+                }
             </div>
             <Confirmation
                 modal={modalDelete}

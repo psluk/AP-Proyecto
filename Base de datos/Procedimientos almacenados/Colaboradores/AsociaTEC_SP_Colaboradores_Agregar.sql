@@ -48,10 +48,15 @@ BEGIN
 		AND E.[eliminado] = 0;
 		
 		IF(@usarIDEvento IS NULL)
-
         BEGIN
             RAISERROR('El evento no existe.', 16, 1)
         END;
+
+		-- La descripción no puede estar vacía
+		IF (LTRIM(RTRIM(@IN_descripcion)) = '')
+		BEGIN
+			RAISERROR('No se proporcionó la descripción', 16, 1)
+		END;
 
 		--revisamos si el colaborador ya esta registrado (borrado o no)
 
@@ -81,8 +86,7 @@ BEGIN
 			END;
 
 			    UPDATE CdE
-				SET CdE.[eliminado] = 0, CdE.[descripcion] = CASE WHEN LTRIM(RTRIM(@IN_descripcion)) = '' THEN  CdE.[descripcion]
-																  ELSE LTRIM(RTRIM(@IN_descripcion)) END
+				SET CdE.[eliminado] = 0, CdE.[descripcion] = LTRIM(RTRIM(@IN_descripcion))
 				FROM [dbo].[ColaboradoresDeEvento] CdE
 				INNER JOIN [dbo].[Estudiantes] E
 					ON E.[id] = Cde.[idEstudiante]
