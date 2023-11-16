@@ -31,6 +31,7 @@ import CreateConversation from "./pages/Forum/CreateConversation";
 import CreateFeedBack from "./pages/Surveys/CreateFeedBack";
 import FeedBackList from "./pages/Surveys/Index";
 import StudentList from "./pages/Students/Index";
+import Student from "./pages/Students/Edit";
 
 function App() {
     return (
@@ -65,6 +66,7 @@ function App() {
                     <Route exact path="/feedback/:uuid" element={<CreateFeedBack/>} />
                     <Route exact path="/feedbacks/:uuid" element={<FeedBackList/>} />
                     <Route exact path="/students" element={<StudentList/>} />
+                    <Route exact path="/student/edit/:uniId" element={<Student/>} />
                 </Routes>
             </div>
             <ToastContainer />
