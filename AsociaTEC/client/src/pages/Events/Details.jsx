@@ -9,8 +9,11 @@ import { useNavigate } from 'react-router-dom'
 import { useSessionContext } from "../../context/SessionComponent";
 import ReactLoading from "react-loading";
 import colors from "tailwindcss/colors";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faWhatsapp, faXTwitter} from '@fortawesome/free-brands-svg-icons'
 
 const EventDetails = () => {
+    const currentURL = window.location.href;
     const { uuid } = useParams()
     const [event, setEvent] = useState(null)
     const navigate = useNavigate()
@@ -66,41 +69,64 @@ const EventDetails = () => {
             })
     }, [])
 
+    const share = (e) => {
+        axios.put(`/api/eventos/compartir?`,{uuid})
+            .then((res) => {
+                toast.success("Compartido", messageSettings)
+            })
+            .catch((err) => {
+                toast.error(err?.response?.data?.mensaje || defaultError, messageSettings)
+            })
+    }
+
+
     return (
         <div>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-6">Detalles del evento</h1>
-            { event ?
-                    <div className='flex flex-col md:grid md:grid-cols-2 gap-4 shadow-lg rounded-lg p-8'>
-                        <p><span className='text-venice-blue-800 font-semibold'>Título del evento: </span>{event.titulo}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Asociación: </span>{event.asociacion}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Fecha de inicio: </span> {localDateTime(event.fechaInicio)}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Fecha de finalización:</span>{localDateTime(event.fechaFin)}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Descripción: </span>{event.descripcion}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Ubicación: </span>{event.lugar}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Capacidad: </span>{event.capacidad}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Categoría: </span>{event.categoria}</p>
-                        <p><span className='text-venice-blue-800 font-semibold'>Especiales: </span>{event.especiales}</p>
-                        <div className='w-full flex flex-col md:flex-row col-span-2 justify-center gap-1'>
-                            <button className='md:w-1/4 bg-venice-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-venice-blue-800'
-                                onClick={goToActivities}>Ver actividades</button>
-                            {(student && event.puedeInscribirse) && <button className='md:w-1/4 bg-teal-700 text-white font-bold py-2 px-4 rounded hover:bg-teal-800'
-                                onClick={requestCollaboration}>Ser colaborador</button>}
-                            {(student && event.puedeInscribirse) && <button className='bg-green-700 text-white font-bold py-2 px-4 rounded md:w-1/4 hover:bg-green-800'
-                                onClick={register}>Inscribirse</button>}
-                            {(student && event.puedeInscribirse) && <button className='bg-red-700 text-white font-bold py-2 px-4 rounded md:w-1/4 hover:bg-red-800'
-                                onClick={interest}>Interés</button>}
-                        </div>
-                    </div> :
-                    <div className="flex flex-col">
-                        {
-                            isLoading
-                                ?
-                                <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
-                                :
-                                <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No se ha inscrito a ningún evento</p>
-                        }
+            {event ?
+                <div className='flex flex-col md:grid md:grid-cols-2 gap-4 shadow-lg rounded-lg p-8'>
+                    <p><span className='text-venice-blue-800 font-semibold'>Título del evento: </span>{event.titulo}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Asociación: </span>{event.asociacion}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Fecha de inicio: </span> {localDateTime(event.fechaInicio)}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Fecha de finalización:</span>{localDateTime(event.fechaFin)}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Descripción: </span>{event.descripcion}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Ubicación: </span>{event.lugar}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Capacidad: </span>{event.capacidad}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Categoría: </span>{event.categoria}</p>
+                    <p><span className='text-venice-blue-800 font-semibold'>Especiales: </span>{event.especiales}</p>
+                    <div className='w-full flex flex-col md:flex-row col-span-2 justify-center gap-1'>
+                        <button className='md:w-1/4 bg-venice-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-venice-blue-800'
+                            onClick={goToActivities}>Ver actividades</button>
+                        {(student && event.puedeInscribirse) && <button className='md:w-1/4 bg-teal-700 text-white font-bold py-2 px-4 rounded hover:bg-teal-800'
+                            onClick={requestCollaboration}>Ser colaborador</button>}
+                        {(student && event.puedeInscribirse) && <button className='bg-green-700 text-white font-bold py-2 px-4 rounded md:w-1/4 hover:bg-green-800'
+                            onClick={register}>Inscribirse</button>}
+                        {(student && event.puedeInscribirse) && <button className='bg-red-700 text-white font-bold py-2 px-4 rounded md:w-1/4 hover:bg-red-800'
+                            onClick={interest}>Interés</button>}
+                    </div>
+                    {event.puedeInscribirse && <div className='flex col-span-2 gap-1 justify-end'>
+                        <a
+                            href={`https://api.whatsapp.com/send?text=${currentURL}`}
+                            data-action="share/whatsapp/share"
+                            target="_blank"
+                            onClick={share}><FontAwesomeIcon icon={faWhatsapp} className="text-3xl text-green-500" /></a>
+                        <a
+                            href={`https://twitter.com/intent/tweet?text=${currentURL}`}
+                            target="_blank"
+                            onClick={share}
+                            data-size="large"><FontAwesomeIcon icon={faXTwitter} className="text-3xl text-black" /></a>
                     </div>}
-        </div> 
+                </div> :
+                <div className="flex flex-col">
+                    {
+                        isLoading
+                            ?
+                            <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                            :
+                            <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No se ha inscrito a ningún evento</p>
+                    }
+                </div>}
+        </div>
 
     )
 }

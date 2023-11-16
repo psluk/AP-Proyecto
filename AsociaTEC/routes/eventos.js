@@ -318,9 +318,6 @@ router.delete("/eliminar", (req, res) => {
  * Incrementa la cantidad de compartidos sobre un evento
  */
 router.put("/compartir", (req, res) => {
-    if (!estaAutenticado(req, false, false)) {
-        return res.status(403).send({ mensaje: "Acceso denegado" });
-    }
 
     const uuid = req.body.uuid;
 
