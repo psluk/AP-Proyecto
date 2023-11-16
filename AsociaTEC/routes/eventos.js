@@ -166,7 +166,7 @@ router.post("/agregar", (req, res) => {
             manejarError(res, error);
         } else {
             res.send(result.recordset[0]["results"]);
-            notificar();
+            notificar(false);
         }
     });
 });
@@ -210,7 +210,7 @@ router.put("/modificar", (req, res) => {
             manejarError(res, error);
         } else {
             res.status(200).send({ mensaje: "Modificado con éxito" });
-            notificar();
+            notificar(false);
 
             // Se notifican los cambios
             const resultado = JSON.parse(result.recordset[0]["results"])[0];
@@ -275,7 +275,7 @@ router.delete("/eliminar", (req, res) => {
             manejarError(res, error);
         } else {
             res.status(200).send({ mensaje: "Eliminado con éxito." });
-            notificar();
+            notificar(false);
 
             // Se notifican los cambios
             const resultado = JSON.parse(result.recordset[0]["results"])[0];

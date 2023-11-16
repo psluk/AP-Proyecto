@@ -34,13 +34,13 @@ function crearTimeout(horaObjetivo = undefined) {
     horaObjetivo.setMinutes(horaObjetivo.getMinutes() - MINUTOS_ANTES);
     siguienteHora = horaObjetivo;
 
-    const diferencia = horaObjetivo - horaActual;
+    const diferencia = siguienteHora - horaActual;
     timeoutEnProceso = setTimeout(notificar, diferencia + 5000); // Unos segundos de margen
 
     console.log(" Siguiente verificación de eventos a las " + horaObjetivo.toISOString());
 }
 
-async function notificar() {
+async function notificar(useTimeout = true) {
     if (!activo) {
         return;
     }
@@ -54,7 +54,7 @@ async function notificar() {
     request.input("IN_minutosAntes", sqlcon.Int, MINUTOS_ANTES);
 
     // Hora de inicio de los eventos que se van a notificar
-    request.input("IN_fechaInicio", sqlcon.DateTime, siguienteEvento);
+    request.input("IN_fechaInicio", sqlcon.DateTime, useTimeout ? siguienteEvento : undefined);
 
     request.execute("AsociaTEC_SP_Eventos_Notificar", (error, result) => {
         if (error) {
@@ -79,35 +79,44 @@ async function notificar() {
 
                 eventosPorNotificar.forEach((evento) => {
                     // Notificar inscripciones
-                    enviarCorreo(
-                        [],
-                        "Recordatorio: " + evento.titulo,
-                        `<p>Hola:</p>
-                        <p>Se le recuerda que el evento <b>${evento.titulo}</b> (para el que tiene una inscripción) iniciará <b>${formatearHoraRelativa(MINUTOS_ANTES)}</b>.</p>
-                        <p>Puede ver más detalles <a href="https://asociatec.azurewebsites.net/event/${evento.uuid}">aquí</a>.</p>`,
-                        [],
-                        // Correos ocultos (CCO/BCC)
-                        evento.inscripciones.map((inscripcion) => inscripcion.correo)
-                    );
+                    if (evento.inscripciones?.length > 0) {
+                        enviarCorreo(
+                            [],
+                            "Recordatorio: " + evento.titulo,
+                            `<p>Hola:</p>
+                            <p>Se le recuerda que el evento <b>${evento.titulo}</b> (para el que tiene una inscripción) iniciará <b>${formatearHoraRelativa(MINUTOS_ANTES)}</b>.</p>
+                            <p>Puede ver más detalles <a href="https://asociatec.azurewebsites.net/event/${evento.uuid}">aquí</a>.</p>`,
+                            [],
+                            // Correos ocultos (CCO/BCC)
+                            evento.inscripciones?.map((inscripcion) => inscripcion.correo)
+                        );
+                    }
 
                     // Notificar eventos de interés
-                    enviarCorreo(
-                        [],
-                        "Recordatorio: " + evento.titulo,
-                        `<p>Hola:</p>
-                        <p>Se le recuerda que el evento <b>${evento.titulo}</b> (que marcó como evento de interés) iniciará <b>${formatearHoraRelativa(MINUTOS_ANTES)}</b>.</p>
-                        <p>Puede ver más detalles <a href="https://asociatec.azurewebsites.net/event/${evento.uuid}">aquí</a>.</p>`,
-                        [],
-                        // Correos ocultos (CCO/BCC)
-                        evento.interes.map((interes) => interes.correo)
-                    );
+                    if (evento.interes?.length > 0) {
+                        enviarCorreo(
+                            [],
+                            "Recordatorio: " + evento.titulo,
+                            `<p>Hola:</p>
+                            <p>Se le recuerda que el evento <b>${evento.titulo}</b> (que marcó como evento de interés) iniciará <b>${formatearHoraRelativa(MINUTOS_ANTES)}</b>.</p>
+                            <p>Puede ver más detalles <a href="https://asociatec.azurewebsites.net/event/${evento.uuid}">aquí</a>.</p>`,
+                            [],
+                            // Correos ocultos (CCO/BCC)
+                            evento.interes?.map((interes) => interes.correo)
+                        );
+                    }
                 });
             } else {
                 console.log("No hay eventos para notificar");
             }
-            const sigHora = new Date(result.recordset[0]["siguienteHora"]);
-            sigHora.setMinutes(sigHora.getMinutes());
-            crearTimeout(sigHora);
+            
+            if (result.recordset[0]["siguienteHora"]) {
+                const sigHora = new Date(result.recordset[0]["siguienteHora"]);
+                sigHora.setMinutes(sigHora.getMinutes());
+                crearTimeout(sigHora);
+            } else {
+                crearTimeout();
+            }
         }
         console.log("-----------------------------------------------------------------");
     });

@@ -20,6 +20,7 @@ const EventDetails = () => {
     const { getUserType, getUniId } = useSessionContext()
     const student = getUserType() === "Estudiante"
     const [isLoading, setIsLoading] = useState(true);
+    
     const goToActivities = (e) => {
         e.preventDefault()
         navigate(`/event/activities/${event.asociacion}/${uuid}`)

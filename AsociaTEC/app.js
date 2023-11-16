@@ -9,7 +9,7 @@ const { notificar } = require("./settings/notificar.js");
 // INICIALIZAR
 async function iniciar() {
     await conexion();
-    notificar();
+    notificar(false);
 }
 iniciar();
 

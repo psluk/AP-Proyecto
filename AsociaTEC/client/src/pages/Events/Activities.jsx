@@ -34,12 +34,6 @@ const Activities = () => {
     }
 
     useEffect(() => {
-
-        if (session.currentUser === null) {
-            navigate("/");
-        }
-
-
         axios.get(`/api/actividades/?uuid=${uuid}`, { withCredentials: true })
             .then((res) => {
                 setActivities(res.data);
