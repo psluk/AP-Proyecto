@@ -48,7 +48,11 @@ const FeedBackList = () => {
             });
     }, []);
 
-    console.log("survey", survey)
+    const goToStats = (e) =>{
+        e.preventDefault()
+        navigate(`/event/stats/${uuid}`)
+    }
+
     return (
         <>
             {
@@ -58,6 +62,7 @@ const FeedBackList = () => {
                 <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                     Retroalimentaciones
                 </h1>
+                <button className="bg-venice-blue-700 text-white p-2 rounded-lg mb-4'" onClick={goToStats}>Ver estadisticas</button>
                 <table className='text-center table-auto md:table-fixed shadow-lg '>
                     <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
                         <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
