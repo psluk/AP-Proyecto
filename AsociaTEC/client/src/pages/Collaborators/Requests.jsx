@@ -83,29 +83,31 @@ const Requests = () => {
                 {
                     requests.length > 0
                     ?
-                    <table className='text-center table-auto md:table-fixed shadow-lg '>
-                        <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
-                            <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
-                                <th>Nombre</th>
-                                <th>Carnet</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {requests.map((item, index) => {
-                                return (
-                                    <tr key={index} className='bg-white border-b-2 border-venice-blue-200 [&>td]:px-2 [&>td]:py-2'>
-                                        <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
-                                        <td >{item.carnet}</td>
-                                        <td className='border-l-2'>
-                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickAccept(item.carnet) }} icon={faCheck} className='text-xl text-venice-blue-800 cursor-pointer mr-4' />
-                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' />
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                    <div className="rounded-xl border overflow-hidden shadow-lg">
+                        <table className={`text-center table-auto md:table-fixed shadow-lg`}>
+                            <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-100 '>
+                                <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
+                                    <th>Nombre</th>
+                                    <th>Carnet</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody className="[&>tr:last-child]:border-b-0">
+                                {requests.map((item, index) => {
+                                    return (
+                                        <tr key={index} className='bg-white border-b-2 border-b-venice-blue-800 [&>td]:px-2 [&>td]:py-2'>
+                                            <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
+                                            <td >{item.carnet}</td>
+                                            <td>
+                                            <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickAccept(item.carnet) }} icon={faCheck} className='text-xl text-venice-blue-800 cursor-pointer mr-4' />
+                                            <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' />
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                     :
                     <>
                         {

@@ -86,28 +86,30 @@ const CollaboratorList = () => {
                     <button onClick={toggleModalAdd} className='bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit'>Añadir colaborador</button>
                     <button onClick={()=>{navigate(`/collaborators/request/${uuid}`)}}className='bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit'>Ver solicitudes</button>
                 </div>                
-                <table className={`text-center table-auto md:table-fixed shadow-lg ${collaborators.length ? '' : 'collapse'}`}>
-                    <thead className=' text-center text-venice-blue-700 md:text-lg bg-gray-100 '>
-                        <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
-                            <th>Nombre</th>
-                            <th>Carnet</th>
-                            <th>Descripción</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {collaborators.map((item, index) => {
-                            return (
-                                <tr key={index} className='bg-white border-b-2 border-venice-blue-200 [&>td]:px-2 [&>td]:py-2'>
-                                    <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
-                                    <td >{item.carnet}</td>
-                                    <td >{item.descripcion}</td>
-                                    <td className='border-l-2'><FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' /></td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                <div className={`rounded-xl ${collaborators.length ? 'border' : ''} overflow-hidden shadow-lg`}>
+                    <table className={`text-center table-auto md:table-fixed ${collaborators.length ? '' : 'collapse'}`}>
+                        <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-100'>
+                            <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
+                                <th>Nombre</th>
+                                <th>Carnet</th>
+                                <th>Descripción</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody className="[&>tr:last-child]:border-b-0">
+                            {collaborators.map((item, index) => {
+                                return (
+                                    <tr key={index} className='bg-white border-b-2 border-b-venice-blue-800 [&>td]:px-2 [&>td]:py-2'>
+                                        <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
+                                        <td >{item.carnet}</td>
+                                        <td >{item.descripcion}</td>
+                                        <td ><FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' /></td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
                 {
                 collaborators.length
                 ?

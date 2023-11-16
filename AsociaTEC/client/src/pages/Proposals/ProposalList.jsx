@@ -4,20 +4,19 @@ import { toast } from "react-toastify";
 import { messageSettings } from "../../utils/messageSettings";
 import ProposalCard from "../../components/cards/Proposal";
 import { useSessionContext } from "../../context/SessionComponent";
-
-
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const ProposalList = () => {
     const {isLoggedIn, getUserType, getCareerCode, getLocationCode } = useSessionContext();
     const [proposals, setProposals] = useState([]);
     const [filter, setFilter] = useState([]);
     const [associations, setAssociations] = useState([]);
-
-    
+    const [isLoading, setIsLoading] = useState(true);
 
     const setNewValues = (uuid, text) =>{
         
-        axios.post("/api/propuestas/modificar",{propuesta: uuid, estado: text},{ withCredentials: true })
+        axios.put("/api/propuestas/modificar",{propuesta: uuid, estado: text},{ withCredentials: true })
             .then((response) => {
                 
                 toast.success("Propuesta modificada correctamente", messageSettings);
@@ -48,8 +47,9 @@ const ProposalList = () => {
         axios.get(`/api/propuestas/?codigoCarrera=${getCareerCode()}&codigoSede=${getLocationCode()}&?estado=Sin revisar`, { withCredentials: true })
             .then((response) => {
                 
-                const prop = response.data
-                setProposals(prop)
+                const proposalData = response.data
+                setProposals(proposalData.filter((item) => item.estado === "Sin revisar" || item.estado === "En análisis"));
+                setIsLoading(false);
             })
             .catch((error) => {
                 toast.error(error?.response?.data?.mensaje || "No se pudieron cargar las propuestas", messageSettings);
@@ -68,7 +68,16 @@ const ProposalList = () => {
                         <ProposalCard proposal={proposal} key={index} onDecline={declineProposal} onAccept={acceptProposal} />
                     ))
                 }</div>
-                : <p className="text-gray-600 italic text-center">Cargando...</p>
+                : 
+                <div className="flex flex-col">
+                    {
+                        isLoading
+                        ?
+                        <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles"/>
+                        :
+                        <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay propuestas sin revisar</p>
+                    }
+                </div>
             }
         </div>
     )
