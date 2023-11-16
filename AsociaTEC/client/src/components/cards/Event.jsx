@@ -37,7 +37,7 @@ const EventCard = ({ event, onDelete, userType, association }) => {
     };
 
     return (
-        <div className="sm:shadow-md border-b sm:border-none sm:m-2 sm:rounded-xl p-3 flex flex-col sm:flex-row sm:items-center">
+        <div className="sm:shadow-md border-b sm:border-none sm:m-2 sm:rounded-xl p-3 flex flex-col sm:flex-row sm:items-center md:w-[23rem]">
             <div className="grow">
                 <a
                     href={target}

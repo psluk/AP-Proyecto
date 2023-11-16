@@ -54,7 +54,7 @@ export default function CreateEvent() {
                     </p>,
                     messageSettings
                 );
-                navigate("/");
+                navigate("/events");
             })
             .catch((err) => {
                 toast.error(
@@ -62,8 +62,6 @@ export default function CreateEvent() {
                     messageSettings
                 );
             });
-            toast.success("Evento creado con éxito", messageSettings);
-            navigate("/eventos");
     };
 
     const saveCategories = (categorias) => {
@@ -119,7 +117,7 @@ export default function CreateEvent() {
             </h1>
             <form
                 onSubmit={handleSubmit}
-                className="w-full max-w-4xl md:grid md:grid-cols-2 md:gap-10 md:mt-4 p-6 space-y-4 md:space-y-0">
+                className="w-full max-w-4xl md:grid md:grid-cols-2 gap-x-10 gap-y-3 md:mt-4 px-6">
                 <FormItems
                     fields={EventStructure}
                     formItemsData={data}
@@ -134,7 +132,7 @@ export default function CreateEvent() {
                     </button>
                 </div>
             </form>
-            <p className="text-center">
+            <p className="text-center mt-4">
                 <a
                     className="text-venice-blue-700 hover:underline cursor-pointer"
                     href="/events"

@@ -236,7 +236,7 @@ const EventList = () => {
                                                     className="text-center text-xl font-serif text-venice-blue-600 font-bold my-4">
                                                     {localDate(date.events[0].fechaInicio, 'long')}
                                                 </h3>
-                                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl-grid-cols-3 w-full">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 w-full">
                                                     {
                                                         date.events.map((event) => {
                                                             return (
@@ -262,7 +262,7 @@ const EventList = () => {
                                 }
                             </div>
                             :
-                            <div className="flex flex-col md:w-[23rem] lg:w-[40rem] 2xl:w-[43.5rem]">
+                            <div className="flex flex-col md:w-[24rem] lg:w-[48rem] 2xl:w-[72rem]">
                                 {
                                     isLoading
                                         ?

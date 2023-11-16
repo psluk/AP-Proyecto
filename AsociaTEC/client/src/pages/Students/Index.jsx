@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { messageSettings } from "../../utils/messageSettings";
 import ReactLoading from "react-loading";
 import colors from "tailwindcss/colors";
-import { faTrashCan, faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faPencil } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Confirmation from '../../components/modals/Confirmation'
 import { useNavigate } from "react-router-dom";
@@ -88,7 +88,7 @@ const StudentList = () => {
                                                 onClick={(e) => { e.preventDefault; goToDetail(target + item.carnet); }}>
                                                     <FontAwesomeIcon className="text-xl text-venice-blue-800" icon={faPencil} title="Modificar" />
                                             </a>
-                                            <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrashCan} className='text-xl text-red-600 cursor-pointer' />
+                                            <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' />
                                         </div>
                                     </td>
                                 </tr>

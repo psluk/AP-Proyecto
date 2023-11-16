@@ -30,8 +30,8 @@ const CreateActivity = () => {
         axios.post('/api/actividades/agregar',
             {
                 uuid,
-                nombre: data.nombre,
-                lugar: data.lugar,
+                nombre: data.name,
+                lugar: data.place,
                 fechaInicio: isoString(data.startDate),
                 fechaFin: isoString(data.endDate),
             }, { withCredentials: true }).then((res) => {
@@ -41,7 +41,7 @@ const CreateActivity = () => {
                 </p>,
                 messageSettings
             );
-            navigate(`/event/edit/${uuid}`);
+            navigate(`/event/activities/${event.asociacion}/${uuid}`);
         }).catch((err) => {
             toast.error(
                 err?.response?.data?.mensaje || defaultError,

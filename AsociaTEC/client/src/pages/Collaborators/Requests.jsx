@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { useEffect, useState } from 'react'
-import { faTrashCan, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSessionContext } from "../../context/SessionComponent";
 import { useNavigate } from 'react-router-dom'
@@ -99,7 +99,7 @@ const Requests = () => {
                                         <td >{item.carnet}</td>
                                         <td className='border-l-2'>
                                         <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickAccept(item.carnet) }} icon={faCheck} className='text-xl text-venice-blue-800 cursor-pointer mr-4' />
-                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrashCan} className='text-xl text-red-600 cursor-pointer' />
+                                        <FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' />
                                         </td>
                                     </tr>
                                 )

@@ -7,8 +7,10 @@ import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { useNavigate } from 'react-router-dom'
 import { useSessionContext } from "../../context/SessionComponent";
 import Activity from '../../components/cards/Activity'
-const Activities = () => {
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
+const Activities = () => {
     const { uuid, association } = useParams()
     const [activities, setActivities] = useState([])
     const navigate = useNavigate()
@@ -17,6 +19,7 @@ const Activities = () => {
     const asocia = getUserType() === "Asociación"
     const admin = getUserType() === "Administrador"
     const {session, getName } = useSessionContext();
+    const [isLoading, setIsLoading] = useState(true);
 
     const goToEdit = (e, a_uuid) => {
         e.preventDefault()
@@ -33,14 +36,14 @@ const Activities = () => {
     useEffect(() => {
 
         if (session.currentUser === null) {
-            console.log("raro")
             navigate("/");
         }
 
 
         axios.get(`/api/actividades/?uuid=${uuid}`, { withCredentials: true })
             .then((res) => {
-                setActivities(res.data)
+                setActivities(res.data);
+                setIsLoading(false);
             })
             .catch((err) => {
                 toast.error(err?.response?.data?.mensaje || defaultError, messageSettings)
@@ -48,33 +51,50 @@ const Activities = () => {
     }, [])
     
     return (
-        <div>
+        <div className="p-3 lg:w-[64rem] md:flex md:flex-col md:items-center w-full">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-6">Actividades del evento</h1>
-            <div className='flex flex-col md:grid md:grid-cols-2 gap-4 justify-center'>
-                {activities.length != 0 ? activities.map((activity) => {
-                    return (
-                        <Activity
-                            key={activity.uuid}
-                            nombre={activity.nombre}
-                            lugar={activity.lugar}
-                            fechaInicio={activity.fechaInicio}
-                            fechaFin={activity.fechaFin}
-                            uuid={activity.uuid}
-                            allowModify={(admin || (asocia && getName()==association))}
-                            auxclick={goToEdit}
+            {
+                activities.length
+                ?
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4 justify-center w-full'>
+                    {
+                        activities.map((activity) => 
+                            <Activity
+                                key={activity.uuid}
+                                nombre={activity.nombre}
+                                lugar={activity.lugar}
+                                fechaInicio={activity.fechaInicio}
+                                fechaFin={activity.fechaFin}
+                                uuid={activity.uuid}
+                                allowModify={(admin || (asocia && getName()==association))}
+                                auxclick={goToEdit}
 
-                        />
-                    )
-                }): <p className='text-center text-venice-blue-800 font-semibold'>No hay actividades registradas...</p>}
-            </div>
-            {(admin || (asocia && getName()==association))&& <div className='flex justify-center mt-4'>
-                <button
-                    className='bg-venice-blue-800 text-white font-semibold rounded-md px-4 py-2'
-                    onClick={goToCreate}
-                >
-                    Agregar actividad
-                </button>
-            </div> }
+                            />
+                        )
+                    }
+                </div>
+                : 
+                <div className="flex flex-col md:w-[23rem] lg:w-[40rem] 2xl:w-[43.5rem]">
+                    {
+                        isLoading
+                        ?
+                        <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                        :
+                        <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay actividades para este evento</p>
+                    }
+                </div>
+            }
+            {
+                (admin || (asocia && getName()==association)) &&
+                <div className='flex justify-center mt-4'>
+                    <button
+                        className='bg-venice-blue-700 hover:bg-venice-blue-800 text-white py-2 px-4 rounded-lg w-fit bg-center'
+                        onClick={goToCreate}
+                    >
+                        Agregar actividad
+                    </button>
+                </div>
+            }
         </div>
         
     )

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { messageSettings, defaultError } from '../../utils/messageSettings'
 import { useEffect, useState } from 'react'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AddCollaboratorModal from '../../components/modals/AddCollaborator'
 import { useSessionContext } from "../../context/SessionComponent";
@@ -102,7 +102,7 @@ const CollaboratorList = () => {
                                     <td>{`${item.nombre} ${item.apellido1} ${item.apellido2}`}</td>
                                     <td >{item.carnet}</td>
                                     <td >{item.descripcion}</td>
-                                    <td className='border-l-2'><FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrashCan} className='text-xl text-red-600 cursor-pointer' /></td>
+                                    <td className='border-l-2'><FontAwesomeIcon id={item.carnet} onClick={(e) => { handleClickDelete(item.carnet) }} icon={faTrash} className='text-xl text-red-600 cursor-pointer' /></td>
                                 </tr>
                             )
                         })}

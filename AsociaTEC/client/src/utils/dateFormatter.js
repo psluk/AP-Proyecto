@@ -68,7 +68,7 @@ export const localDate = (apiDateString, dateType, capitalizeFirstLetter = false
     }
 };
 
-export const localTime = (apiDateString, timeType) => {
+export const localTime = (apiDateString, timeType = "short") => {
     try {
         const apiDate = new Date(apiDateString + (apiDateString.endsWith("Z") ? "" : "Z"));
         const currentTimeOptions = timeOptions;

@@ -4,35 +4,35 @@ export const EditEventStructure = [
         type: "text",
         name: "titulo",
         placeholder: "",
-        required: false
+        required: true,
     },
     {
         label: "Capacidad",
         type: "number",
         name: "capacidad",
         placeholder: "Capacidad del evento",
-        required: false,
+        required: true,
     },
     {
         label: "Lugar",
         type: "text",
         name: "lugar",
         placeholder: "Lugar del evento",
-        required: false,
+        required: true,
     },
     {
         label: "Fecha de inicio",
         type: "datetime-local",
         name: "fechaInicio",
         placeholder: "Fecha de Inicio",
-        required: false,
+        required: true,
     },
     {
         label: "Fecha de finalización",
         type: "datetime-local",
         name: "fechaFin",
         placeholder: "Fecha de Finalización",
-        required: false,
+        required: true,
     },
     {
         label: "Categorias",
@@ -41,7 +41,7 @@ export const EditEventStructure = [
         options: [
             { value: "", label: "Cargando...", disabled: true },
         ],
-        required: false,
+        required: true,
     },
     {
         label: "Descripción",
@@ -49,7 +49,7 @@ export const EditEventStructure = [
         name: "descripcion",
         placeholder: "Descripción del evento",
         rows: 5,
-        required: false,
+        required: true,
     },
     {
         label: "Recursos especiales",
@@ -57,6 +57,6 @@ export const EditEventStructure = [
         name: "especiales",
         placeholder: "Recursos especiales",
         rows: 5,
-        required: false,
+        required: true,
     }
 ]
