@@ -138,7 +138,7 @@ const ForumList = () => {
                     <button
                         className=" bg-venice-blue-500 text-white py-2 px-4 rounded-lg w-fit md:whitespace-nowrap"
                         onClick={handleCreate}>
-                        Crear nueva conversacion
+                        Crear nueva conversación
                     </button>
                 }
             </form>
