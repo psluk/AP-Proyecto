@@ -114,7 +114,7 @@ const Requests = () => {
                 modal={modalAccept}
                 handleClose={toggleModalAccept}
                 handleConfirm={handleAccept}
-                title='Eliminar colaborador'
+                title='Aceptar colaborador'
                 confirmColor="bg-venice-blue-600"
                 confirmationText='Aceptar'
                 setDescripcion={setDescripcion}

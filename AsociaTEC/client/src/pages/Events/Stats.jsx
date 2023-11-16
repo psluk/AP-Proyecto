@@ -55,9 +55,9 @@ const Stats = () => {
                     <h2 className='text-center text-2xl font-serif text-venice-blue-600 font-bold mb-4'>Analisis de las Estadisticas</h2>
                     <ul className='list-disc list-inside [&>li]:mt-2'>
                         <li>El evento tiene un {stats.calificaciones != 0 ?(stats.estrellas / stats.calificaciones * 100):0}% de calificación promedio</li>
-                        <li>El evento tiene un {stats.confirmados / stats.inscripciones *100}% de confirmación promedio</li>
-                        <li>El evento tiene un {stats.cancelados / stats.inscripciones * 100}% de cancelación promedio</li>
-                        <li>El evento tiene un {stats.compartidos / stats.inscripciones *100}% de compartición promedio</li>
+                        <li>El evento tiene un {stats.inscripciones != 0?stats.confirmados / stats.inscripciones *100:0}% de confirmación promedio</li>
+                        <li>El evento tiene un {stats.inscripciones != 0?stats.cancelados / stats.inscripciones * 100:0}% de cancelación promedio</li>
+                        <li>El evento tiene un {stats.inscripciones != 0?stats.compartidos / stats.inscripciones *100:0}% de compartición promedio</li>
                     </ul>
                 </div>
             </div>
