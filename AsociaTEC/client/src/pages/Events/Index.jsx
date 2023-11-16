@@ -240,7 +240,18 @@ const EventList = () => {
                                                     {
                                                         date.events.map((event) => {
                                                             return (
-                                                                <EventCard key={event.uuid} event={event} onDelete={deleteEvent} admin={admin} userType={getUserType()} />
+                                                                <EventCard
+                                                                    key={event.uuid}
+                                                                    event={event}
+                                                                    onDelete={deleteEvent}
+                                                                    userType={getUserType()}
+                                                                    association={
+                                                                        {
+                                                                            locationCode: getLocationCode(),
+                                                                            careerCode: getCareerCode()
+                                                                        }
+                                                                    }
+                                                                    />
                                                             );
                                                         })
                                                     }

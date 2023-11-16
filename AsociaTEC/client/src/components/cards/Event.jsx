@@ -9,20 +9,18 @@ import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { localHtmlAttribute, localTime, localDate } from "../../utils/dateFormatter";
 import { useSessionContext } from "../../context/SessionComponent";
     
-const EventCard = ({ event, onDelete, admin, userType }) => {
+const EventCard = ({ event, onDelete, userType, association }) => {
     const navigate = useNavigate();
-    const target = `/event/edit/${event.uuid}`;
-    const targetStudent = `/event/${event.uuid}`;
+    const canManage = userType == "Administrador" || (userType == "Asociación" && association.locationCode === event?.asociacion?.codigoSede && association.careerCode === event?.asociacion?.codigoCarrera);
+    const target = canManage ? `/event/edit/${event.uuid}` : `/event/${event.uuid}`;
     const [modal, setModal] = useState(false);
-    const { getName } = useSessionContext();
-    const name = getName();
     const toggleModal = () => {
         setModal(!modal);
     };
     
     const goToDetail = (e) => {
         e.preventDefault();
-        navigate(((userType=="Asociación"&&name==event.asociacion.nombre)?target:targetStudent));
+        navigate(target);
     };
 
     const deleteEvent = () => {
@@ -72,7 +70,7 @@ const EventCard = ({ event, onDelete, admin, userType }) => {
             </div>
             <div className="flex flex-row mt-2 sm:mt-0 sm:ml-2 sm:flex-col grow-0 justify-around sm:justify-center sm:space-y-2">
                 {
-                    admin ?
+                    canManage ?
                     <>
                         <a
                             href={target}
