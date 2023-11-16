@@ -30,6 +30,7 @@ import ForumMessages from "./pages/Forum/ForumMessages";
 import CreateConversation from "./pages/Forum/CreateConversation";
 import CreateFeedBack from "./pages/Surveys/CreateFeedBack";
 import FeedBackList from "./pages/Surveys/Index";
+import StudentList from "./pages/Students/Index";
 
 function App() {
     return (
@@ -63,6 +64,7 @@ function App() {
                     <Route exact path="/forum/new_conversation" element={<CreateConversation/>} />
                     <Route exact path="/feedback/:uuid" element={<CreateFeedBack/>} />
                     <Route exact path="/feedbacks/:uuid" element={<FeedBackList/>} />
+                    <Route exact path="/students" element={<StudentList/>} />
                 </Routes>
             </div>
             <ToastContainer />
