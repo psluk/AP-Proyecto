@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
 import Forum from "../../components/cards/Forum";
-import { CreateSurvey } from "../../structures/Fields/CresteSurvey";
+import { CreateSurvey } from "../../structures/Fields/CreateSurvey";
 import { Stars } from "../../structures/Fields/Stars";
 
 const FeedBackList = () => {
