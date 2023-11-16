@@ -1,6 +1,7 @@
 const { pool, sqlcon } = require("./database.js");
 const { enviarCorreo } = require("./correos.js");
 const { formatearHoraRelativa } = require("./formatos.js");
+const activo = process.env.NODE_ENV.trim() != "development"; // Si está en desarrollo, no se envían correos
 
 const MINUTOS_ANTES = 30; // Minutos antes de la hora del evento para notificar
 const INTENTOS_MAXIMOS = 3; // Intentos máximos para notificar un evento
@@ -11,6 +12,9 @@ let siguienteEvento = null;
 let intentosRestantes = 3; // Intentos restantes para notificar un evento
 
 function crearTimeout(horaObjetivo = undefined) {
+    if (!activo) {
+        return;
+    }
     if (timeoutEnProceso != null) {
         clearTimeout(timeoutEnProceso);
         timeoutEnProceso = null;
@@ -37,6 +41,9 @@ function crearTimeout(horaObjetivo = undefined) {
 }
 
 async function notificar() {
+    if (!activo) {
+        return;
+    }
     const fechaActual = new Date();
     console.log("-----------------------------------------------------------------");
     console.log(" Verificando si hay eventos para notificar...");
