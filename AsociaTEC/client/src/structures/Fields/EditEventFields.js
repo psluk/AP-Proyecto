@@ -35,7 +35,7 @@ export const EditEventStructure = [
         required: true,
     },
     {
-        label: "Categorias",
+        label: "Categorías",
         type: "select",
         name: "categoria",
         options: [
