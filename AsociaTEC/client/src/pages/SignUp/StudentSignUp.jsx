@@ -146,7 +146,7 @@ export const StudentSignUp = () => {
     return (
         <div className="p-5 w-full xs:w-[30rem]">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
-                Registrar estudiante
+                Registrarse
             </h1>
             <form
                 onSubmit={handleSubmit}

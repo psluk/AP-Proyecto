@@ -133,7 +133,7 @@ export default function EditEvent() {
     return (
         <div className='p-3 lg:w-[64rem] md:flex md:flex-col md:items-center w-full'>
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold my-4">
-                Editar Evento
+                Editar evento
             </h1>
             {
                 event

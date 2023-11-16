@@ -64,7 +64,7 @@ const ProposalDetails = () => {
                 ?
                 <>
                     <ul className="flex flex-col space-y-2">
-                        {proposal.id ? <li><b>ID Propuesta: </b> {proposal.id}</li> : <></>}
+                        {proposal.id ? <li><b>ID de la propuesta: </b> {proposal.id}</li> : <></>}
                         {proposal.titulo ? <li><b>Título: </b> {proposal.titulo}</li> : <></>}
                         {proposal.tematica ? <li><b>Temática: </b> {proposal.tematica}</li> : <></>}
                         {proposal.objetivos ? <li><b>Objetivos: </b> {proposal.objetivos}</li> : <></>}
@@ -73,7 +73,7 @@ const ProposalDetails = () => {
                     </ul>
                     <div className="space-x-2">
                         <button
-                            className="bg-blue-600 hover:bg-blue-800 text-white py-2 px-4 rounded-lg w-fit"
+                            className="bg-emerald-600 hover:bg-emerald-800 text-white py-2 px-4 rounded-lg w-fit"
                             type="button"
                             key="logout"
                             onClick={accept}

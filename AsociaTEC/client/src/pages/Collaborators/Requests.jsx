@@ -127,7 +127,7 @@ const Requests = () => {
                 title='Eliminar colaborador'
                 confirmColor="bg-red-600"
                 confirmationText='Eliminar'
-                message='¿Está seguro que desea eliminar esta solicitud?'
+                message='¿Está seguro de que desea eliminar esta solicitud?'
             />
             <RequestConfirmation
                 modal={modalAccept}

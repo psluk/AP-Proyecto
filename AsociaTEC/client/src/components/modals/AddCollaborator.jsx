@@ -23,7 +23,7 @@ const AddCollaboratorModal = ({ handleClose, handleConfirm, modal, setCarnet, se
                             <h4 className="w-full text-center font-medium text-xl">
                                 Añadir colaborador
                             </h4>
-                            <label>Digite el carnet</label>
+                            <label>Digite el carné</label>
                             <input
                                 onChange={(e) => setCarnet(e.target.value)}
                                 type="text" className="py-1 px-2 border border-venice-blue-700 rounded-lg bg-gray-50" />

@@ -86,7 +86,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     return (
         <div className='w-full border-2 rounded-md shadow-lg flex flex-col md:flex-row p-2 hover:bg-zinc-100 md:items-center'>
             <div className='flex flex-col grow'>
-                <p className='text-center text-venice-blue-700 font-semibold'>{interest ? 'Evento inscrito' : 'Evento de interes'}</p>
+                <p className='text-center text-venice-blue-700 font-semibold'>{interest ? 'Evento inscrito' : 'Evento de interés'}</p>
                 <p className='flex '>
                     <EventIcon className='w-6 h-6 text-venice-blue-800' /><span className='ml-2 font-bold font-serif text-venice-blue-800 text-lg'>{nombre}</span>
                 </p>

@@ -46,7 +46,7 @@ const Stats = () => {
                 ?
                 <div className='flex flex-col gap-8 md:flex-row'>
                     <div className='flex flex-col gap-2 p-4 '>
-                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Estadisticas del evento</h2>
+                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Estadísticas del evento</h2>
                         <p><FontAwesomeIcon icon={faUserPlus} className='text-green-800' /> <b>Inscripciones:</b> {stats.inscripciones}</p>
                         <p><FontAwesomeIcon icon={faCheckDouble} className='text-lime-700' /> <b>Confirmaciones:</b> {stats.confirmados}</p>
                         <p><FontAwesomeIcon icon={faStar} className='text-yellow-600' /> <b>Estrellas:</b> {stats.estrellas}</p>
@@ -55,7 +55,7 @@ const Stats = () => {
                         <p><FontAwesomeIcon icon={faShareNodes} className='text-venice-blue-800' /> <b>Veces compartido:</b> {stats.compartidos}</p>
                     </div>
                     <div className='flex flex-col gap-2 p-4'>
-                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Analisis de las Estadisticas</h2>
+                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Análisis de las estadísticas</h2>
                         <ul className='list-disc list-inside [&>li]:mt-2'>
                             <li>El evento tiene un {stats.calificaciones != 0 ? (stats.estrellas / stats.calificaciones).toFixed(1).replace(".", ",") : 0} de calificación promedio</li>
                             <li>El evento tiene un {stats.inscripciones != 0 ? Math.round(stats.confirmados / stats.inscripciones * 100) : 0}&nbsp;% de confirmación promedio</li>

@@ -133,7 +133,7 @@ const CollaboratorList = () => {
                 title='Eliminar colaborador'
                 confirmColor="bg-red-600"
                 confirmationText='Eliminar'
-                message='¿Está seguro que desea eliminar este colaborador?'
+                message='¿Está seguro de que desea eliminar este colaborador?'
             />
             <AddCollaboratorModal
                 modal={modalAdd}

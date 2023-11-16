@@ -59,11 +59,11 @@ const CreateConversation = () => {
                     setFormItemsData={setData}
                 />
                 <button
-                    className="bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
+                    className="bg-venice-blue-800 hover:bg-venice-blue-900 text-white py-2 px-4 rounded-lg w-fit"
                     type="submit"
                     key="submit"
                 >
-                    Crear nueva Conversación
+                    Crear nueva conversación
                 </button>
             </form>
 
