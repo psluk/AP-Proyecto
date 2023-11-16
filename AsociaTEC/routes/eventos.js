@@ -9,6 +9,7 @@ const {
     formatoFecha,
     formatoHora,
 } = require("../settings/formatos.js");
+const { notificar } = require("../settings/notificar.js"); // Actualiza la hora de notificación
 
 
 router.get("/categorias", (req, res) => {
@@ -165,6 +166,7 @@ router.post("/agregar", (req, res) => {
             manejarError(res, error);
         } else {
             res.send(result.recordset[0]["results"]);
+            notificar();
         }
     });
 });
@@ -208,6 +210,7 @@ router.put("/modificar", (req, res) => {
             manejarError(res, error);
         } else {
             res.status(200).send({ mensaje: "Modificado con éxito" });
+            notificar();
 
             // Se notifican los cambios
             const resultado = JSON.parse(result.recordset[0]["results"])[0];
@@ -272,6 +275,7 @@ router.delete("/eliminar", (req, res) => {
             manejarError(res, error);
         } else {
             res.status(200).send({ mensaje: "Eliminado con éxito." });
+            notificar();
 
             // Se notifican los cambios
             const resultado = JSON.parse(result.recordset[0]["results"])[0];

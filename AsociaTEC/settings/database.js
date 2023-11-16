@@ -30,6 +30,4 @@ async function conexion() {
     }
 }
 
-conexion();
-
-module.exports = { pool, sqlcon };
+module.exports = { pool, sqlcon, conexion };

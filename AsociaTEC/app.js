@@ -4,6 +4,15 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
+const { conexion } = require("./settings/database.js");
+const { notificar } = require("./settings/notificar.js");
+
+// INICIALIZAR
+async function iniciar() {
+    await conexion();
+    notificar();
+}
+iniciar();
 
 // CLIENT FILES
 const CLIENT_FILES = path.join(__dirname, "../client/build/");
