@@ -41,26 +41,31 @@ const Stats = () => {
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold mb-4">
                 Datos del evento
             </h1>
-            <div className='flex flex-col gap-4 md:flex-row shadow rounded-lg'>
-                <div className='flex flex-col gap-2 p-4 '>
-                    <h2 className='text-center text-2xl font-serif text-venice-blue-600 font-bold mb-4'>Estadisticas del evento</h2>
-                    <p><FontAwesomeIcon icon={faUserPlus} className='text-green-800' /> Inscripciones: {stats.inscripciones}</p>
-                    <p><FontAwesomeIcon icon={faCheckDouble} className='text-lime-700' /> Confirmaciones: {stats.confirmados}</p>
-                    <p><FontAwesomeIcon icon={faStar} className='text-yellow-600' /> Estrellas: {stats.estrellas}</p>
-                    <p><FontAwesomeIcon icon={faSquarePollHorizontal} className='text-venice-blue-800' /> Número de calificaciones: {stats.calificaciones}</p>
-                    <p><FontAwesomeIcon icon={faCalendarXmark} className='text-red-800' /> Inscripciones canceladas: {stats.cancelados}</p>
-                    <p><FontAwesomeIcon icon={faShareNodes} className='text-venice-blue-800' /> Veces compartido: {stats.compartidos}</p>
+            {
+                !isLoading
+                ?
+                <div className='flex flex-col gap-8 md:flex-row'>
+                    <div className='flex flex-col gap-2 p-4 '>
+                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Estadisticas del evento</h2>
+                        <p><FontAwesomeIcon icon={faUserPlus} className='text-green-800' /> <b>Inscripciones:</b> {stats.inscripciones}</p>
+                        <p><FontAwesomeIcon icon={faCheckDouble} className='text-lime-700' /> <b>Confirmaciones:</b> {stats.confirmados}</p>
+                        <p><FontAwesomeIcon icon={faStar} className='text-yellow-600' /> <b>Estrellas:</b> {stats.estrellas}</p>
+                        <p><FontAwesomeIcon icon={faSquarePollHorizontal} className='text-venice-blue-800' /> <b>Número de calificaciones:</b> {stats.calificaciones}</p>
+                        <p><FontAwesomeIcon icon={faCalendarXmark} className='text-red-800' /> <b>Inscripciones canceladas:</b> {stats.cancelados}</p>
+                        <p><FontAwesomeIcon icon={faShareNodes} className='text-venice-blue-800' /> <b>Veces compartido:</b> {stats.compartidos}</p>
+                    </div>
+                    <div className='flex flex-col gap-2 p-4'>
+                        <h2 className='text-center text-xl font-serif text-venice-blue-600 font-bold'>Analisis de las Estadisticas</h2>
+                        <ul className='list-disc list-inside [&>li]:mt-2'>
+                            <li>El evento tiene un {stats.calificaciones != 0 ? (stats.estrellas / stats.calificaciones).toFixed(1).replace(".", ",") : 0} de calificación promedio</li>
+                            <li>El evento tiene un {stats.inscripciones != 0 ? Math.round(stats.confirmados / stats.inscripciones * 100) : 0}&nbsp;% de confirmación promedio</li>
+                            <li>El evento tiene un {stats.inscripciones != 0 ? Math.round(stats.cancelados / stats.inscripciones * 100) : 0}&nbsp;% de cancelación promedio</li>
+                            <li>El evento tiene un {stats.inscripciones != 0 ? Math.round(stats.compartidos / stats.inscripciones * 100) : 0}&nbsp;% de compartición promedio</li>
+                        </ul>
+                    </div>
                 </div>
-                <div className='flex flex-col gap-2 p-4'>
-                    <h2 className='text-center text-2xl font-serif text-venice-blue-600 font-bold mb-4'>Analisis de las Estadisticas</h2>
-                    <ul className='list-disc list-inside [&>li]:mt-2'>
-                        <li>El evento tiene un {stats.calificaciones != 0 ?(stats.estrellas / stats.calificaciones * 100):0}% de calificación promedio</li>
-                        <li>El evento tiene un {stats.inscripciones != 0?stats.confirmados / stats.inscripciones *100:0}% de confirmación promedio</li>
-                        <li>El evento tiene un {stats.inscripciones != 0?stats.cancelados / stats.inscripciones * 100:0}% de cancelación promedio</li>
-                        <li>El evento tiene un {stats.inscripciones != 0?stats.compartidos / stats.inscripciones *100:0}% de compartición promedio</li>
-                    </ul>
-                </div>
-            </div>
+                : <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+            }
         </div>
     )
 }
