@@ -185,7 +185,7 @@ const Association = () => {
                     </p>,
                     messageSettings
                 );
-                navigate(`/edit/association/${data.location}/${data.career}`);
+                navigate(`/association/edit/${data.location}/${data.career}`);
             })
             .catch((err) => {
                 toast.error(
