@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
 import Forum from "../../components/cards/Forum";
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const ForumList = () => {
     const navigate = useNavigate();
@@ -14,6 +16,7 @@ const ForumList = () => {
     const [cambio, setCambio] = useState(true);
     const [forum, setForum] = useState([]);
     const [data, setData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleCambio = () => {
         setCambio(!cambio)
@@ -26,11 +29,12 @@ const ForumList = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log(data.titulo)
+        setIsLoading(true);
         axios.get(`/api/conversaciones?titulo=${data.titulo}`,{ withCredentials: true })
             .then((response) => {
                 const prop = response.data
                 setForum(prop)
+                setIsLoading(false);
             })
             .catch((error) => {
                 toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
@@ -50,7 +54,7 @@ const ForumList = () => {
     }
 
 
-    const handleErrase = (e, uuid) => {
+    const handleErase = (e, uuid) => {
         e.preventDefault()
 
         axios.delete(`/api/conversaciones/eliminar?uuid=${uuid}`,{ withCredentials: true })
@@ -77,6 +81,7 @@ const ForumList = () => {
             .then((response) => {
                 const prop = response.data
                 setForum(prop)
+                setIsLoading(false);
             })
             .catch((error) => {
                 toast.error(error?.response?.data?.mensaje || "No se logró cargar las conversaciones", messageSettings);
@@ -101,11 +106,11 @@ const ForumList = () => {
 
 
     return (
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+        <div className="p-5 w-full max-w-4xl space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                 Foro
             </h1>
-            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleSearch}>
+            <form className="space-y-4 flex flex-row items-center w-full gap-4 justify-center" onSubmit={handleSearch}>
                 <FormItems
                     fields={[{
                         label: "Título",
@@ -125,23 +130,35 @@ const ForumList = () => {
                 >
                     Buscar
                 </button>
-                {getUserType() === "Administrador"? <div></div> :<button
-                    className=" bg-venice-blue-500 text-white py-2 px-4 rounded-lg w-fit"
-                    onClick={handleCreate}>
-                    Crear nueva Conversacion
-                </button>
+                {
+                    getUserType() === "Administrador"
+                    ? null
+                    :
+                    <button
+                        className=" bg-venice-blue-500 text-white py-2 px-4 rounded-lg w-fit md:whitespace-nowrap"
+                        onClick={handleCreate}>
+                        Crear nueva Conversacion
+                    </button>
                 }
             </form>
             {
-                forum.length > 0
-                    ? <div className="">{
-                        forum.map((item, index) => (
-                            <Forum forum={item} userType={getUserType()} key={index} click={onClick} errase={handleErrase} />
-                        ))
-                    }</div>
-                    : <p className="text-gray-600 italic text-center">Cargando...</p>
+                forum.length > 0 && !isLoading
+                ? <div className="w-full">{
+                    forum.map((item, index) => (
+                        <Forum forum={item} userType={getUserType()} key={index} click={onClick} erase={handleErase} />
+                    ))
+                }</div>
+                : 
+                <div className="flex flex-col w-full">
+                    {
+                        isLoading
+                            ?
+                            <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                            :
+                            <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay conversaciones</p>
+                    }
+                </div>
             }
-
         </div>
     );
 };

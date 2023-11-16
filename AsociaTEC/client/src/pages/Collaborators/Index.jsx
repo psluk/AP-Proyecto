@@ -88,10 +88,10 @@ const CollaboratorList = () => {
                 </div>                
                 <div className={`rounded-xl ${collaborators.length ? 'border' : ''} overflow-hidden shadow-lg`}>
                     <table className={`text-center table-auto md:table-fixed ${collaborators.length ? '' : 'collapse'}`}>
-                        <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-100'>
+                        <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-200'>
                             <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
                                 <th>Nombre</th>
-                                <th>Carnet</th>
+                                <th>Carné</th>
                                 <th>Descripción</th>
                                 <th></th>
                             </tr>

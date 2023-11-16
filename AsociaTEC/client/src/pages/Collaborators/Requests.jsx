@@ -85,10 +85,10 @@ const Requests = () => {
                     ?
                     <div className="rounded-xl border overflow-hidden shadow-lg">
                         <table className={`text-center table-auto md:table-fixed shadow-lg`}>
-                            <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-100 '>
+                            <thead className='font-serif text-center text-venice-blue-800 md:text-lg bg-gray-200 '>
                                 <tr className="[&>th]:px-2 md:[&>th]:px-8 [&>th]:py-2">
                                     <th>Nombre</th>
-                                    <th>Carnet</th>
+                                    <th>Carné</th>
                                     <th></th>
                                 </tr>
                             </thead>

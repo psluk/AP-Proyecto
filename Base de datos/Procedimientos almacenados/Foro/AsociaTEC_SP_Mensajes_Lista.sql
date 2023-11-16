@@ -47,7 +47,7 @@ BEGIN
             FROM (SELECT M.[contenido] AS 'contenido',
 					M.[timestamp] AS 'timestamp',
 					M.[uuid] AS 'uuid',
-					E.[nombre] AS 'nombre',
+					CONCAT(E.[nombre], ' ', E.[apellido1], ' ', E.[apellido2]) AS 'nombre',
 					E.[carnet] AS 'carnet'
 			     FROM [dbo].[Mensajes] M
                  INNER JOIN [dbo].[Estudiantes] E

@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
 import ForumMessage from "../../components/cards/ForumMessage";
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const ForumMessages = () => {
     const navigate = useNavigate();
@@ -15,6 +17,7 @@ const ForumMessages = () => {
     const [forum, setForum] = useState([]);
     const [messages, setMessages] = useState([]);
     const [data, setData] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const toggleModal = () => {
         setModal(!modal);
@@ -38,7 +41,7 @@ const ForumMessages = () => {
         });
     }
 
-    const handleErrase = (e, uuid) => {
+    const handleErase = (e, uuid) => {
         
         axios.delete(`/api/conversaciones/mensajes/eliminar?uuid=${uuid}`, { withCredentials: true }).then((response) => {
 
@@ -58,6 +61,7 @@ const ForumMessages = () => {
             .then((response) => {
                 const prop = response.data
                 setMessages(prop)
+                setIsLoading(false)
             })
             .catch((error) => {
                 toast.error(error?.response?.data?.mensaje || "No se logró cargar los mensajes", messageSettings);
@@ -90,18 +94,27 @@ const ForumMessages = () => {
 
 
     return (
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+        <div className="p-5 w-full max-w-4xl space-y-4 flex flex-col items-center">
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                 {forum.length >0 ? forum[0].titulo : ""}
             </h1>
             {
                 messages.length > 0
-                    ? <div className="">{
+                    ? <div className="w-full flex flex-col">{
                         messages.map((item, index) => (
-                            <ForumMessage message={item} userType={getUserType()} errase={handleErrase} key={index}/>
+                            <ForumMessage message={item} userType={getUserType()} erase={handleErase} key={index}/>
                         ))
                     }</div>
-                    : <p className="text-gray-600 italic text-center">Aun no hay mensajes</p>
+                    : 
+                    <div className="flex flex-col w-full">
+                        {
+                            isLoading
+                                ?
+                                <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                                :
+                                <p className="text-center text-gray-400 text-xl font-serif font-bold my-3">No hay mensajes en la conversación</p>
+                        }
+                    </div>
             }
             {
                 isLoggedIn() ? getUserType() === "Administrador" ? <div></div> : 
