@@ -15,7 +15,7 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
 
     const [confirm, setConfirm] = useState(inscripcion.confirmada)
     const [interest, setInterest] = useState(inscripcion.inscrito)
-    const Navigate = useNavigate()
+    const navigate = useNavigate()
     const [modal, setModal] = useState(false);
     const [modalQR, setModalQR] = useState(false);
     const [image, setImage] = useState(`api/inscripciones/qr?evento=${idEvento}&carnet=${carnet}`);
@@ -35,12 +35,10 @@ const Registration = ({ idEvento, carnet, nombre, inicio, fin, inscripcion }) =>
     const handleCreateFeedback = () => {
         
         if ((confirm && inscripcion.encuestaActiva) && compareToCurrentDate(fin)) {
-            navigate(`/feedback/${uuid}`)
-            return
-        }
-        toast.error("Encuesta no disponible", messageSettings);
-
-        
+            navigate(`/feedback/${idEvento}`)
+        } else {
+            toast.error("Encuesta no disponible", messageSettings);
+        }        
     }
 
     const handleConfirm = (e) => {

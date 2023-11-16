@@ -4,7 +4,26 @@ export const CreateSurvey = [
         type: "select",
         name: "calificacion",
         options: [
-            { value: "", label: "Cargando...", disabled: true },
+            {
+                label: "5",
+                value: 5,
+            },
+            {
+                label: "4",
+                value: 4,
+            },
+            {
+                label: "3",
+                value: 3,
+            },
+            {
+                label: "2",
+                value: 2,
+            },
+            {
+                label: "1",
+                value: 1,
+            },
         ],
         required: true,
     },
@@ -14,6 +33,6 @@ export const CreateSurvey = [
         name: "password",
         rows: 5,
         placeholder: "Deje sus comentario aquí",
-        required: true,
+        required: false,
     },
 ];

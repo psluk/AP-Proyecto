@@ -5,19 +5,19 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { messageSettings, defaultError } from "../../utils/messageSettings";
 import { useSessionContext } from "../../context/SessionComponent";
-import Forum from "../../components/cards/Forum";
 import { CreateSurvey } from "../../structures/Fields/CreateSurvey";
-import { Stars } from "../../structures/Fields/Stars";
+import ReactLoading from "react-loading";
+import colors from "tailwindcss/colors";
 
 const CreateFeedBack = () => {
     const navigate = useNavigate();
-    const { getUserType, isLoggedIn, getUniId } = useSessionContext();
-    const [constFields, setConstFields] = useState(CreateSurvey);
-    const [constStars, setConstStars] = useState(Stars);
-    const [fields, setFields] = useState([]);
-    const [event, setEvent] = useState(false);
+    const { isLoggedIn, getUniId } = useSessionContext();;
+    const [isLoading, setIsLoading] = useState(false);
     const { uuid } = useParams();
-    const [data, setData] = useState({});
+    const [data, setData] = useState({
+        calificacion: CreateSurvey[0].options[0].value,
+        comentario: "",
+    });
 
 
     const handleCreate = (e) => {
@@ -28,11 +28,6 @@ const CreateFeedBack = () => {
             toast.error("Sesión no iniciada", messageSettings);
             return
         } 
-
-        if (data.comentario === undefined || data.comentario.trim() === "" ) {
-            toast.error("Comentario vacio",messageSettings);
-            return;
-        }
 
         axios.post('/api/encuestas/agregar',
             {
@@ -61,62 +56,48 @@ const CreateFeedBack = () => {
             toast.error("Sesión no iniciada", messageSettings);
         }
 
-        setFields(() => {
-            setData((prev) => ({
-                ...prev,
-                calificacion: 5
-            }));
-            const newFields = [...constFields];
-            newFields[0].options = constStars.map((item) => ({
-                label: item.label,
-                value: item.value,
-            }));
-            return newFields;
-        });
-
         axios.get(`/api/eventos/detalles?uuid=${uuid}`,{ withCredentials: true }).then((res) => {
-
-            setEvent(true)
-
+            setIsLoading(true);
             })
             .catch((err) => {
                 toast.error(
                     err?.response?.data?.mensaje || defaultError,
                     messageSettings
                 );
-                setEvent(false)
+                navigate(-1);
             });
     }, []);
 
-    console.log("data", data)
     return (
-        event? 
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Retroalimentación
-            </h1>
-            <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
-                <FormItems
-                    fields={fields}
-                    formItemsData={data}
-                    setFormItemsData={setData}
-                />
-                <button
-                    className=" bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
-                    type="submit"
-                    key={"submit"}
-                >
-                    Enviar
-                </button>
-            </form>
-        </div>
-        :
-        <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
-            <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
-                Evento no existente
-            </h1>
-        </div>
-        
+        <>
+            {
+                isLoading
+                ? 
+                <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
+                    <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
+                        Retroalimentación
+                    </h1>
+                    <form className="space-y-4 flex flex-col items-center w-full" onSubmit={handleCreate}>
+                        <FormItems
+                            fields={CreateSurvey}
+                            formItemsData={data}
+                            setFormItemsData={setData}
+                        />
+                        <button
+                            className=" bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
+                            type="submit"
+                            key={"submit"}
+                        >
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+                :
+                <div className="flex flex-col md:w-[24rem] lg:w-[48rem] 2xl:w-[72rem]">
+                    <ReactLoading className="self-center grow" color={colors.gray[400]} type="bubbles" />
+                </div>
+            }
+        </>
     );
 };
 
