@@ -36,9 +36,13 @@ const CreateConversation = () => {
     // Load locations and association data
     useEffect(() => {
 
-        if (!isLoggedIn) {
+        if (!isLoggedIn()) {
             navigate("/login");
             toast.error("Sesión no iniciada", messageSettings);
+        }
+
+        if (getUserType() === "Administrador") {
+            toast.error("dirección no válidad", messageSettings);
         }
     }, []);
 

@@ -43,9 +43,10 @@ const ForumList = () => {
         if (!isLoggedIn()) {
             navigate("/login");
             toast.error("Sesión no iniciada", messageSettings);
-        } else {
-            navigate(`/forum/new_conversation`);
+            return;
         }
+        navigate(`/forum/new_conversation`);
+        
     }
 
 
@@ -124,11 +125,12 @@ const ForumList = () => {
                 >
                     Buscar
                 </button>
-                <button
+                {getUserType() === "Administrador"? <div></div> :<button
                     className=" bg-venice-blue-500 text-white py-2 px-4 rounded-lg w-fit"
                     onClick={handleCreate}>
                     Crear nueva Conversacion
                 </button>
+                }
             </form>
             {
                 forum.length > 0
