@@ -110,7 +110,7 @@ const ForumList = () => {
             <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                 Foro
             </h1>
-            <form className="space-y-4 flex flex-row items-center w-full gap-4 justify-center" onSubmit={handleSearch}>
+            <form className="flex flex-row items-center w-full gap-4 justify-center max-sm:flex-wrap" onSubmit={handleSearch}>
                 <FormItems
                     fields={[{
                         label: "Título",
@@ -122,6 +122,7 @@ const ForumList = () => {
                     }]}
                     formItemsData={data}
                     setFormItemsData={setData}
+                    className="w-fit"
                 />
                 <button
                     className=" bg-venice-blue-700 text-white py-2 px-4 rounded-lg w-fit"
