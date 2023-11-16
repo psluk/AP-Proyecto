@@ -43,6 +43,7 @@ const CreateConversation = () => {
 
         if (getUserType() === "Administrador") {
             toast.error("dirección no válidad", messageSettings);
+            navigate("/");
         }
     }, []);
 
