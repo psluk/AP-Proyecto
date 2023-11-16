@@ -30,8 +30,8 @@ const CreateActivity = () => {
         axios.post('/api/actividades/agregar',
             {
                 uuid,
-                nombre: data.name,
-                lugar: data.place,
+                nombre: data.nombre,
+                lugar: data.lugar,
                 fechaInicio: isoString(data.startDate),
                 fechaFin: isoString(data.endDate),
             }, { withCredentials: true }).then((res) => {

@@ -60,7 +60,7 @@ const Activities = () => {
                             fechaInicio={activity.fechaInicio}
                             fechaFin={activity.fechaFin}
                             uuid={activity.uuid}
-                            useType={getUserType()}
+                            allowModify={(admin || (asocia && getName()==association))}
                             auxclick={goToEdit}
 
                         />
