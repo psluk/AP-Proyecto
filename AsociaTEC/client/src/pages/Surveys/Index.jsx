@@ -50,7 +50,10 @@ const FeedBackList = () => {
 
     console.log("survey", survey)
     return (
-        event ?
+        <>
+            {
+            event
+            ?
             <div className="p-5 w-full sm:w-[40rem] space-y-4 flex flex-col items-center">
                 <h1 className="text-center text-4xl font-serif text-venice-blue-800 font-bold">
                     Retroalimentaciones
@@ -80,7 +83,8 @@ const FeedBackList = () => {
                     Evento no existente
                 </h1>
             </div>
-
+            }
+        </>
     );
 };
 
