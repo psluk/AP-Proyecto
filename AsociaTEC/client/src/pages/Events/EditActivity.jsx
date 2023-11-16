@@ -61,8 +61,8 @@ const EditActivity = () => {
                 uuid: a_uuid,
                 nombre: loadedEvent.Nombre,
                 lugar: loadedEvent.lugar,
-                fechaInicio: isoString(loadedEvent.fechaInicio),
-                fechaFin: isoString(loadedEvent.fechaFin),
+                startDate: localHtmlAttribute(loadedEvent.fechaInicio),
+                endDate: localHtmlAttribute(loadedEvent.fechaFin),
             }));
             setFields((prev) => {
                 const newFields = [...prev];
